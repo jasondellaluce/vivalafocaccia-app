@@ -11,7 +11,7 @@ class WPRestJsonPostParser {
     Map<String, dynamic> jsonObj = json.decode(jsonBody);
     return Post(
         int.parse(jsonObj['id'].toString()),
-        jsonObj['slug']['rendered'].toString(),
+        jsonObj['slug'].toString(),
         jsonObj['title']['rendered'].toString(),
         jsonObj['content']['rendered'].toString(),
         jsonObj['author_name'].toString(),
@@ -25,7 +25,7 @@ class WPRestJsonPostParser {
   List<Post> parseList(String jsonBody) {
     List<dynamic> jsonObj = json.decode(jsonBody);
     List<Post> result = new List();
-    jsonObj.forEach((element) => result.add(parse(element)));
+    jsonObj.forEach((element) => result.add(parse(json.encode(element))));
     return result;
   }
 }
@@ -56,7 +56,7 @@ class WPRestJsonRecipeParser {
     List<dynamic> stepList = jsonObj['recipe_steps'];
     return Recipe(
         int.parse(jsonObj['id'].toString()),
-        jsonObj['slug']['rendered'].toString(),
+        jsonObj['slug'].toString(),
         jsonObj['title']['rendered'].toString(),
         jsonObj['content']['rendered'].toString(),
         jsonObj['author_name'].toString(),
@@ -78,7 +78,7 @@ class WPRestJsonRecipeParser {
   List<Recipe> parseList(String jsonBody) {
     List<dynamic> jsonObj = json.decode(jsonBody);
     List<Recipe> result = new List();
-    jsonObj.forEach((element) => result.add(parse(element)));
+    jsonObj.forEach((element) => result.add(parse(json.encode(element))));
     return result;
   }
 }
@@ -116,7 +116,7 @@ class WPRestPostRepository implements PostRepository {
   }
 
   @override
-  Future<List<Post>> getMany({int offset, int count, PostOrder order}) async {
+  Future<List<Post>> getMany({offset:0, count:10, order:PostOrder.date}) async {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
@@ -128,13 +128,13 @@ class WPRestPostRepository implements PostRepository {
       return jsonParser.parseList(response.body);
     }
     else {
-      throw Exception('Failed HTTP request for Post List');
+      throw Exception(response.body);
     }
   }
 
   @override
   Future<List<Post>> getManyFromCategory(Category category,
-      {int offset, int count, PostOrder order}) async {
+      {offset:0, count:10, order:PostOrder.date}) async {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
@@ -186,7 +186,7 @@ class WPRestRecipeRepository implements RecipeRepository {
   }
 
   @override
-  Future<List<Recipe>> getMany({int offset, int count, RecipeOrder order})
+  Future<List<Recipe>> getMany({offset:0, count:10, order:RecipeOrder.date})
       async {
     Map<String, String> query = {
       'offset' : offset.toString(),
@@ -205,7 +205,7 @@ class WPRestRecipeRepository implements RecipeRepository {
 
   @override
   Future<List<Recipe>> getManyFromCategory(Category category,
-      {int offset, int count, RecipeOrder order}) async {
+      {offset:0, count:10, order:RecipeOrder.date}) async {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),

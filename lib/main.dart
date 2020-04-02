@@ -1,4 +1,7 @@
+import 'package:app/model/repositories.dart';
 import 'package:flutter/material.dart';
+
+import 'model/types.dart';
 
 void main() {
   runApp(MyApp());
@@ -93,8 +96,17 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            FutureBuilder<Recipe>(
+              future: ModelRepositoryFactory.instance.getRecipeRepository().getFromId(392623),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data.code);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default, show a loading spinner.
+                return CircularProgressIndicator();
+              },
             ),
             Text(
               '$_counter',

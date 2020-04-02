@@ -1,9 +1,9 @@
 class Category {
   final int id;
   final String name;
-  final String slug;
+  final String code;
 
-  Category(this.id, this.name, this.slug);
+  Category(this.id, this.name, this.code);
 }
 
 class Post {

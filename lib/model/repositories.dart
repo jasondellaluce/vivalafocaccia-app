@@ -1,5 +1,7 @@
 
+import 'package:app/model/fixed-repositories.dart';
 import 'package:app/model/types.dart';
+import 'package:app/model/wprest-repositories.dart';
 
 enum CategoryOrder {
   importance
@@ -37,18 +39,21 @@ abstract class RecipeRepository {
 class ModelRepositoryFactory {
   static final ModelRepositoryFactory _instance = ModelRepositoryFactory._privateConstructor();
   static ModelRepositoryFactory get instance => _instance;
+  final _categoryRepositoty = new FixedCategoryRepository();
+  final _postRepository = new WPRestPostRepository();
+  final _recipeRepository = new WPRestRecipeRepository();
 
   ModelRepositoryFactory._privateConstructor();
 
   CategoryRepository getCategoryRepository() {
-    return null;
+    return _categoryRepositoty;
   }
 
   PostRepository getPostRepository() {
-    return null;
+    return _postRepository;
   }
 
   RecipeRepository getRecipeRepository() {
-    return null;
+    return _recipeRepository;
   }
 }
