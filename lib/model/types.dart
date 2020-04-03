@@ -4,6 +4,12 @@ class Category {
   final String code;
 
   Category(this.id, this.name, this.code);
+
+  bool get hasError => id < 0;
+  String get errorMessage => code;
+  factory Category.createInvalid(String errorMessage) {
+    return Category(-1, '', errorMessage);
+  }
 }
 
 class Post {
@@ -19,6 +25,12 @@ class Post {
 
   Post(this.id, this.code, this.title, this.content, this.authorName, this.pageUrl,
       this.featuredImageUrl, this.creationDateTime, this.lastUpdateDateTime);
+
+  bool get hasError => id < 0;
+  String get errorMessage => code;
+  factory Post.createInvalid(String errorMessage) {
+    return Post(-1, errorMessage, '', '', '', '', '', null, null);
+  }
 }
 
 class RecipeIngredient {
@@ -55,4 +67,9 @@ class Recipe extends Post {
       this.description, this.ingredientList, this.stepList)
       : super(id, code, title, content, authorName, pageUrl, featuredImageUrl,
       creationDateTime, lastUpdateDateTime);
+
+  factory Recipe.createInvalid(String errorMessage) {
+    return Recipe(-1, errorMessage, '', '', '', '', '', null, null, 0, 0, '',
+        '', '', '', null, null);
+  }
 }

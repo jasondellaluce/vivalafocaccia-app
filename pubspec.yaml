@@ -18,6 +18,11 @@ environment:
 
 dependencies:
   http:
+  cached_network_image:
+  html:
+  intl:
+  shimmer:
+  transparent_image:
   flutter:
     sdk: flutter
 

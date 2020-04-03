@@ -25,9 +25,9 @@ class FixedCategoryRepository implements CategoryRepository {
   }
 
   @override
-  Future<List<Category>> getMany({offset:0, count:11,
+  List<Future<Category>> getMany({offset:0, count:11,
       order:CategoryOrder.importance}) {
-    return Future.value(_innerList.sublist(offset, count));
+    return _innerList.sublist(offset, count).map((e) => Future.value(e)).toList();
   }
 
 }

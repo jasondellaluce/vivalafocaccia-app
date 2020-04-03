@@ -88,6 +88,22 @@ class WPRestPostRepository implements PostRepository {
   final websiteUrl = "vivalafocaccia.com";
   final restRouteBase = "/wp-json/wp/v2";
 
+  List<Post> _parseHttpResponse(response){
+    if (response.statusCode == 200) {
+      return jsonParser.parseList(response.body);
+    }
+    return List.filled(1, Post.createInvalid(response.body));
+  }
+
+  List<Future<Post>> _doListHttpRequest(uri, count) {
+    final response = http.get(uri)
+        .then((value) => _parseHttpResponse(value))
+        .catchError((err) => List.filled(1, Post.createInvalid(err.toString())));
+    return List.generate(count, (index) => response
+        .then((value) => value[0].hasError ? value[0] : value[index])
+        .catchError((err) => Post.createInvalid(err.toString())));
+  }
+
   @override
   Future<Post> getFromCode(String code) async {
     Map<String, String> query = {
@@ -99,7 +115,7 @@ class WPRestPostRepository implements PostRepository {
       return jsonParser.parse(response.body);
     }
     else {
-      throw Exception('Failed HTTP request for Post List');
+      throw Exception(response.body);
     }
   }
 
@@ -109,46 +125,40 @@ class WPRestPostRepository implements PostRepository {
         + "/posts/" + id.toString()));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
-    }
-    else {
-      throw Exception('Failed HTTP request for Post');
-    }
-  }
-
-  @override
-  Future<List<Post>> getMany({offset:0, count:10, order:PostOrder.date}) async {
-    Map<String, String> query = {
-      'offset' : offset.toString(),
-      'per_page' : count.toString(),
-      // TODO: Implement ordering
-    };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
-        + "/posts", query));
-    if (response.statusCode == 200) {
-      return jsonParser.parseList(response.body);
-    }
-    else {
+    } else {
       throw Exception(response.body);
     }
   }
 
   @override
-  Future<List<Post>> getManyFromCategory(Category category,
-      {offset:0, count:10, order:PostOrder.date}) async {
+  List<Future<Post>> getMany({offset:0, count:10, order:PostOrder.date}) {
+    Map<String, String> query = {
+      'offset' : offset.toString(),
+      'per_page' : count.toString(),
+      // TODO: Implement ordering
+    };
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/posts", query), count);
+  }
+
+  @override
+  List<Future<Post>> getManyFromCategory(Category category,
+      {offset:0, count:10, order:PostOrder.date}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'categories' : category.id.toString(),
       // TODO: Implement ordering
     };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
-        + "/posts", query));
-    if (response.statusCode == 200) {
-      return jsonParser.parseList(response.body);
-    }
-    else {
-      throw Exception('Failed HTTP request for Post List');
-    }
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/posts", query), count);
+  }
+
+  @override
+  List<Future<Post>> getManyFromKeyWords(String keyWords,
+      {int offset, int count, PostOrder order}) {
+    // TODO: implement getManyFromKeyWords
+    return getMany(offset: offset, count: count, order: order);
   }
 
 }
@@ -157,6 +167,22 @@ class WPRestRecipeRepository implements RecipeRepository {
   final jsonParser = new WPRestJsonRecipeParser();
   final websiteUrl = "vivalafocaccia.com";
   final restRouteBase = "/wp-json/wp/v2";
+
+  List<Recipe> _parseHttpResponse(response){
+    if (response.statusCode == 200) {
+      return jsonParser.parseList(response.body);
+    }
+    return List.filled(1, Recipe.createInvalid(response.body));
+  }
+
+  List<Future<Recipe>> _doListHttpRequest(uri, count) {
+    final Future<List<Recipe>>response = http.get(uri)
+        .then((value) => _parseHttpResponse(value))
+        .catchError((err) => List.filled(1, Recipe.createInvalid(err.toString())));
+    return List.generate(count, (index) => response
+        .then((value) => value[0].hasError ? value[0] : value[index])
+        .catchError((err) => Recipe.createInvalid(err.toString())));
+  }
 
   @override
   Future<Recipe> getFromCode(String code) async {
@@ -169,7 +195,7 @@ class WPRestRecipeRepository implements RecipeRepository {
       return jsonParser.parse(response.body);
     }
     else {
-      throw Exception('Failed HTTP request for Post List');
+      throw Exception(response.body);
     }
   }
 
@@ -181,45 +207,41 @@ class WPRestRecipeRepository implements RecipeRepository {
       return jsonParser.parse(response.body);
     }
     else {
-      throw Exception('Failed HTTP request for Post');
+      throw Exception(response.body);
     }
   }
 
   @override
-  Future<List<Recipe>> getMany({offset:0, count:10, order:RecipeOrder.date})
-      async {
+  List<Future<Recipe>> getMany({offset:0, count:10, order:RecipeOrder.date}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString()
       // TODO: Implement ordering
     };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
-        + "/recipes", query));
-    if (response.statusCode == 200) {
-      return jsonParser.parseList(response.body);
-    }
-    else {
-      throw Exception('Failed HTTP request for Post List');
-    }
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/recipes", query),
+        count
+    );
   }
 
   @override
-  Future<List<Recipe>> getManyFromCategory(Category category,
-      {offset:0, count:10, order:RecipeOrder.date}) async {
+  List<Future<Recipe>> getManyFromCategory(Category category,
+      {offset:0, count:10, order:RecipeOrder.date}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'categories' : category.id.toString(),
       // TODO: Implement ordering
     };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
-        + "/recipes", query));
-    if (response.statusCode == 200) {
-      return jsonParser.parseList(response.body);
-    }
-    else {
-      throw Exception('Failed HTTP request for Post List');
-    }
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
+  }
+
+  @override
+  List<Future<Recipe>> getManyFromKeyWords(String keyWords,
+      {offset:0, count:10, order:RecipeOrder.date}) {
+    // TODO: implement getManyFromKeyWords
+    return getMany(offset: offset, count: count, order: order);
   }
 
 }
