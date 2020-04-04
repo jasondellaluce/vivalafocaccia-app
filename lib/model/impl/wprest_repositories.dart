@@ -93,7 +93,7 @@ class WPRestPostRepository implements PostRepository {
     if (response.statusCode == 200) {
       return jsonParser.parseList(response.body);
     }
-    return List.filled(1, Post.createInvalid(response.body));
+    throw ModelRetrieveError(message: response.body);
   }
 
   List<Future<Post>> _doListHttpRequest(uri, count) {
@@ -101,7 +101,7 @@ class WPRestPostRepository implements PostRepository {
         .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
         .then((value) => value[index])
-        .catchError((err) => Post.createInvalid(err.toString())));
+        .catchError((err) => ModelRetrieveError(message: err.toString())));
   }
 
   @override
@@ -113,9 +113,8 @@ class WPRestPostRepository implements PostRepository {
         + "/posts", query));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
-    }
-    else {
-      throw Exception(response.body);
+    } else {
+      throw ModelRetrieveError(message: response.body);
     }
   }
 
@@ -126,7 +125,7 @@ class WPRestPostRepository implements PostRepository {
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
     } else {
-      throw Exception(response.body);
+      throw ModelRetrieveError(message: response.body);
     }
   }
 
@@ -172,7 +171,7 @@ class WPRestRecipeRepository implements RecipeRepository {
     if (response.statusCode == 200) {
       return jsonParser.parseList(response.body);
     }
-    return List.filled(1, Recipe.createInvalid(response.body));
+    throw ModelRetrieveError(message: response.body);
   }
 
   List<Future<Recipe>> _doListHttpRequest(uri, count) {
@@ -180,7 +179,7 @@ class WPRestRecipeRepository implements RecipeRepository {
         .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
         .then((value) => value[index])
-        .catchError((err) => Post.createInvalid(err.toString())));
+        .catchError((err) => ModelRetrieveError(message: err.toString())));
   }
 
   @override
@@ -194,7 +193,7 @@ class WPRestRecipeRepository implements RecipeRepository {
       return jsonParser.parse(response.body);
     }
     else {
-      throw Exception(response.body);
+      throw ModelRetrieveError(message: response.body);
     }
   }
 
@@ -204,9 +203,8 @@ class WPRestRecipeRepository implements RecipeRepository {
         + "/recipes/" + id.toString()));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
-    }
-    else {
-      throw Exception(response.body);
+    } else {
+      throw ModelRetrieveError(message: response.body);
     }
   }
 
@@ -218,9 +216,7 @@ class WPRestRecipeRepository implements RecipeRepository {
       // TODO: Implement ordering
     };
     return _doListHttpRequest(
-        Uri.https(websiteUrl, restRouteBase + "/recipes", query),
-        count
-    );
+        Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
   }
 
   @override

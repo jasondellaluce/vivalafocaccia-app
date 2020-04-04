@@ -1,7 +1,7 @@
 
-import 'file:///C:/dev/projects/vivalafocaccia_app/lib/model/impl/fixed-repositories.dart';
+import 'file:///C:/dev/projects/vivalafocaccia_app/lib/model/impl/mock_repositories.dart';
 import 'package:app/model/models.dart';
-import 'file:///C:/dev/projects/vivalafocaccia_app/lib/model/impl/wprest-repositories.dart';
+import 'file:///C:/dev/projects/vivalafocaccia_app/lib/model/impl/wprest_repositories.dart';
 
 enum CategoryOrder {
   importance
