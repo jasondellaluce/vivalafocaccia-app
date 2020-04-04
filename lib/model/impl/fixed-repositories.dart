@@ -1,6 +1,6 @@
 
 import 'package:app/model/repositories.dart';
-import 'package:app/model/types.dart';
+import 'package:app/model/models.dart';
 
 class FixedCategoryRepository implements CategoryRepository {
   final _innerList = [

@@ -1,7 +1,7 @@
 import 'package:app/model/repositories.dart';
 import 'package:flutter/material.dart';
 
-import 'model/types.dart';
+import 'model/models.dart';
 
 void main() {
   runApp(MyApp());

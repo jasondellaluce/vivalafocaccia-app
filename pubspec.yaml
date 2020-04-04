@@ -17,12 +17,15 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  meta:
   http:
   cached_network_image:
   html:
   intl:
   shimmer:
   transparent_image:
+  equatable:
+  bloc:
   flutter:
     sdk: flutter
 

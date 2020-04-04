@@ -1,10 +1,11 @@
 
 import 'dart:convert';
 
+import 'package:app/model/errors.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/model/repositories.dart';
-import 'package:app/model/types.dart';
+import 'package:app/model/models.dart';
 
 class WPRestJsonPostParser {
   Post parse(String jsonBody) {
@@ -97,10 +98,9 @@ class WPRestPostRepository implements PostRepository {
 
   List<Future<Post>> _doListHttpRequest(uri, count) {
     final response = http.get(uri)
-        .then((value) => _parseHttpResponse(value))
-        .catchError((err) => List.filled(1, Post.createInvalid(err.toString())));
+        .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
-        .then((value) => value[0].hasError ? value[0] : value[index])
+        .then((value) => value[index])
         .catchError((err) => Post.createInvalid(err.toString())));
   }
 
@@ -176,12 +176,11 @@ class WPRestRecipeRepository implements RecipeRepository {
   }
 
   List<Future<Recipe>> _doListHttpRequest(uri, count) {
-    final Future<List<Recipe>>response = http.get(uri)
-        .then((value) => _parseHttpResponse(value))
-        .catchError((err) => List.filled(1, Recipe.createInvalid(err.toString())));
+    final response = http.get(uri)
+        .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
-        .then((value) => value[0].hasError ? value[0] : value[index])
-        .catchError((err) => Recipe.createInvalid(err.toString())));
+        .then((value) => value[index])
+        .catchError((err) => Post.createInvalid(err.toString())));
   }
 
   @override
