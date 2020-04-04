@@ -1,6 +1,6 @@
-import 'package:app/bloc/recipe_search_event.dart';
-import 'package:app/bloc/recipe_search_state.dart';
-import 'package:app/model/errors.dart';
+import 'package:app/bloc/events/recipe_search_event.dart';
+import 'package:app/bloc/states/recipe_search_state.dart';
+import 'package:app/errors.dart';
 import 'package:app/model/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +43,7 @@ class RecipeSearchBloc extends Bloc<RecipeSearchEvent, RecipeSearchState> {
       } else {
         yield SearchStateLoading();
         try {
-          final results = await recipeRepository.getManyFromKeyWords(searchTerm);
+          final results = recipeRepository.getManyFromKeyWords(searchTerm);
           yield SearchStateSuccess(results);
         } catch (error) {
           yield error is ModelRetrieveError

@@ -25,7 +25,7 @@ dependencies:
   shimmer:
   transparent_image:
   equatable:
-  bloc:
+  flutter_bloc:
   flutter:
     sdk: flutter
 

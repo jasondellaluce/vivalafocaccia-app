@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:app/model/errors.dart';
+import 'package:app/errors.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/model/repositories.dart';
@@ -89,19 +89,20 @@ class WPRestPostRepository implements PostRepository {
   final websiteUrl = "vivalafocaccia.com";
   final restRouteBase = "/wp-json/wp/v2";
 
-  List<Post> _parseHttpResponse(response){
+  List<Recipe> _parseHttpResponse(response){
     if (response.statusCode == 200) {
       return jsonParser.parseList(response.body);
     }
-    throw ModelRetrieveError(message: response.body);
+    throw ModelRetrieveError(message : response.body);
   }
 
-  List<Future<Post>> _doListHttpRequest(uri, count) {
+  List<Future<Recipe>> _doListHttpRequest(uri, count) {
     final response = http.get(uri)
         .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
         .then((value) => value[index])
-        .catchError((err) => ModelRetrieveError(message: err.toString())));
+        .catchError((err) => throw  ModelRetrieveError(
+        message: err.toString())));
   }
 
   @override
@@ -171,7 +172,7 @@ class WPRestRecipeRepository implements RecipeRepository {
     if (response.statusCode == 200) {
       return jsonParser.parseList(response.body);
     }
-    throw ModelRetrieveError(message: response.body);
+    throw ModelRetrieveError(message : response.body);
   }
 
   List<Future<Recipe>> _doListHttpRequest(uri, count) {
@@ -179,7 +180,8 @@ class WPRestRecipeRepository implements RecipeRepository {
         .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
         .then((value) => value[index])
-        .catchError((err) => ModelRetrieveError(message: err.toString())));
+        .catchError((err) => throw  ModelRetrieveError(
+            message: err.toString())));
   }
 
   @override

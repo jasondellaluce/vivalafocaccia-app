@@ -4,4 +4,8 @@ class ModelRetrieveError {
 
   const ModelRetrieveError({this.message});
 
+  @override
+  String toString() {
+    return message;
+  }
 }
