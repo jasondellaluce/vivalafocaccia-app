@@ -1,15 +1,19 @@
 import 'package:app/model/repositories.dart';
-import 'package:app/bloc/recipe_search_bloc.dart';
-import 'package:app/pages/recipe_search_page.dart';
+import 'package:app/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:app/bloc/search/search_bloc.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-    runApp(VivaLaFocacciaApp(recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository()));
+    runApp(VivaLaFocacciaApp(
+      recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
+      categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository(),
+    ));
   });
 }
 
@@ -40,10 +44,12 @@ class VivaLaFocacciaApp extends StatefulWidget {
   );
 
   final RecipeRepository recipeRepository;
+  final CategoryRepository categoryRepository;
 
   const VivaLaFocacciaApp({
     Key key,
     @required this.recipeRepository,
+    @required this.categoryRepository,
   }) : super(key: key);
 
   @override
@@ -70,8 +76,10 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
       title: "VivaLaFocaccia",
       home: BlocProvider(
         create: (context) =>
-            RecipeSearchBloc(recipeRepository: widget.recipeRepository),
-        child: RecipeSearchPage(),
+            SearchBloc(
+              categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
+            ),
+        child: SearchPage(),
       ),
     );
   }
