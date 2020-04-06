@@ -10,6 +10,8 @@ abstract class SearchResultState extends Equatable {
 
 class ResultUninitialized extends SearchResultState {}
 
+class GoToPrevPageState extends SearchResultState {}
+
 class ResultError extends SearchResultState {
   final String errorStr;
 
@@ -24,11 +26,13 @@ class ResultError extends SearchResultState {
 }
 
 class ResultLoaded extends SearchResultState {
+  final int previousLength;
   final List<Future<Recipe>> results;
   final bool hasReachedMax;
 
   const ResultLoaded({
     this.results,
+    this.previousLength,
     this.hasReachedMax,
   });
 
@@ -47,5 +51,5 @@ class ResultLoaded extends SearchResultState {
 
   @override
   String toString() =>
-      'ResultLoaded { results: ${results.length}, hasReachedMax: $hasReachedMax }';
+      'ResultLoaded { results: ${results.length}, previousLength: $previousLength, hasReachedMax: $hasReachedMax }';
 }

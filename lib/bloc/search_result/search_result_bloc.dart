@@ -8,6 +8,7 @@ import 'search_result_state.dart';
 
 abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultState> {
   final RecipeRepository recipeRepository;
+  final int resultsPerRefresh = 10;
 
   SearchResultBloc(this.recipeRepository);
 
@@ -33,22 +34,26 @@ abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultStat
     if (event is FetchResult && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ResultUninitialized) {
-          final posts = await fetchResults(0, 20);
+          final posts = fetchResults(0, resultsPerRefresh);
           yield ResultLoaded(results: posts, hasReachedMax: false);
           return;
         }
         if (currentState is ResultLoaded) {
-          final posts = await fetchResults(currentState.results.length, 20);
+          final posts = fetchResults(currentState.results.length, resultsPerRefresh);
           yield posts.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
               : ResultLoaded(
-            results: currentState.results + posts,
-            hasReachedMax: false,
-          );
+                  results: currentState.results + posts,
+                  previousLength: currentState.results?.length ?? 0,
+                  hasReachedMax: false,
+              );
         }
       } catch (error) {
         yield ResultError(error.toString());
       }
+    }
+    if(event is GoToPrevPage) {
+      yield GoToPrevPageState();
     }
   }
 

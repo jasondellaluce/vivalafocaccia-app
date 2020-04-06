@@ -1,10 +1,14 @@
+import 'package:app/bloc/search/search_bloc.dart';
+import 'package:app/bloc/search_result/search_result_event.dart';
 import 'package:app/model/repositories.dart';
 import 'package:app/pages/search_page.dart';
+import 'package:app/pages/keyword_search_result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:app/bloc/search/search_bloc.dart';
+import 'bloc/search/search_state.dart';
+import 'bloc/search_result/keyword_search_result_bloc.dart';
 
 
 void main() async{
@@ -74,11 +78,14 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
       debugShowCheckedModeBanner: false,
       theme: VivaLaFocacciaApp.lightTheme,
       title: "VivaLaFocaccia",
-      home: BlocProvider(
-        create: (context) =>
-            SearchBloc(
-              categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => SearchBloc(
+                categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
             ),
+          ),
+        ],
         child: SearchPage(),
       ),
     );

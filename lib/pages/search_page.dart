@@ -1,7 +1,6 @@
 
 import 'package:app/bloc/search/search_bloc.dart';
 import 'package:app/bloc/search/search_event.dart';
-import 'package:app/bloc/search/search_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,24 +14,12 @@ class SearchPage extends StatelessWidget {
         title: Text("Le ricette di VivaLaFocaccia"),
         centerTitle: true,
         automaticallyImplyLeading: false,
+
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
         child: ListView(
           children: <Widget>[
-            BlocBuilder<SearchBloc, SearchState>(
-              builder: (context, state) {
-                if (state is KeywordSelectedState) {
-                  // TODO: Navigate to keyword search results page
-                  return Container();
-                }
-                if (state is CategorySelectedState) {
-                  // TODO: Navigate to category search results page
-                  return Container();
-                }
-                return Container();
-              },
-            ),
             _SearchBar(),
             SizedBox(height: 10.0),
             _CategoryList(),
@@ -77,6 +64,7 @@ class _SearchBarState extends State<_SearchBar> {
           ),
         ),
         child: TextField(
+          onSubmitted: (text) => _submitKeywords(),
           style: TextStyle(
             fontSize: 15.0,
             color: Colors.black,
@@ -97,16 +85,17 @@ class _SearchBarState extends State<_SearchBar> {
                 Icons.search,
                 color: Colors.black,
               ),
-              onTap: _onSearchTapped,
+              onTap: _submitKeywords,
             ),
             suffixIcon: GestureDetector(
               child: Icon(Icons.clear),
-              onTap: _onClearTapped,
+              onTap: _clearKeywords,
             ),
             hintStyle: TextStyle(
               fontSize: 15.0,
               color: Colors.black,
             ),
+
           ),
           maxLines: 1,
           controller: _textController,
@@ -116,12 +105,13 @@ class _SearchBarState extends State<_SearchBar> {
     );
   }
 
-  void _onClearTapped() {
+  void _clearKeywords() {
     _textController.text = '';
     bloc.add(KeywordSelectedEvent(text: ''));
   }
 
-  void _onSearchTapped() {
+  void _submitKeywords() {
+    print("Hellooo");
     bloc.add(KeywordSelectedEvent(text: _textController.text));
   }
 
@@ -130,6 +120,7 @@ class _SearchBarState extends State<_SearchBar> {
 class _CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO: Render cool category list
     return Container();
   }
 }

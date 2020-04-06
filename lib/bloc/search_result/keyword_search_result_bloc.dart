@@ -4,7 +4,7 @@ import 'package:app/model/models.dart';
 import 'package:flutter/cupertino.dart';
 
 class KeywordSearchResultBloc extends SearchResultBloc {
-  final String keyWords;
+  String keyWords;
 
   KeywordSearchResultBloc({
     @required recipeRepository,

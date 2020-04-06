@@ -6,3 +6,5 @@ abstract class SearchResultEvent extends Equatable {
 }
 
 class FetchResult extends SearchResultEvent {}
+
+class GoToPrevPage extends SearchResultEvent {}

@@ -28,12 +28,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   @override
-  void onTransition(
-      Transition<SearchEvent, SearchState> transition) {
-    print(transition);
-  }
-
-  @override
   SearchState get initialState => EmptyState(categoryRepository.getMany());
 
   @override
