@@ -1,5 +1,5 @@
 import 'package:app/model/models.dart';
-import 'file:///C:/dev/projects/vivalafocaccia_app/lib/ui/widgets/picture.dart';
+import 'package:app/ui/widgets/picture.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:html/parser.dart';

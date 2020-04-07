@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:global_configuration/global_configuration.dart';
 
-import 'bloc/search_result/keyword_search_result_bloc.dart';
+import 'package:app/bloc/search_result/keyword_search_result_bloc.dart';
 
 
 void main() async {

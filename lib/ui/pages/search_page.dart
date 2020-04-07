@@ -17,7 +17,7 @@ class SearchPage extends StatelessWidget {
         BlocListener(
           bloc: BlocProvider.of<SearchBloc>(context),
           listener: (context, state) {
-            var argument = MapNavigationArgument();
+            var argument = NavigationArgument();
             if(state is KeywordSelectedState) {
               argument['title'] = state.text;
               Navigator.pushNamed(context, "keywordSearchResult", arguments: argument);

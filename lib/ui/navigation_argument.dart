@@ -1,12 +1,5 @@
 
-abstract class NavigationArgument {
-
-  operator [](String name);
-  operator []=(String name, String value);
-
-}
-
-class MapNavigationArgument implements NavigationArgument {
+class NavigationArgument {
   Map<String, String> _innerMap = Map();
 
   @override
