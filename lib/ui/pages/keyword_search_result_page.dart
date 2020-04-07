@@ -2,45 +2,72 @@ import 'package:app/bloc/search_result/keyword_search_result_bloc.dart';
 import 'package:app/bloc/search_result/search_result_event.dart';
 import 'package:app/bloc/search_result/search_result_state.dart';
 import 'package:app/model/models.dart';
-import 'package:app/widgets/loading.dart';
-import 'package:app/widgets/recipe_snippets.dart';
+import 'package:app/ui/navigation_argument.dart';
+import 'package:app/ui/widgets/loading.dart';
+import 'package:app/ui/widgets/recipe_snippets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchResultPage extends StatelessWidget {
-  final String title;
+class KeywordSearchResultPage extends StatefulWidget {
 
-  const SearchResultPage({
-    Key key,
-    @required this.title
-  }) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => KeywordSearchResultPageState();
+}
+
+class KeywordSearchResultPageState extends State<KeywordSearchResultPage> {
+  String _title;
+  KeywordSearchResultBloc _postBloc;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          title: Text(
-            title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-                Icons.arrow_back_ios
-            ),
-            onPressed: () {
-              // TODO: Check that navigation works
+    // Setup arguments and bloc inherited from context
+    NavigationArgument args = ModalRoute.of(context).settings.arguments;
+    _title = args['title'] ?? "No Title";
+    _postBloc = BlocProvider.of<KeywordSearchResultBloc>(context);
+    _postBloc.keyWords = args['title'] ?? "";
+
+    return MultiBlocListener(
+      // Setup navigation event listeners
+      listeners: [
+        BlocListener(
+          bloc: BlocProvider.of<KeywordSearchResultBloc>(context),
+          listener: (context, state) {
+            if(state is GoToPrevPageState) {
               Navigator.pop(context);
-            },
-          ),
-        ),
-        body: Padding(
-            padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-            child: _ScrollingResults()
+            }
+          },
         )
+      ],
+
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            title: Text(
+              _title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: Icon(
+                  Icons.arrow_back_ios
+              ),
+              onPressed: () {
+                _postBloc.add(GoToPrevPage());
+              },
+            ),
+          ),
+          body: Padding(
+              padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
+              child: _ScrollingResults()
+          )
+      )
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:app/bloc/search/search_bloc.dart';
 import 'package:app/bloc/search_result/search_result_event.dart';
 import 'package:app/model/repositories.dart';
-import 'package:app/pages/search_page.dart';
-import 'package:app/pages/keyword_search_result_page.dart';
+import 'package:app/ui/navigation_page.dart';
+import 'package:app/ui/pages/search_page.dart';
+import 'package:app/ui/pages/keyword_search_result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/search/search_state.dart';
 import 'bloc/search_result/keyword_search_result_bloc.dart';
 
 
@@ -61,7 +61,6 @@ class VivaLaFocacciaApp extends StatefulWidget {
 }
 
 class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
-
   @override
   void initState() {
     super.initState();
@@ -78,16 +77,29 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
       debugShowCheckedModeBanner: false,
       theme: VivaLaFocacciaApp.lightTheme,
       title: "VivaLaFocaccia",
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => SearchBloc(
+      home: BlocProvider(
+            create: (providerContext) => SearchBloc(
                 categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
             ),
-          ),
-        ],
-        child: SearchPage(),
+            child: NavigationPage()
       ),
+      routes: {
+
+        'search': (context) => BlocProvider(
+          create: (providerContext) => SearchBloc(
+              categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
+          ),
+          child: SearchPage()
+        ),
+
+        'keywordSearchResult': (context) => BlocProvider(
+          create: (providerContext) => KeywordSearchResultBloc(
+              recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
+              keyWords: ""
+          )..add(FetchResult()),
+          child: KeywordSearchResultPage()
+        ),
+      },
     );
   }
 }

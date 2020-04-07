@@ -1,23 +1,17 @@
 import 'package:app/model/models.dart';
+import 'file:///C:/dev/projects/vivalafocaccia_app/lib/ui/widgets/picture.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter/widgets.dart';
 
-class RecipeSnippetWidget extends StatefulWidget {
+class RecipeSnippetWidget extends StatelessWidget {
   final Recipe item;
 
   const RecipeSnippetWidget({
     Key key,
     @required this.item,
   }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => RecipeSnippetWidgetState();
-
-}
-
-class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +34,9 @@ class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      child: FadeInImage.memoryNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: kTransparentImage,
-                        image: widget.item.featuredImageUrl,
-                      ),
+                      child: PictureWidget.fromUrl(
+                          imageUrl: item.featuredImageUrl
+                      )
                     ),
                   ),
 
@@ -65,7 +57,7 @@ class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
                               size: 10,
                             ),
                             Text(
-                              " " + widget.item.likeCount.toString() + " ",
+                              " " + item.likeCount.toString() + " ",
                               style: TextStyle(
                                 fontSize: 10,
                               ),
@@ -84,7 +76,7 @@ class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
                       child: Padding(
                         padding: EdgeInsets.all(4.0),
                         child:Text(
-                          " " + DateFormat("dd/MM/yyyy").format(widget.item.lastUpdateDateTime) + " ",
+                          " " + DateFormat("dd/MM/yyyy").format(item.lastUpdateDateTime) + " ",
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.green,
@@ -106,7 +98,7 @@ class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    parse(widget.item.title).documentElement.text,
+                    parse(item.title).documentElement.text,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
@@ -123,7 +115,7 @@ class RecipeSnippetWidgetState extends State<RecipeSnippetWidget> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    widget.item.authorName,
+                    item.authorName,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w300,

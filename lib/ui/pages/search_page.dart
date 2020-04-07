@@ -1,6 +1,8 @@
 
 import 'package:app/bloc/search/search_bloc.dart';
 import 'package:app/bloc/search/search_event.dart';
+import 'package:app/bloc/search/search_state.dart';
+import 'package:app/ui/navigation_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,25 +10,40 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        title: Text("Le ricette di VivaLaFocaccia"),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
+    return MultiBlocListener(
+      // Setup navigation event listeners
+      listeners: [
+        BlocListener(
+          bloc: BlocProvider.of<SearchBloc>(context),
+          listener: (context, state) {
+            var argument = MapNavigationArgument();
+            if(state is KeywordSelectedState) {
+              argument['title'] = state.text;
+              Navigator.pushNamed(context, "keywordSearchResult", arguments: argument);
+            }
+          },
+        )
+      ],
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            title: Text("Le ricette di VivaLaFocaccia"),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
 
+          ),
+          body: Padding(
+              padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
+              child: ListView(
+                children: <Widget>[
+                  _SearchBar(),
+                  SizedBox(height: 10.0),
+                  _CategoryList(),
+                  SizedBox(height: 10.0),
+                ],
+              )
+          )
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-        child: ListView(
-          children: <Widget>[
-            _SearchBar(),
-            SizedBox(height: 10.0),
-            _CategoryList(),
-            SizedBox(height: 10.0),
-          ],
-         )
-      )
     );
   }
 }
@@ -111,8 +128,8 @@ class _SearchBarState extends State<_SearchBar> {
   }
 
   void _submitKeywords() {
-    print("Hellooo");
     bloc.add(KeywordSelectedEvent(text: _textController.text));
+    _textController.text = '';
   }
 
 }
