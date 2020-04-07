@@ -7,17 +7,20 @@ import 'package:app/ui/pages/keyword_search_result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:global_configuration/global_configuration.dart';
 
 import 'bloc/search_result/keyword_search_result_bloc.dart';
 
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-    runApp(VivaLaFocacciaApp(
-      recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
-      categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository(),
-    ));
+    GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
+      runApp(VivaLaFocacciaApp(
+        recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
+        categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository(),
+      ));
+    });
   });
 }
 
@@ -76,7 +79,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: VivaLaFocacciaApp.lightTheme,
-      title: "VivaLaFocaccia",
+      title: GlobalConfiguration().get("appName"),
       home: BlocProvider(
             create: (providerContext) => SearchBloc(
                 categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()

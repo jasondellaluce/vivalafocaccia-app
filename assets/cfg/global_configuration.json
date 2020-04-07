@@ -1,0 +1,9 @@
+{
+  "appName": "Viva La Focaccia",
+  "serverUrl": "vivalafocaccia.com",
+  "noText": "NoText",
+  "dateTimeFormat": "dd/MM/yyyy",
+  "searchPageTitle": "Le ricette di Viva La Focaccia",
+  "searchPageBarPlaceholder": "Inserisci parole per la ricerca..."
+
+}

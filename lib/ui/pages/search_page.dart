@@ -5,6 +5,7 @@ import 'package:app/bloc/search/search_state.dart';
 import 'package:app/ui/navigation_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:global_configuration/global_configuration.dart';
 
 class SearchPage extends StatelessWidget {
 
@@ -27,7 +28,7 @@ class SearchPage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             elevation: 0.0,
-            title: Text("Le ricette di VivaLaFocaccia"),
+            title: Text(GlobalConfiguration().get("searchPageTitle")),
             centerTitle: true,
             automaticallyImplyLeading: false,
 
@@ -96,7 +97,7 @@ class _SearchBarState extends State<_SearchBar> {
               borderSide: BorderSide(color: Colors.white,),
               borderRadius: BorderRadius.circular(5.0),
             ),
-            hintText: "Parole per la ricerca...",
+            hintText: GlobalConfiguration().get("searchPageBarPlaceholder"),
             prefixIcon: GestureDetector(
               child: Icon(
                 Icons.search,

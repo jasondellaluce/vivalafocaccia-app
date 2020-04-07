@@ -1,6 +1,7 @@
 import 'package:app/model/models.dart';
 import 'file:///C:/dev/projects/vivalafocaccia_app/lib/ui/widgets/picture.dart';
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
@@ -76,7 +77,8 @@ class RecipeSnippetWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(4.0),
                         child:Text(
-                          " " + DateFormat("dd/MM/yyyy").format(item.lastUpdateDateTime) + " ",
+                          " " + DateFormat(GlobalConfiguration().get("dateTimeFormat"))
+                              .format(item.lastUpdateDateTime) + " ",
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.green,

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:app/errors.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/model/repositories.dart';
@@ -86,7 +87,7 @@ class WPRestJsonRecipeParser {
 
 class WPRestPostRepository implements PostRepository {
   final jsonParser = new WPRestJsonPostParser();
-  final websiteUrl = "vivalafocaccia.com";
+  final websiteUrl = GlobalConfiguration().get("serverUrl");
   final restRouteBase = "/wp-json/wp/v2";
 
   List<Recipe> _parseHttpResponse(response){
@@ -165,7 +166,7 @@ class WPRestPostRepository implements PostRepository {
 
 class WPRestRecipeRepository implements RecipeRepository {
   final jsonParser = new WPRestJsonRecipeParser();
-  final websiteUrl = "vivalafocaccia.com";
+  final websiteUrl = GlobalConfiguration().get("serverUrl");
   final restRouteBase = "/wp-json/wp/v2";
 
   List<Recipe> _parseHttpResponse(response){

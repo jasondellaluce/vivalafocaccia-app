@@ -7,6 +7,7 @@ import 'package:app/ui/widgets/loading.dart';
 import 'package:app/ui/widgets/recipe_snippets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:global_configuration/global_configuration.dart';
 
 class KeywordSearchResultPage extends StatefulWidget {
 
@@ -27,7 +28,7 @@ class KeywordSearchResultPageState extends State<KeywordSearchResultPage> {
   Widget build(BuildContext context) {
     // Setup arguments and bloc inherited from context
     NavigationArgument args = ModalRoute.of(context).settings.arguments;
-    _title = args['title'] ?? "No Title";
+    _title = args['title'] ?? GlobalConfiguration().get("noText");
     _postBloc = BlocProvider.of<KeywordSearchResultBloc>(context);
     _postBloc.keyWords = args['title'] ?? "";
 
@@ -122,12 +123,12 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                             message: futureData.error.toString()
                         );
                     }
-                    if(futureData.hasData) {
+                    else if(futureData.hasData) {
                       return RecipeSnippetWidget(
                           item: futureData.data
                       );
                     }
-                    if(index == state.previousLength)
+                    else if(index == state.previousLength)
                       return BottomLoadingWidget();
 
                     return Container();
