@@ -9,6 +9,7 @@ import 'search_result_state.dart';
 abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultState> {
   final RecipeRepository recipeRepository;
   final int resultsPerRefresh = 10;
+  SearchResultState lastState = UninitializedState();
 
   SearchResultBloc(this.recipeRepository);
 
@@ -26,39 +27,42 @@ abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultStat
   }
 
   @override
-  SearchResultState get initialState => ResultUninitialized();
+  SearchResultState get initialState => UninitializedState();
 
   @override
   Stream<SearchResultState> mapEventToState(SearchResultEvent event) async* {
     final currentState = state;
-    if (event is FetchResult && !_hasReachedMax(currentState)) {
+    if (event is FetchResultEvent && !_hasReachedMax(currentState)) {
       try {
-        if (currentState is ResultUninitialized) {
+        if (currentState is UninitializedState) {
           final posts = fetchResults(0, resultsPerRefresh);
-          yield ResultLoaded(results: posts, hasReachedMax: false);
+          yield ResultLoadedState(results: posts, hasReachedMax: false);
           return;
         }
-        if (currentState is ResultLoaded) {
+        if (currentState is ResultLoadedState) {
           final posts = fetchResults(currentState.results.length, resultsPerRefresh);
           yield posts.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
-              : ResultLoaded(
+              : ResultLoadedState(
                   results: currentState.results + posts,
                   previousLength: currentState.results?.length ?? 0,
                   hasReachedMax: false,
               );
         }
       } catch (error) {
-        yield ResultError(error.toString());
+        yield ResultErrorState(error.toString());
       }
     }
-    if(event is GoToPrevPage) {
-      yield GoToPrevPageState();
+
+    if(event is RecipeSelectedEvent) {
+      yield RecipeSelectedState(recipe : event.recipe);
+      yield event.currentState;
     }
+
   }
 
   bool _hasReachedMax(SearchResultState state) =>
-      state is ResultLoaded && state.hasReachedMax;
+      state is ResultLoadedState && state.hasReachedMax;
 
   List<Future<Recipe>> fetchResults(int startIndex, int limit);
 }

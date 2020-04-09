@@ -1,5 +1,6 @@
 import 'package:app/model/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 abstract class SearchResultState extends Equatable {
   const SearchResultState();
@@ -8,14 +9,12 @@ abstract class SearchResultState extends Equatable {
   List<Object> get props => [];
 }
 
-class ResultUninitialized extends SearchResultState {}
+class UninitializedState extends SearchResultState {}
 
-class GoToPrevPageState extends SearchResultState {}
-
-class ResultError extends SearchResultState {
+class ResultErrorState extends SearchResultState {
   final String errorStr;
 
-  ResultError(this.errorStr);
+  ResultErrorState(this.errorStr);
 
   @override
   List<Object> get props => [errorStr];
@@ -25,22 +24,22 @@ class ResultError extends SearchResultState {
       'ResultError { error: $errorStr }';
 }
 
-class ResultLoaded extends SearchResultState {
+class ResultLoadedState extends SearchResultState {
   final int previousLength;
   final List<Future<Recipe>> results;
   final bool hasReachedMax;
 
-  const ResultLoaded({
+  const ResultLoadedState({
     this.results,
     this.previousLength,
     this.hasReachedMax,
   });
 
-  ResultLoaded copyWith({
+  ResultLoadedState copyWith({
     List<Future<Recipe>> results,
     bool hasReachedMax,
   }) {
-    return ResultLoaded(
+    return ResultLoadedState(
       results: results ?? this.results,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
@@ -52,4 +51,18 @@ class ResultLoaded extends SearchResultState {
   @override
   String toString() =>
       'ResultLoaded { results: ${results.length}, previousLength: $previousLength, hasReachedMax: $hasReachedMax }';
+}
+
+class RecipeSelectedState extends SearchResultState {
+  final Recipe recipe;
+
+  const RecipeSelectedState({
+    @required this.recipe
+  });
+
+  @override
+  List<Object> get props => [recipe];
+
+  @override
+  String toString() => 'RecipeSelectedState { recipe: ${recipe.code} }';
 }

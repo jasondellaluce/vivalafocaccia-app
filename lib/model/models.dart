@@ -1,9 +1,13 @@
+
+
 class Category {
   final int id;
   final String name;
   final String code;
+  final String pageUrl;
+  final String featuredImageUrl;
 
-  Category(this.id, this.name, this.code);
+  Category(this.id, this.name, this.code, this.pageUrl, this.featuredImageUrl);
 }
 
 class Post {

@@ -36,8 +36,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final String searchTerm = event.text;
       if (searchTerm.isEmpty) {
         yield EmptyState(categoryRepository.getMany());
-      } else {
+      }
+      else {
         yield KeywordSelectedState(searchTerm);
+        yield EmptyState(categoryRepository.getMany());
       }
     }
 
@@ -45,9 +47,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final Category selectedCategory = event.category;
       if (selectedCategory == null) {
         yield EmptyState(categoryRepository.getMany());
-      } else {
+      }
+      else {
         yield CategorySelectedState(selectedCategory);
+        yield EmptyState(categoryRepository.getMany());
       }
     }
+
   }
 }

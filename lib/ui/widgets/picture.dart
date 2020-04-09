@@ -29,9 +29,9 @@ class _SimpleImageWidget extends PictureWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInImage.memoryNetwork(
-      fit: fit ?? null,
-      placeholder: kTransparentImage,
-      image: imageUrl,
+        fit: fit ?? null,
+        placeholder: kTransparentImage,
+        image: imageUrl,
     );
   }
 

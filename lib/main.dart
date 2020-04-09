@@ -99,7 +99,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
           create: (providerContext) => KeywordSearchResultBloc(
               recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
               keyWords: ""
-          )..add(FetchResult()),
+          )..add(FetchResultEvent()),
           child: KeywordSearchResultPage()
         ),
       },

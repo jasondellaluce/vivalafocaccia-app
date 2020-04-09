@@ -1,5 +1,6 @@
 import 'package:app/model/models.dart';
 import 'package:app/ui/widgets/picture.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:html/parser.dart';
@@ -14,30 +15,34 @@ class RecipeSnippetWidget extends StatelessWidget {
     @required this.item,
   }) : super(key: key);
 
+  final imageHeightProportion = 3.5;
+  final borderRadius = 10.0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Card(
-          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0)),
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(borderRadius)),
           elevation: 3.0,
           child: Column(
             children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height/3.5,
+                    height: MediaQuery.of(context).size.height / imageHeightProportion,
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      child: PictureWidget.fromUrl(
-                          imageUrl: item.featuredImageUrl
-                      )
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(borderRadius),
+                          topRight: Radius.circular(borderRadius),
+                        ),
+                        child: PictureWidget.fromUrl(
+                            fit: BoxFit.cover,
+                            imageUrl: item.featuredImageUrl
+                        )
                     ),
                   ),
 

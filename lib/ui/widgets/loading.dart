@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: Real bottom loader
 class BottomLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class BottomLoadingWidget extends StatelessWidget {
   }
 }
 
+// TODO: Real bottom loader error
 class LoadingErrorWidget extends StatelessWidget {
   final String message;
 
@@ -32,6 +34,7 @@ class LoadingErrorWidget extends StatelessWidget {
   }
 }
 
+// TODO: real placeholder
 class NothingToLoadWidget extends StatelessWidget {
 
   @override
