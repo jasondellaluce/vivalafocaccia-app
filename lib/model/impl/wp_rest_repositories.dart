@@ -179,7 +179,7 @@ class WPRestPostRepository
 
   @override
   List<Future<Post>> getManyFromKeyWords(String keyWords,
-      {int offset, int count, PostOrder order}) {
+      {offset:0, count:10, order:PostOrder.relevance}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
@@ -267,7 +267,7 @@ class WPRestRecipeRepository
 
   @override
   List<Future<Recipe>> getManyFromKeyWords(String keyWords,
-      {offset:0, count:10, order:RecipeOrder.date}) {
+      {offset:0, count:10, order:RecipeOrder.relevance}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
