@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:app/model/repositories.dart';
 import 'package:app/model/models.dart';
 
+
 class WPRestJsonPostParser {
   Post parse(String jsonBody) {
     Map<String, dynamic> jsonObj = json.decode(jsonBody);
@@ -85,10 +86,31 @@ class WPRestJsonRecipeParser {
   }
 }
 
-class WPRestPostRepository implements PostRepository {
+abstract class _AbstractWPControllerRepository {
+
+  String mapPostOrderToString(PostOrder order) {
+    switch(order) {
+      case PostOrder.date: return "date";
+      case PostOrder.relevance: return "relevance";
+    }
+    return "";
+  }
+
+  String mapRecipeOrderToString(RecipeOrder order) {
+    switch(order) {
+      case RecipeOrder.date: return "date";
+      case RecipeOrder.relevance: return "relevance";
+    }
+    return "";
+  }
+
+}
+class WPRestPostRepository
+    extends _AbstractWPControllerRepository implements PostRepository {
   final jsonParser = new WPRestJsonPostParser();
   final websiteUrl = GlobalConfiguration().get("serverUrl");
   final restRouteBase = "/wp-json/wp/v2";
+  final httpClient = http.Client();
 
   List<Recipe> _parseHttpResponse(response){
     if (response.statusCode == 200) {
@@ -98,7 +120,7 @@ class WPRestPostRepository implements PostRepository {
   }
 
   List<Future<Recipe>> _doListHttpRequest(uri, count) {
-    final response = http.get(uri)
+    final response = httpClient.get(uri)
         .then((value) => _parseHttpResponse(value));
     return List.generate(count, (index) => response
         .then((value) => value[index])
@@ -111,7 +133,7 @@ class WPRestPostRepository implements PostRepository {
     Map<String, String> query = {
       'slug' : code
     };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
+    final response = await httpClient.get(Uri.https(websiteUrl, restRouteBase
         + "/posts", query));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
@@ -122,7 +144,7 @@ class WPRestPostRepository implements PostRepository {
 
   @override
   Future<Post> getFromId(int id) async {
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
+    final response = await httpClient.get(Uri.https(websiteUrl, restRouteBase
         + "/posts/" + id.toString()));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
@@ -136,7 +158,7 @@ class WPRestPostRepository implements PostRepository {
     Map<String, String> query = {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
-      // TODO: Implement ordering
+      'orderby': mapPostOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/posts", query), count);
@@ -149,7 +171,7 @@ class WPRestPostRepository implements PostRepository {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'categories' : category.id.toString(),
-      // TODO: Implement ordering
+      'orderby': mapPostOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/posts", query), count);
@@ -158,16 +180,24 @@ class WPRestPostRepository implements PostRepository {
   @override
   List<Future<Post>> getManyFromKeyWords(String keyWords,
       {int offset, int count, PostOrder order}) {
-    // TODO: implement getManyFromKeyWords
-    return getMany(offset: offset, count: count, order: order);
+    Map<String, String> query = {
+      'offset' : offset.toString(),
+      'per_page' : count.toString(),
+      'search' : keyWords,
+      'orderby': mapPostOrderToString(order)
+    };
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/posts", query), count);
   }
 
 }
 
-class WPRestRecipeRepository implements RecipeRepository {
+class WPRestRecipeRepository
+    extends _AbstractWPControllerRepository implements RecipeRepository {
   final jsonParser = new WPRestJsonRecipeParser();
   final websiteUrl = GlobalConfiguration().get("serverUrl");
   final restRouteBase = "/wp-json/wp/v2";
+  final httpClient = http.Client();
 
   List<Recipe> _parseHttpResponse(response){
     if (response.statusCode == 200) {
@@ -190,7 +220,7 @@ class WPRestRecipeRepository implements RecipeRepository {
     Map<String, String> query = {
       'slug' : code
     };
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
+    final response = await httpClient.get(Uri.https(websiteUrl, restRouteBase
         + "/recipes", query));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
@@ -202,7 +232,7 @@ class WPRestRecipeRepository implements RecipeRepository {
 
   @override
   Future<Recipe> getFromId(int id) async {
-    final response = await http.get(Uri.https(websiteUrl, restRouteBase
+    final response = await httpClient.get(Uri.https(websiteUrl, restRouteBase
         + "/recipes/" + id.toString()));
     if (response.statusCode == 200) {
       return jsonParser.parse(response.body);
@@ -215,8 +245,8 @@ class WPRestRecipeRepository implements RecipeRepository {
   List<Future<Recipe>> getMany({offset:0, count:10, order:RecipeOrder.date}) {
     Map<String, String> query = {
       'offset' : offset.toString(),
-      'per_page' : count.toString()
-      // TODO: Implement ordering
+      'per_page' : count.toString(),
+      'orderby': mapRecipeOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
@@ -229,7 +259,7 @@ class WPRestRecipeRepository implements RecipeRepository {
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'categories' : category.id.toString(),
-      // TODO: Implement ordering
+      'orderby': mapRecipeOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
@@ -238,8 +268,14 @@ class WPRestRecipeRepository implements RecipeRepository {
   @override
   List<Future<Recipe>> getManyFromKeyWords(String keyWords,
       {offset:0, count:10, order:RecipeOrder.date}) {
-    // TODO: implement getManyFromKeyWords
-    return getMany(offset: offset, count: count, order: order);
+    Map<String, String> query = {
+      'offset' : offset.toString(),
+      'per_page' : count.toString(),
+      'search' : keyWords,
+      'orderby': mapRecipeOrderToString(order)
+    };
+    return _doListHttpRequest(
+        Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
   }
 
 }

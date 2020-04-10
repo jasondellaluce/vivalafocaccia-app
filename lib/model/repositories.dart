@@ -1,18 +1,18 @@
 
 import 'package:app/model/impl/mock_repositories.dart';
 import 'package:app/model/models.dart';
-import 'package:app/model/impl/wprest_repositories.dart';
+import 'package:app/model/impl/wp_rest_repositories.dart';
 
 enum CategoryOrder {
   importance
 }
 
 enum PostOrder {
-  date
+  date, relevance
 }
 
 enum RecipeOrder {
-  date
+  date, relevance
 }
 
 abstract class CategoryRepository {

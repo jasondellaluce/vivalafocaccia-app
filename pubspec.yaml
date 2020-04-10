@@ -20,6 +20,7 @@ dependencies:
   meta:
   http:
   cached_network_image:
+  flutter_cache_manager:
   html:
   intl:
   transparent_image:

@@ -80,14 +80,12 @@ class _ScrollingResults extends StatefulWidget {
 
 class _ScrollingResultsState extends State<_ScrollingResults> {
   final _scrollController = ScrollController();
-  final _scrollThreshold = -10.0;
-  KeywordSearchResultBloc _postBloc;
+  final _scrollThreshold = 20.0;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _postBloc = context.bloc<KeywordSearchResultBloc>();
   }
 
   @override
@@ -119,7 +117,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                 future: state.results[index],
                 builder: (futureContext, futureData) {
                     if(futureData.hasError) {
-                      if(index == state.previousLength)
+                      if(index == state.results.length - 1)
                         return LoadingErrorWidget(
                             message: futureData.error.toString()
                         );
@@ -138,10 +136,10 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                         ),
                       );
                     }
-                    else if(index == state.previousLength )
+                    else if(index == state.results.length - 1)
                       return BottomLoadingWidget();
 
-                    return Container();
+                    return SizedBox.shrink();
                   }
                 );
             },
@@ -151,7 +149,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
             controller: _scrollController,
           );
         }
-        return Container();
+        return SizedBox.shrink();
       },
     );
   }
@@ -166,7 +164,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _postBloc.add(FetchResultEvent());
+      context.bloc<KeywordSearchResultBloc>().add(FetchResultEvent());
     }
   }
 }
