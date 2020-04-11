@@ -2,7 +2,7 @@
 import 'package:app/model/repositories.dart';
 import 'package:app/model/models.dart';
 
-class FixedCategoryRepository implements CategoryRepository {
+class LocalCategoryRepository implements CategoryRepository {
   final _innerList = [
     Category(339,
         "Colombe, Pandolci e Panettoni",
@@ -68,7 +68,7 @@ class FixedCategoryRepository implements CategoryRepository {
 
   @override
   List<Future<Category>> getMany({offset:0, count:11,
-      order:CategoryOrder.importance}) {
+    order:CategoryOrder.importance}) {
     return _innerList.sublist(offset, count).map((e) => Future.value(e)).toList();
   }
 

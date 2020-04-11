@@ -1,0 +1,40 @@
+
+import 'dart:convert';
+
+import 'package:app/model/models.dart';
+import 'package:app/model/repositories.dart';
+import 'abstract_wp_rest_post_repository.dart';
+
+class WPRestPostRepository
+    extends AbstractWpRestPostRepository<Post, PostOrder>
+    implements PostRepository {
+
+  @override
+  String formatOrderType(PostOrder order) {
+    switch(order) {
+      case PostOrder.date: return "date";
+      case PostOrder.relevance: return "relevance";
+    }
+    return "";
+  }
+
+  @override
+  String get wpRestRoute => "posts";
+
+  @override
+  Post parseJson(String jsonBody) {
+    Map<String, dynamic> jsonObj = json.decode(jsonBody);
+    return Post(
+        int.parse(jsonObj['id'].toString()),
+        jsonObj['slug'].toString(),
+        jsonObj['title']['rendered'].toString(),
+        jsonObj['content']['rendered'].toString(),
+        jsonObj['author_name'].toString(),
+        jsonObj['link'].toString(),
+        jsonObj['featured_image_url'],
+        DateTime.parse(jsonObj['date_gmt']),
+        DateTime.parse(jsonObj['modified_gmt'])
+    );
+  }
+
+}

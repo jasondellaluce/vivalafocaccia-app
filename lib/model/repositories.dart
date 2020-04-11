@@ -1,7 +1,8 @@
 
-import 'package:app/model/impl/mock_repositories.dart';
 import 'package:app/model/models.dart';
-import 'package:app/model/impl/wp_rest_repositories.dart';
+import 'package:app/model/wp_rest/wp_rest_post_repository.dart';
+import 'package:app/model/wp_rest/wp_rest_recipe_repository.dart';
+import 'package:app/model/local/local_category_repository.dart';
 
 enum CategoryOrder {
   importance
@@ -40,24 +41,27 @@ abstract class RecipeRepository {
       {int offset, int count, RecipeOrder order});
 }
 
-class ModelRepositoryFactory {
-  static final ModelRepositoryFactory _instance = ModelRepositoryFactory._privateConstructor();
-  static ModelRepositoryFactory get instance => _instance;
-  final _categoryRepository = new FixedCategoryRepository();
+class Repositories {
+  static final Repositories _instance = Repositories._privateConstructor();
+  final _categoryRepository = new LocalCategoryRepository();
   final _postRepository = new WPRestPostRepository();
   final _recipeRepository = new WPRestRecipeRepository();
 
-  ModelRepositoryFactory._privateConstructor();
+  Repositories._privateConstructor();
 
-  CategoryRepository getCategoryRepository() {
+  factory Repositories() {
+    return _instance;
+  }
+
+  CategoryRepository ofCategory() {
     return _categoryRepository;
   }
 
-  PostRepository getPostRepository() {
+  PostRepository ofPost() {
     return _postRepository;
   }
 
-  RecipeRepository getRecipeRepository() {
+  RecipeRepository ofRecipe() {
     return _recipeRepository;
   }
 }

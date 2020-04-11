@@ -17,8 +17,8 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
       runApp(VivaLaFocacciaApp(
-        recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
-        categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository(),
+        recipeRepository: Repositories().ofRecipe(),
+        categoryRepository: Repositories().ofCategory(),
       ));
     });
   });
@@ -82,7 +82,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
       title: GlobalConfiguration().get("appName"),
       home: BlocProvider(
             create: (providerContext) => SearchBloc(
-                categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
+                categoryRepository: Repositories().ofCategory()
             ),
             child: NavigationPage()
       ),
@@ -90,14 +90,14 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
 
         'search': (context) => BlocProvider(
           create: (providerContext) => SearchBloc(
-              categoryRepository: ModelRepositoryFactory.instance.getCategoryRepository()
+              categoryRepository: Repositories().ofCategory()
           ),
           child: SearchPage()
         ),
 
         'keywordSearchResult': (context) => BlocProvider(
           create: (providerContext) => KeywordSearchResultBloc(
-              recipeRepository: ModelRepositoryFactory.instance.getRecipeRepository(),
+              recipeRepository: Repositories().ofRecipe(),
               keyWords: ""
           )..add(FetchResultEvent()),
           child: KeywordSearchResultPage()
