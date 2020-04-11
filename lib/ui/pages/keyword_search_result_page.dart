@@ -125,8 +125,8 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                     else if(futureData.hasData) {
                       return GestureDetector(
                         onTap: () {
-                          context.bloc<KeywordSearchResultBloc>().add(
-                              RecipeSelectedEvent(
+                          context.bloc<KeywordSearchResultBloc>()
+                              .add(RecipeSelectedEvent(
                                 recipe: futureData.data,
                                 currentState: state
                               ));
@@ -136,10 +136,8 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                         ),
                       );
                     }
-                    else if(index == state.previousLength)
-                      return BottomLoadingWidget();
 
-                    return SizedBox.shrink();
+                    return RecipeEmptySnippetWidget();
                   }
                 );
             },
