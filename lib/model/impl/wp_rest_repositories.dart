@@ -259,7 +259,7 @@ class WPRestRecipeRepository
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'categories' : category.id.toString(),
-      'orderby': mapRecipeOrderToString(order)
+      // 'orderby': mapRecipeOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);
@@ -272,7 +272,7 @@ class WPRestRecipeRepository
       'offset' : offset.toString(),
       'per_page' : count.toString(),
       'search' : keyWords,
-      'orderby': mapRecipeOrderToString(order)
+      //'orderby': mapRecipeOrderToString(order)
     };
     return _doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/recipes", query), count);

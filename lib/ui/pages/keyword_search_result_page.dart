@@ -117,7 +117,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                 future: state.results[index],
                 builder: (futureContext, futureData) {
                     if(futureData.hasError) {
-                      if(index == state.results.length - 1)
+                      if(index == state.previousLength)
                         return LoadingErrorWidget(
                             message: futureData.error.toString()
                         );
@@ -125,8 +125,8 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                     else if(futureData.hasData) {
                       return GestureDetector(
                         onTap: () {
-                          context.bloc<KeywordSearchResultBloc>()
-                              .add(RecipeSelectedEvent(
+                          context.bloc<KeywordSearchResultBloc>().add(
+                              RecipeSelectedEvent(
                                 recipe: futureData.data,
                                 currentState: state
                               ));
@@ -136,7 +136,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
                         ),
                       );
                     }
-                    else if(index == state.results.length - 1)
+                    else if(index == state.previousLength)
                       return BottomLoadingWidget();
 
                     return SizedBox.shrink();
