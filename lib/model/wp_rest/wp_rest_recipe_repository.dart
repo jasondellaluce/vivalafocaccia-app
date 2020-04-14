@@ -8,6 +8,9 @@ class WPRestRecipeRepository
     extends AbstractWpRestPostTypeRepository<Recipe, RecipeOrder>
     implements RecipeRepository {
 
+  WPRestRecipeRepository(String websiteUrl) : super(websiteUrl);
+
+
   RecipeIngredient _parseJsonRecipeIngredient(Map<String, dynamic> json) {
     return RecipeIngredient(
       json['is_separator'].toString().toLowerCase() == "true",

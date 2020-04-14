@@ -8,6 +8,9 @@ class WPRestPostRepository
     extends AbstractWpRestPostTypeRepository<Post, PostOrder>
     implements PostRepository {
 
+  WPRestPostRepository(String websiteUrl) : super(websiteUrl);
+
+
   @override
   String formatOrderType(PostOrder order) {
     switch(order) {

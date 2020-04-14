@@ -4,10 +4,10 @@ import 'package:meta/meta.dart';
 /// This class abstracts what kind of data is used for
 /// the authentication system. In this way, the JWT token system can be
 /// easily replaced
-class AuthenticationData {
+class AuthenticationValue {
   final String token;
 
-  AuthenticationData(this.token);
+  AuthenticationValue(this.token);
 }
 
 class User {
@@ -20,7 +20,7 @@ class User {
 }
 
 class ActiveUser extends User {
-  final AuthenticationData authenticationData;
+  final AuthenticationValue authenticationData;
 
   ActiveUser(id, name, email, pictureUrl, this.authenticationData)
     : super(id, name, email, pictureUrl);
@@ -40,5 +40,9 @@ abstract class UserRepository {
   Future<ActiveUser> authenticateWithFacebook({
     @required String facebookToken
   });
+
+  Future<ActiveUser> getAuthenticatedUser();
+
+  bool isAuthenticated();
 
 }

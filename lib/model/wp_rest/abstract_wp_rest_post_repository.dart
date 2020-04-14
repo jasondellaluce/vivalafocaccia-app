@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 
-import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:app/model/models.dart';
@@ -15,9 +14,11 @@ import 'package:app/errors.dart';
 abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderType>
     implements PostTypeRepository<PostType, OrderType> {
 
-  final websiteUrl = GlobalConfiguration().get("serverUrl") ?? "vivalafocaccia.com";
+  final String websiteUrl;
   final restRouteBase = "/wp-json/wp/v2";
   final httpClient = http.Client();
+
+  AbstractWpRestPostTypeRepository(this.websiteUrl);
 
   PostType parseJson(String jsonBody);
   String formatOrderType(OrderType order);

@@ -15,7 +15,6 @@ dependencies:
   transparent_image:
   equatable:
   flutter_bloc:
-  flutter_wordpress:
   global_configuration:
   flutter:
     sdk: flutter
@@ -26,12 +25,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
   assets:
     - assets/cfg/
 

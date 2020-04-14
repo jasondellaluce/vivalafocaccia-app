@@ -1,4 +1,5 @@
 
+import 'package:app/model/data/user.dart';
 import 'package:meta/meta.dart';
 
 import 'post.dart';
@@ -7,22 +8,24 @@ class Comment {
   final int id;
   final int postId;
   final int authorId;
+  final int parentId;
   final String authorName;
   final String authorImageUrl;
   final String content;
   final DateTime creationDateTime;
 
-  Comment(this.id, this.postId, this.authorId, this.authorName,
+  Comment(this.id, this.postId, this.authorId, this.parentId, this.authorName,
       this.authorImageUrl, this.content, this.creationDateTime);
 }
 
-class CommentDiscussion {
+class Discussion {
   final Comment value;
-  final List<CommentDiscussion> responses;
+  final List<Discussion> responses;
 
-  CommentDiscussion(this.value, this.responses);
+  Discussion(this.value, this.responses);
 
   get hasResponses => responses != null && responses.length > 0;
+  get isRoot => value == null;
 }
 
 enum CommentOrder {
@@ -31,14 +34,7 @@ enum CommentOrder {
 
 abstract class CommentRepository {
 
-  List<Future<CommentDiscussion>> getManyFromPost({
-    @required Post post,
-    int offset,
-    int count,
-    CommentOrder order
-  });
-
-  List<Future<CommentDiscussion>> getManyAsDiscussionFromPost({
+  Future<Discussion> getDiscussionFromPost({
     @required Post post,
     int offset,
     int count,
@@ -46,7 +42,9 @@ abstract class CommentRepository {
   });
 
   Future<Comment> createComment({
-    @required Comment prototype
+    @required ActiveUser user,
+    @required Comment prototype,
+    Comment parent
   });
 
 }
