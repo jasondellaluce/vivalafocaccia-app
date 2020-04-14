@@ -2,11 +2,10 @@
 import 'dart:convert';
 
 import 'package:app/model/models.dart';
-import 'package:app/model/repositories.dart';
 import 'abstract_wp_rest_post_repository.dart';
 
 class WPRestRecipeRepository
-    extends AbstractWpRestPostRepository<Recipe, RecipeOrder>
+    extends AbstractWpRestPostTypeRepository<Recipe, RecipeOrder>
     implements RecipeRepository {
 
   RecipeIngredient _parseJsonRecipeIngredient(Map<String, dynamic> json) {
@@ -35,6 +34,7 @@ class WPRestRecipeRepository
     List<dynamic> stepList = jsonObj['recipe_steps'];
     return Recipe(
         int.parse(jsonObj['id'].toString()),
+        int.parse(jsonObj['author'].toString()),
         jsonObj['slug'].toString(),
         jsonObj['title']['rendered'].toString(),
         jsonObj['content']['rendered'].toString(),
@@ -65,5 +65,11 @@ class WPRestRecipeRepository
 
   @override
   String get wpRestRoute => "recipes";
+
+  @override
+  Future<Recipe> setUserVote({Recipe post, bool positive, ActiveUser user}) {
+    // TODO : Implement user voting
+    throw new UnimplementedError("setUserVote");
+  }
 
 }

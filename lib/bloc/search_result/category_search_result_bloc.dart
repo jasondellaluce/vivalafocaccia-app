@@ -13,7 +13,7 @@ class CategorySearchResultBloc extends SearchResultBloc {
   @override
   List<Future<Recipe>> fetchResults(int startIndex, int limit) {
     return recipeRepository.getManyFromCategory(
-        category,
+        category : category,
         offset: startIndex,
         count: limit
     );

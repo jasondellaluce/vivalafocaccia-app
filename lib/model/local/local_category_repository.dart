@@ -1,5 +1,4 @@
 
-import 'package:app/model/repositories.dart';
 import 'package:app/model/models.dart';
 
 class LocalCategoryRepository implements CategoryRepository {
@@ -62,7 +61,7 @@ class LocalCategoryRepository implements CategoryRepository {
   ];
 
   @override
-  Future<Category> getFromId(int id) {
+  Future<Category> getFromId({int id}) {
     return Future.value(_innerList.firstWhere((element) => element.id == id));
   }
 

@@ -2,11 +2,10 @@
 import 'dart:convert';
 
 import 'package:app/model/models.dart';
-import 'package:app/model/repositories.dart';
 import 'abstract_wp_rest_post_repository.dart';
 
 class WPRestPostRepository
-    extends AbstractWpRestPostRepository<Post, PostOrder>
+    extends AbstractWpRestPostTypeRepository<Post, PostOrder>
     implements PostRepository {
 
   @override
@@ -26,6 +25,7 @@ class WPRestPostRepository
     Map<String, dynamic> jsonObj = json.decode(jsonBody);
     return Post(
         int.parse(jsonObj['id'].toString()),
+        int.parse(jsonObj['author'].toString()),
         jsonObj['slug'].toString(),
         jsonObj['title']['rendered'].toString(),
         jsonObj['content']['rendered'].toString(),

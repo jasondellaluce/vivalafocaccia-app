@@ -14,7 +14,7 @@ class KeywordSearchResultBloc extends SearchResultBloc {
   @override
   List<Future<Recipe>> fetchResults(int startIndex, int limit) {
     return recipeRepository.getManyFromKeyWords(
-      keyWords,
+      keyWords : keyWords,
       offset: startIndex,
       count: limit
     );

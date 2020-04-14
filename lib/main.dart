@@ -1,6 +1,7 @@
 import 'package:app/bloc/search/search_bloc.dart';
 import 'package:app/bloc/search_result/search_result_event.dart';
 import 'package:app/model/repositories.dart';
+import 'package:app/model/models.dart';
 import 'package:app/ui/navigation_page.dart';
 import 'package:app/ui/pages/search_page.dart';
 import 'package:app/ui/pages/keyword_search_result_page.dart';
