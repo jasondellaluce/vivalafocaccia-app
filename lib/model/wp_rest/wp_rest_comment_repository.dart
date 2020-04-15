@@ -73,7 +73,7 @@ class WPRestCommentRepository implements CommentRepository {
   }
 
   @override
-  Future<Comment> createComment({ActiveUser user, Comment prototype,
+  Future<Comment> createComment({AuthUser user, Comment prototype,
     Comment parent}) {
     // TODO: implement createComment
     throw UnimplementedError("createComment");

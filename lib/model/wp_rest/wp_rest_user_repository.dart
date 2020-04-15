@@ -9,14 +9,14 @@ class WPRestUserRepository implements UserRepository {
 
   final String _baseUrl;
   final _httpClient = http.Client();
-  ActiveUser _activeUser;
+  AuthUser _activeUser;
   final Map<String, String> _urlHeader = {
     'Authorization': ''
   };
 
   WPRestUserRepository(this._baseUrl);
 
-  Future<ActiveUser> _authenticateViaJWT(username, password) async {
+  Future<AuthUser> _authenticateViaJWT(username, password) async {
     final jwtResponse = await _httpClient.post(
       Uri.https(_baseUrl, '/wp-json/jwt-auth/v1/token'),
       body: {
@@ -46,18 +46,18 @@ class WPRestUserRepository implements UserRepository {
 
     var userDecoded = json.decode(userResponse.body);
 
-    return ActiveUser(
+    return AuthUser(
         int.parse(userDecoded['id'].toString()),
         userDecoded['name'].toString(),
         email,
         userDecoded['avatar_urls']['48'].toString(),
-        AuthenticationValue(token)
+        token
     );
 
   }
 
   @override
-  Future<ActiveUser> authenticateWithCredentials({String username,
+  Future<AuthUser> authenticateWithCredentials({String username,
     String password}) async {
     if(_activeUser != null)
       return _activeUser;
@@ -66,26 +66,26 @@ class WPRestUserRepository implements UserRepository {
   }
 
   @override
-  Future<ActiveUser> authenticateWithFacebook({String facebookToken}) {
+  Future<AuthUser> authenticateWithFacebook({String facebookToken}) {
     // TODO: implement authenticateWithFacebook
     throw UnimplementedError("authenticateWithFacebook");
   }
 
   @override
-  Future<ActiveUser> authenticateWithGoogle({String googleToken}) {
+  Future<AuthUser> authenticateWithGoogle({String googleToken}) {
     // TODO: implement authenticateWithGoogle
     throw UnimplementedError("authenticateWithGoogle");
   }
 
   @override
-  Future<ActiveUser> getAuthenticatedUser() {
+  Future<AuthUser> getLastAuthUser() {
     if(_activeUser != null)
       return Future.value(_activeUser);
     throw new AuthenticationError("Not authenticated yet");
   }
 
   @override
-  bool isAuthenticated() {
+  bool hasAuthUser() {
     return _activeUser != null;
   }
 

@@ -50,7 +50,7 @@ abstract class RecipeRepository
   Future<Recipe> setUserVote({
     @required Recipe post,
     @required bool positive,
-    @required ActiveUser user
+    @required AuthUser user
   });
 
 }

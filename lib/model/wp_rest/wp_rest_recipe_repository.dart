@@ -70,7 +70,7 @@ class WPRestRecipeRepository
   String get wpRestRoute => "recipes";
 
   @override
-  Future<Recipe> setUserVote({Recipe post, bool positive, ActiveUser user}) {
+  Future<Recipe> setUserVote({Recipe post, bool positive, AuthUser user}) {
     // TODO : Implement user voting
     throw new UnimplementedError("setUserVote");
   }
