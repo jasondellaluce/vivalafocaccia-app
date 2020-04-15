@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:app/model/models.dart';
-import 'package:app/errors.dart';
+import 'package:app/common/errors.dart';
 
 /// Abstract base class for implementation of repositories that
 /// interact with WordPress REST endpoints derived from the

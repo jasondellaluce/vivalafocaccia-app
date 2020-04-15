@@ -7,7 +7,7 @@ import 'package:app/model/data/comment.dart';
 import 'package:app/model/data/post.dart';
 import 'package:app/model/data/user.dart';
 
-import 'package:app/errors.dart';
+import 'package:app/common/errors.dart';
 
 class WPRestCommentRepository implements CommentRepository {
 
@@ -73,8 +73,7 @@ class WPRestCommentRepository implements CommentRepository {
   }
 
   @override
-  Future<Comment> createComment({AuthUser user, Comment prototype,
-    Comment parent}) {
+  Future<Comment> createComment({AuthUser user, Comment prototype}) {
     // TODO: implement createComment
     throw UnimplementedError("createComment");
   }

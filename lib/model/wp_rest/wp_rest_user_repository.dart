@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:app/errors.dart';
+import 'package:app/common/errors.dart';
 import 'package:app/model/data/user.dart';
 import 'package:http/http.dart' as http;
 

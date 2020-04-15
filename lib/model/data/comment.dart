@@ -43,8 +43,7 @@ abstract class CommentRepository {
 
   Future<Comment> createComment({
     @required AuthUser user,
-    @required Comment prototype,
-    Comment parent
+    @required Comment prototype
   });
 
 }
