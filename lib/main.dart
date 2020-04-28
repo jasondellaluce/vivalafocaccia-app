@@ -1,16 +1,15 @@
-import 'package:app/bloc/search/search_bloc.dart';
-import 'package:app/bloc/search_result/search_result_event.dart';
-import 'package:app/model/repositories.dart';
-import 'package:app/model/models.dart';
-import 'package:app/ui/navigation_page.dart';
-import 'package:app/ui/pages/search_page.dart';
-import 'package:app/ui/pages/keyword_search_result_page.dart';
+import 'package:app/legacy/bloc/search/search_bloc.dart';
+import 'package:app/legacy/bloc/search_result/search_result_event.dart';
+import 'package:app/legacy/model/repositories.dart';
+import 'package:app/legacy/model/models.dart';
+import 'package:app/legacy/ui/navigation_page.dart';
+import 'package:app/legacy/ui/pages/search_page.dart';
+import 'package:app/legacy/ui/pages/keyword_search_result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:global_configuration/global_configuration.dart';
-
-import 'package:app/bloc/search_result/keyword_search_result_bloc.dart';
+import 'package:app/legacy/bloc/search_result/keyword_search_result_bloc.dart';
 
 
 void main() async {
