@@ -1,5 +1,5 @@
 
-import 'package:app/core/http_interface.dart';
+import 'package:app/core/third_party/network_http_interface.dart';
 import 'package:app/repositories/repositories.dart';
 
 import 'package:app/repositories/wprest_impl/wprest_recipe_repository.dart';
@@ -11,6 +11,14 @@ void main() {
   setUp(() {
     repository = new WpRestRecipeRepository(
         NetworkHttpInterface(), 'vivalafocaccia.com');
+  });
+
+  group("WpRestRecipeRepository - read()", () {
+    test("read() correctly fetches without parameters", () {
+      var request = RecipeSingleReadRequest(code: "video-ricetta-della-focaccia-genovese");
+      var result = repository.read(request);
+      expect(result, completion(isNot(contains(null))));
+    });
   });
 
   group("WpRestRecipeRepository - readMany()", () {

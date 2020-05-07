@@ -3,7 +3,20 @@
   "serverUrl": "vivalafocaccia.com",
   "noText": "NoText",
   "dateTimeFormat": "dd/MM/yyyy",
-  "searchPageTitle": "Le ricette di Viva La Focaccia",
-  "searchPageBarPlaceholder": "Inserisci parole per la ricerca..."
+
+  "recipePageVoteCountIcon" : "COUNT mi piace",
+  "recipePageAskForReviewIcon": "Mandaci la tua!",
+  "recipePageReviewCountIcon": "COUNT recensioni",
+  "recipePageServingCount" : "Ricetta per COUNT porzioni",
+  "recipePageCookingTime" : "Tempo di preparazione VALUE",
+  "recipePageCookingTemperature" : "Temperatura di cottura VALUE",
+  "recipePageDifficulty" : "Livello di difficoltà",
+  "recipePageIngredientsTitle" : "Ingredienti",
+  "recipePageDescriptionTitle" : "Descrizione",
+  "readLessLabel" : "Leggi di meno...",
+  "readMoreLabel" : "Leggi di più...",
+  "recipePageStepByStepLabel" : "Segui la ricetta passo per passo",
+  "recipeTimingCalculatorTitle" : "Tempistica della ricetta",
+  "recipeTimingCalculatorStartByLabel" : "Inizio alle..."
 
 }

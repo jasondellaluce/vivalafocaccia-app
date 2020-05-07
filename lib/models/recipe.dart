@@ -32,6 +32,8 @@ class RecipeStep {
 class Recipe extends Post {
   final int servesCount;
   final int votesCount;
+  final int ratingsCount;
+  final double averageRating;
   final String cookingTime;
   final String cookingTemperature;
   final String difficulty;
@@ -52,6 +54,8 @@ class Recipe extends Post {
     lastUpdateDateTime,
     this.servesCount,
     this.votesCount,
+    this.ratingsCount,
+    this.averageRating,
     this.cookingTime,
     this.cookingTemperature,
     this.difficulty,

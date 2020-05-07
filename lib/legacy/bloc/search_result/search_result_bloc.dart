@@ -13,19 +13,6 @@ abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultStat
   SearchResultBloc(this.recipeRepository);
 
   @override
-  Stream<SearchResultState> transformEvents(
-      Stream<SearchResultEvent> events,
-      Stream<SearchResultState> Function(SearchResultEvent event) next,
-      ) {
-    return super.transformEvents(
-      events.debounceTime(
-        Duration(milliseconds: 500),
-      ),
-      next,
-    );
-  }
-
-  @override
   SearchResultState get initialState => UninitializedState();
 
   @override

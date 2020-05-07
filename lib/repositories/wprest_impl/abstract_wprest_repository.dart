@@ -20,13 +20,16 @@ abstract class AbstractWpRestRepository<T> {
   Future<T> delegateRead(
       String urlBase,
       String urlEndpoint,
-      Map<String, dynamic> query,
-      Map<String, dynamic> headers) async {
+      Map<String, String> query,
+      Map<String, String> headers) async {
     query.removeWhere((key, value) => value == null);
     headers.removeWhere((key, value) => value == null);
     final response = await httpClient.doGet(urlBase, urlEndpoint,
         query: query, headers: headers);
     if (response.statusCode == 200) {
+      var decoded = json.decode(response.body);
+      if(decoded is List)
+        return parseJsonList(decoded)[0];
       return parseJsonMap(json.decode(response.body));
     }
     throw RepositorySingleReadError(json.decode(response.body)['message']);
@@ -35,8 +38,8 @@ abstract class AbstractWpRestRepository<T> {
   Future<List<T>> delegateReadMany(
       String urlBase,
       String urlEndpoint,
-      Map<String, dynamic> query,
-      Map<String, dynamic> headers) async {
+      Map<String, String> query,
+      Map<String, String> headers) async {
     query.removeWhere((key, value) => value == null);
     headers.removeWhere((key, value) => value == null);
     final response = await httpClient.doGet(urlBase, urlEndpoint,
@@ -77,7 +80,7 @@ abstract class AbstractWpRestRepository<T> {
       case ReadOrderType.desc:
         return "desc";
     }
-    return "";
+    return null;
   }
 
   Map<String, String> formatAuthUserTokenToHeader(AuthUser user) {

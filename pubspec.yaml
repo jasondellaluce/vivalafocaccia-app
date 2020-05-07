@@ -8,17 +8,22 @@ environment:
 
 dependencies:
   meta:
-  http:
-  cached_network_image:
-  html:
-  intl:
-  transparent_image:
   equatable:
+  provider:
   flutter_bloc:
   global_configuration:
+  http:
+  html:
+  intl:
+
   flutter:
     sdk: flutter
+  cached_network_image:
+  transparent_image:
   cupertino_icons: ^0.1.3
+  youtube_player_flutter: ^6.1.1
+  bouncing_widget: ^1.2.0
+  flutter_html:
 
 dev_dependencies:
   flutter_test:

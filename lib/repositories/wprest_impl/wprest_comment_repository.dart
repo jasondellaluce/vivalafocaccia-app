@@ -65,7 +65,7 @@ class WpRestCommentRepository extends AbstractWpRestRepository<Comment>
     query['orderby'] = _formatCommentOrderBy(request.orderBy) ?? null;
     query['order'] = formatResultOrderType(request.order) ?? null;
 
-    return delegateReadMany(urlBase, urlEndpoint, query, Map());
+    return delegateReadMany(urlBase, urlEndpoint, query, Map<String, String>());
   }
 
   @override

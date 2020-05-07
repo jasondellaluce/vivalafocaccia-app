@@ -64,7 +64,7 @@ class WpRestPostRepository extends AbstractWpRestRepository<Post>
     query['orderby'] = _formatPostOrderBy(request.orderBy) ?? null;
     query['order'] = formatResultOrderType(request.order) ?? null;
 
-    return delegateReadMany(urlBase, urlEndpoint, query, Map());
+    return delegateReadMany(urlBase, urlEndpoint, query, Map<String, String>());
   }
 
 }

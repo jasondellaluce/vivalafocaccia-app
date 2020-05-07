@@ -13,18 +13,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     @required this.categoryRepository
   });
 
-  @override
-  Stream<SearchState> transformEvents(
-      Stream<SearchEvent> events,
-      Stream<SearchState> Function(SearchEvent event) next,
-      ) {
-    return super.transformEvents(
-      events.debounceTime(
-        Duration(milliseconds: 500),
-      ),
-      next,
-    );
-  }
 
   @override
   SearchState get initialState => EmptyState(categoryRepository.getMany());

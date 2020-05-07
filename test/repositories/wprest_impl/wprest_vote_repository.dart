@@ -1,5 +1,5 @@
 
-import 'package:app/core/http_interface.dart';
+import 'package:app/core/third_party/network_http_interface.dart';
 import 'package:app/models/models.dart';
 import 'package:app/repositories/repositories.dart';
 import 'package:app/repositories/wprest_impl/wprest_vote_repository.dart';

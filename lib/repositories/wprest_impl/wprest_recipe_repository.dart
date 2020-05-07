@@ -8,7 +8,6 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
     implements RecipeRepository {
   final String urlBase;
   final String urlEndpoint = "/wp-json/wp/v2/recipes";
-  final String urlEndpointVote = "/wp-json/vlf/v1/recipe-votes";
 
   WpRestRecipeRepository(httpClient, this.urlBase) : super(httpClient);
 
@@ -36,6 +35,7 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
   parseJsonMap(Map<String, dynamic> map) {
     List<dynamic> ingredientList = map['recipe_ingredients'];
     List<dynamic> stepList = map['recipe_steps'];
+    // TODO: Extract video link, featured img form content, images form steps. also filter content, find calculators
     return Recipe(
         id: int.parse(map['id'].toString()),
         authorId : int.parse(map['author'].toString()),
@@ -49,6 +49,8 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
         lastUpdateDateTime : DateTime.parse(map['modified_gmt']),
         servesCount : int.tryParse(map['recipe_serves'].toString()) ?? 0,
         votesCount : int.tryParse(map['recipe_like_count'].toString()) ?? 0,
+        ratingsCount : int.tryParse(map['recipe_like_count'].toString()) ?? 0,
+        averageRating: double.tryParse(map['recipe_review_avg_rating'].toString()),
         cookingTime : map['recipe_cooking_time'].toString(),
         cookingTemperature : map['recipe_cooking_temperature'].toString(),
         difficulty : map['recipe_difficulty'].toString(),
@@ -74,13 +76,13 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
 
     if(request.id != null) {
       String url = urlEndpoint + "/" + request.id.toString();
-      return delegateRead(urlBase, url, Map(), Map());
+      return delegateRead(urlBase, url, {}, {});
     }
 
     if(request.code != null) {
       Map<String, String> query = Map();
       query['slug'] = request.code;
-      return delegateRead(urlBase, urlEndpoint, query, Map());
+      return delegateRead(urlBase, urlEndpoint, query, {});
     }
 
     throw new RepositoryInvalidRequestError("Should specify id or code");
@@ -96,7 +98,7 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
     query['orderby'] = _formatPostOrderBy(request.orderBy) ?? null;
     query['order'] = formatResultOrderType(request.order) ?? null;
 
-    return delegateReadMany(urlBase, urlEndpoint, query, Map());
+    return delegateReadMany(urlBase, urlEndpoint, query, {});
   }
 
 }
