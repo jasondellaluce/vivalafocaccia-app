@@ -1,12 +1,10 @@
-import 'package:app/recipe_overview_page.dart';
-import 'package:app/recipe_page.dart';
-import 'package:app/widgets/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 
 import 'core/localization.dart';
+import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,15 +35,15 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
+      theme: ThemeData.light().copyWith(
         //scaffoldBackgroundColor: HexColor("#fefcf8"),
-        primaryColor: HexColor("#F5500A"),
-        accentColor: HexColor("#FFB500")
+        primaryColor: Colors.orange,
+        // accentColor: HexColor("#FFB500")
       ),
       debugShowCheckedModeBanner: false,
       home: Provider<Localization>(
         create: (BuildContext context) => Localization((s) => GlobalConfiguration().get(s)),
-        child: RecipePage(),
+        child: HomePage(),
       )
     );
   }

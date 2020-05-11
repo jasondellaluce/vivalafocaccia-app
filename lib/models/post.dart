@@ -8,6 +8,7 @@ class Post {
   final String authorName;
   final String pageUrl;
   final String featuredImageUrl;
+  final String featuredVideoUrl;
   final DateTime creationDateTime;
   final DateTime lastUpdateDateTime;
 
@@ -20,6 +21,7 @@ class Post {
     this.authorName,
     this.pageUrl,
     this.featuredImageUrl,
+    this.featuredVideoUrl,
     this.creationDateTime,
     this.lastUpdateDateTime
   });

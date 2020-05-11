@@ -18,9 +18,11 @@ class RecipePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Recipe as nav argument or link opening, compile all event functions,
+    // TODO: Recipe as nav argument or link opening and loading if future
     // TODO: Extract useful widgets in other modules
     // TODO: Integrate video
+    // TODO: Manage colors better
+    ///TODO: Inject repository factory through provider
     return FutureBuilder(
       future: RepositoryFactory().forRecipe().read(RecipeSingleReadRequest(
           code: "video-ricetta-della-focaccia-genovese")
@@ -85,15 +87,15 @@ class RecipePage extends StatelessWidget {
   }
 
   void _onBackButtonPressed() {
-
+    // TODO: Navigate to previous page or close app (Eventually don't show button at all)
   }
 
   void _onCommentButtonPressed() {
-
+    // TODO: Navigate to comment list page
   }
 
   void _onShareButtonPressed() {
-
+    // TODO: Open share dialog
   }
 
 }
@@ -229,11 +231,11 @@ class _HeaderDetailsWidget extends StatelessWidget{
   }
 
   void _onVoteButtonPressed() {
-
+    // TODO: Ask for authentication or execute vote with VoteRepository, also update count
   }
 
   void _onReviewButtonPressed() {
-
+    // TODO: Open review list page
   }
 
 }
@@ -424,7 +426,7 @@ class _SingleIngredientState extends State<_SingleIngredient> {
       child: Row(
         children: <Widget>[
           selected
-            ? Icon(Icons.check_circle, color: Theme.of(context).accentColor)
+            ? Icon(Icons.check_circle)
             : Icon(Icons.radio_button_unchecked),
           SizedBox(width: 10),
           Text(widget.name)
@@ -668,6 +670,7 @@ class _RecipeTimingPreviewState extends State<_RecipeTimingPreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Implement this completely and use timepicker
     return Container(
       padding: widget.padding,
         color: Theme.of(context).primaryColor,

@@ -12,6 +12,7 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
   WpRestRecipeRepository(httpClient, this.urlBase) : super(httpClient);
 
   RecipeIngredient _parseJsonRecipeIngredient(Map<String, dynamic> json) {
+    // TODO: Separate name and quantity if they are stuck together
     return RecipeIngredient(
       isTitle : json['is_separator'].toString().toLowerCase() == "true",
       name : json['name'].toString(),
@@ -21,6 +22,7 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
   }
 
   RecipeStep _parseJsonRecipeStep(Map<String, dynamic> json) {
+    // TODO: Extract images links from description
     List<dynamic> imageList = json['images'];
     return RecipeStep(
         title: json['title'].toString(),
@@ -35,7 +37,7 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
   parseJsonMap(Map<String, dynamic> map) {
     List<dynamic> ingredientList = map['recipe_ingredients'];
     List<dynamic> stepList = map['recipe_steps'];
-    // TODO: Extract video link, featured img form content, images form steps. also filter content, find calculators
+    // TODO: Extract video link, featured img form content, also filter content, find calculators info
     return Recipe(
         id: int.parse(map['id'].toString()),
         authorId : int.parse(map['author'].toString()),
@@ -45,12 +47,15 @@ class WpRestRecipeRepository extends AbstractWpRestRepository<Recipe>
         authorName : map['author_name'].toString(),
         pageUrl : map['link'].toString(),
         featuredImageUrl : map['featured_image_url'],
+        featuredVideoUrl: "https://www.youtube.com/embed/F8kEpPfna6w", // TODO: Remove placeholder
         creationDateTime : DateTime.parse(map['date_gmt']),
         lastUpdateDateTime : DateTime.parse(map['modified_gmt']),
         servesCount : int.tryParse(map['recipe_serves'].toString()) ?? 0,
         votesCount : int.tryParse(map['recipe_like_count'].toString()) ?? 0,
         ratingsCount : int.tryParse(map['recipe_like_count'].toString()) ?? 0,
         averageRating: double.tryParse(map['recipe_review_avg_rating'].toString()),
+        // totalMixtureWeight: 600, // TODO: Remove placeholder
+        // totalPanSurface: 1000, // TODO: Remove placeholder
         cookingTime : map['recipe_cooking_time'].toString(),
         cookingTemperature : map['recipe_cooking_temperature'].toString(),
         difficulty : map['recipe_difficulty'].toString(),

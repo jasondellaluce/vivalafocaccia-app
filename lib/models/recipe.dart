@@ -34,6 +34,8 @@ class Recipe extends Post {
   final int votesCount;
   final int ratingsCount;
   final double averageRating;
+  final double totalMixtureWeight;
+  final double totalPanSurface;
   final String cookingTime;
   final String cookingTemperature;
   final String difficulty;
@@ -50,12 +52,15 @@ class Recipe extends Post {
     authorName,
     pageUrl,
     featuredImageUrl,
+    featuredVideoUrl,
     creationDateTime,
     lastUpdateDateTime,
     this.servesCount,
     this.votesCount,
     this.ratingsCount,
     this.averageRating,
+    this.totalMixtureWeight,
+    this.totalPanSurface,
     this.cookingTime,
     this.cookingTemperature,
     this.difficulty,
