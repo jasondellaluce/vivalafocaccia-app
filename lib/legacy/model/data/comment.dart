@@ -1,4 +1,3 @@
-
 import 'user.dart';
 import 'package:meta/meta.dart';
 
@@ -28,22 +27,12 @@ class Discussion {
   get isRoot => value == null;
 }
 
-enum CommentOrder {
-  date
-}
+enum CommentOrder { date }
 
 abstract class CommentRepository {
+  Future<Discussion> getDiscussionFromPost(
+      {@required Post post, int offset, int count, CommentOrder order});
 
-  Future<Discussion> getDiscussionFromPost({
-    @required Post post,
-    int offset,
-    int count,
-    CommentOrder order
-  });
-
-  Future<Comment> createComment({
-    @required AuthUser user,
-    @required Comment prototype
-  });
-
+  Future<Comment> createComment(
+      {@required AuthUser user, @required Comment prototype});
 }

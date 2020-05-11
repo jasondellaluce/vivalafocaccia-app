@@ -20,8 +20,7 @@ class ResultErrorState extends SearchResultState {
   List<Object> get props => [errorStr];
 
   @override
-  String toString() =>
-      'ResultError { error: $errorStr }';
+  String toString() => 'ResultError { error: $errorStr }';
 }
 
 class ResultLoadedState extends SearchResultState {
@@ -56,9 +55,7 @@ class ResultLoadedState extends SearchResultState {
 class RecipeSelectedState extends SearchResultState {
   final Recipe recipe;
 
-  const RecipeSelectedState({
-    @required this.recipe
-  });
+  const RecipeSelectedState({@required this.recipe});
 
   @override
   List<Object> get props => [recipe];

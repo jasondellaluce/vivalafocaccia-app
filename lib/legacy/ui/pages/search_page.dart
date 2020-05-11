@@ -1,4 +1,3 @@
-
 import 'package:app/legacy/bloc/search/search_bloc.dart';
 import 'package:app/legacy/bloc/search/search_event.dart';
 import 'package:app/legacy/bloc/search/search_state.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:global_configuration/global_configuration.dart';
 
 class SearchPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -21,9 +19,10 @@ class SearchPage extends StatelessWidget {
           bloc: context.bloc<SearchBloc>(),
           listener: (context, state) {
             var argument = NavigationArgument();
-            if(state is KeywordSelectedState) {
+            if (state is KeywordSelectedState) {
               argument['title'] = state.text;
-              Navigator.pushNamed(context, "keywordSearchResult", arguments: argument);
+              Navigator.pushNamed(context, "keywordSearchResult",
+                  arguments: argument);
             }
           },
         ),
@@ -33,9 +32,10 @@ class SearchPage extends StatelessWidget {
           bloc: context.bloc<SearchBloc>(),
           listener: (context, state) {
             var argument = NavigationArgument();
-            if(state is CategorySelectedState) {
+            if (state is CategorySelectedState) {
               argument['title'] = state.category.code;
-              Navigator.pushNamed(context, "keywordSearchResult", arguments: argument);
+              Navigator.pushNamed(context, "keywordSearchResult",
+                  arguments: argument);
             }
           },
         )
@@ -46,10 +46,9 @@ class SearchPage extends StatelessWidget {
             title: Text(GlobalConfiguration().get("searchPageTitle")),
             centerTitle: true,
             automaticallyImplyLeading: false,
-
           ),
           body: Padding(
-              padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
+              padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
               child: ListView(
                 children: <Widget>[
                   _SearchBar(),
@@ -57,9 +56,7 @@ class SearchPage extends StatelessWidget {
                   _CategoryList(),
                   SizedBox(height: 10.0),
                 ],
-              )
-          )
-      ),
+              ))),
     );
   }
 }
@@ -106,10 +103,14 @@ class _SearchBarState extends State<_SearchBar> {
             contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(color: Colors.white,),
+              borderSide: BorderSide(
+                color: Colors.white,
+              ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white,),
+              borderSide: BorderSide(
+                color: Colors.white,
+              ),
               borderRadius: BorderRadius.circular(5.0),
             ),
             hintText: GlobalConfiguration().get("searchPageBarPlaceholder"),
@@ -128,7 +129,6 @@ class _SearchBarState extends State<_SearchBar> {
               fontSize: 15.0,
               color: Colors.black,
             ),
-
           ),
           maxLines: 1,
           controller: _textController,
@@ -147,42 +147,39 @@ class _SearchBarState extends State<_SearchBar> {
     bloc.add(KeywordSelectedEvent(text: _textController.text));
     _textController.text = '';
   }
-
 }
 
 class _CategoryList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _CategoryListState();
-
 }
 
-class _CategoryListState extends State<_CategoryList>{
-  
+class _CategoryListState extends State<_CategoryList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top : 10.0),
-      child: BlocBuilder<SearchBloc, SearchState> (
+      padding: EdgeInsets.only(top: 10.0),
+      child: BlocBuilder<SearchBloc, SearchState>(
         builder: (builderContext, state) {
-          if(state is EmptyState) {
+          if (state is EmptyState) {
             return Wrap(
-                spacing: MediaQuery.of(context).size.width / 20, // gap between adjacent chips
-                runSpacing: MediaQuery.of(context).size.width / 20, // gap between lines
+                spacing: MediaQuery.of(context).size.width /
+                    20, // gap between adjacent chips
+                runSpacing:
+                    MediaQuery.of(context).size.width / 20, // gap between lines
                 children: state.categoryList.map((futureCat) {
-                  return FutureBuilder<Category> (
+                  return FutureBuilder<Category>(
                     future: futureCat,
                     builder: (futureContext, snapshot) {
-                      if(snapshot.hasData) {
+                      if (snapshot.hasData) {
                         return GestureDetector(
                           onTap: () {
-                            context.bloc<SearchBloc>().add(CategorySelectedEvent(category: snapshot.data));
+                            context.bloc<SearchBloc>().add(
+                                CategorySelectedEvent(category: snapshot.data));
                           },
-                          child: CategorySnippetWidget(
-                              item: snapshot.data
-                          ),
+                          child: CategorySnippetWidget(item: snapshot.data),
                         );
-                      }
-                      else if(snapshot.hasError) {
+                      } else if (snapshot.hasError) {
                         return LoadingErrorWidget(
                           message: snapshot.error.toString(),
                         );
@@ -190,8 +187,7 @@ class _CategoryListState extends State<_CategoryList>{
                       return BottomLoadingWidget();
                     },
                   );
-                }).toList()
-            );
+                }).toList());
           }
           return Container();
         },

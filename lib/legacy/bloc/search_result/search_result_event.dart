@@ -14,14 +14,12 @@ class RecipeSelectedEvent extends SearchResultEvent {
   final Recipe recipe;
   final SearchResultState currentState;
 
-  RecipeSelectedEvent({
-    @required this.recipe,
-    @required this.currentState
-  });
+  RecipeSelectedEvent({@required this.recipe, @required this.currentState});
 
   @override
   List<Object> get props => [recipe];
 
   @override
-  String toString() => 'RecipeSelectedEvent { recipe: ${recipe.code}, currentState: $currentState}';
+  String toString() =>
+      'RecipeSelectedEvent { recipe: ${recipe.code}, currentState: $currentState}';
 }

@@ -1,19 +1,13 @@
-
 import 'package:app/models/models.dart';
 import 'common.dart';
 
-enum RecipeOrderBy {
-  date, relevance
-}
+enum RecipeOrderBy { date, relevance }
 
 class RecipeSingleReadRequest {
   final int id;
   final String code;
 
-  RecipeSingleReadRequest({
-    this.id,
-    this.code
-  });
+  RecipeSingleReadRequest({this.id, this.code});
 }
 
 class RecipeMultiReadRequest {
@@ -24,23 +18,19 @@ class RecipeMultiReadRequest {
   final int categoryId;
   final String keyWordQuery;
 
-  RecipeMultiReadRequest({
-    this.categoryId,
-    this.keyWordQuery,
-    this.readOffset,
-    this.readCount,
-    this.orderBy,
-    this.order
-  });
+  RecipeMultiReadRequest(
+      {this.categoryId,
+      this.keyWordQuery,
+      this.readOffset,
+      this.readCount,
+      this.orderBy,
+      this.order});
 }
-
 
 class RecipeVoteReadRequest {
   final int postId;
 
-  RecipeVoteReadRequest({
-    this.postId
-  });
+  RecipeVoteReadRequest({this.postId});
 }
 
 class RecipeVoteCreateRequest {
@@ -48,10 +38,7 @@ class RecipeVoteCreateRequest {
   final bool isPositive;
   final AuthUser authUser;
 
-  RecipeVoteCreateRequest({
-    this.postId,
-    this.isPositive,
-    this.authUser});
+  RecipeVoteCreateRequest({this.postId, this.isPositive, this.authUser});
 }
 
 /// Interface that represents a data repository for classes of the legacy.model.
@@ -62,7 +49,6 @@ class RecipeVoteCreateRequest {
 /// and throw error that can be caught with proper handlers in the returned
 /// futures.
 abstract class RecipeRepository {
-
   /// Retrieves a single element matching the details specified by [request],
   /// if possible. Should return the most updated value retrievable. Errors and
   /// failures regarding retrieval of the element or the configuration of the
@@ -74,5 +60,4 @@ abstract class RecipeRepository {
   /// failures regarding retrieval of the element or the configuration of the
   /// request should be caught through the returned [Future] value.
   Future<List<Recipe>> readMany(RecipeMultiReadRequest request);
-
 }

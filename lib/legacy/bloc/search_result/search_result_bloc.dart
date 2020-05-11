@@ -5,7 +5,8 @@ import 'package:rxdart/rxdart.dart';
 import 'search_result_event.dart';
 import 'search_result_state.dart';
 
-abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultState> {
+abstract class SearchResultBloc
+    extends Bloc<SearchResultEvent, SearchResultState> {
   final RecipeRepository recipeRepository;
   final int resultsPerRefresh = 10;
   SearchResultState lastState = UninitializedState();
@@ -26,25 +27,25 @@ abstract class SearchResultBloc extends Bloc<SearchResultEvent, SearchResultStat
           return;
         }
         if (currentState is ResultLoadedState) {
-          final posts = fetchResults(currentState.results.length, resultsPerRefresh);
+          final posts =
+              fetchResults(currentState.results.length, resultsPerRefresh);
           yield posts.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
               : ResultLoadedState(
                   results: currentState.results + posts,
                   previousLength: currentState.results?.length ?? 0,
                   hasReachedMax: false,
-              );
+                );
         }
       } catch (error) {
         yield ResultErrorState(error.toString());
       }
     }
 
-    if(event is RecipeSelectedEvent) {
-      yield RecipeSelectedState(recipe : event.recipe);
+    if (event is RecipeSelectedEvent) {
+      yield RecipeSelectedState(recipe: event.recipe);
       yield event.currentState;
     }
-
   }
 
   bool _hasReachedMax(SearchResultState state) =>

@@ -1,4 +1,3 @@
-
 import 'package:meta/meta.dart';
 
 class Category {
@@ -11,18 +10,10 @@ class Category {
   Category(this.id, this.name, this.code, this.pageUrl, this.featuredImageUrl);
 }
 
-enum CategoryOrder {
-  importance
-}
+enum CategoryOrder { importance }
 
 abstract class CategoryRepository {
-  Future<Category> getFromId({
-    @required int id
-  });
+  Future<Category> getFromId({@required int id});
 
-  List<Future<Category>> getMany({
-    int offset,
-    int count,
-    CategoryOrder order
-  });
+  List<Future<Category>> getMany({int offset, int count, CategoryOrder order});
 }

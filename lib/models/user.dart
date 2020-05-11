@@ -1,4 +1,3 @@
-
 /// Represents a user present in the system
 class User {
   final int id;
@@ -6,12 +5,7 @@ class User {
   final String email;
   final String featuredImageUrl;
 
-  User({
-    this.id,
-    this.name,
-    this.email,
-    this.featuredImageUrl
-  });
+  User({this.id, this.name, this.email, this.featuredImageUrl});
 }
 
 /// Represents an authenticated user. This is useful for logging a user on the
@@ -19,16 +13,10 @@ class User {
 class AuthUser extends User {
   final String authToken;
 
-  AuthUser({
-    id,
-    name,
-    email,
-    featuredImageUrl,
-    this.authToken
-  }) : super(
-      id: id,
-      name : name,
-      email : email,
-      featuredImageUrl : featuredImageUrl
-  );
+  AuthUser({id, name, email, featuredImageUrl, this.authToken})
+      : super(
+            id: id,
+            name: name,
+            email: email,
+            featuredImageUrl: featuredImageUrl);
 }

@@ -1,28 +1,19 @@
-
 import 'package:app/models/models.dart';
 import 'common.dart';
 
-enum CommentOrderBy {
-  date
-}
+enum CommentOrderBy { date }
 
 class CommentSingleReadRequest {
   final int id;
 
-  CommentSingleReadRequest({
-    this.id
-  });
-
+  CommentSingleReadRequest({this.id});
 }
 
 class CommentCreateRequest {
   final Comment prototype;
   final AuthUser authUser;
 
-  CommentCreateRequest({
-    this.prototype,
-    this.authUser
-  });
+  CommentCreateRequest({this.prototype, this.authUser});
 }
 
 class CommentMultiReadRequest {
@@ -31,12 +22,8 @@ class CommentMultiReadRequest {
   final CommentOrderBy orderBy;
   final ReadOrderType order;
 
-  CommentMultiReadRequest({
-    this.readOffset,
-    this.readCount,
-    this.orderBy,
-    this.order
-  });
+  CommentMultiReadRequest(
+      {this.readOffset, this.readCount, this.orderBy, this.order});
 }
 
 /// Interface that represents a data repository for classes of the legacy.model.
@@ -47,7 +34,6 @@ class CommentMultiReadRequest {
 /// and throw error that can be caught with proper handlers in the returned
 /// futures.
 abstract class CommentRepository {
-
   /// Retrieves a single element matching the details specified by [request],
   /// if possible. Should return the most updated value retrievable. Errors and
   /// failures regarding retrieval of the element or the configuration of the
@@ -69,5 +55,4 @@ abstract class CommentRepository {
   /// retrieval of the element or the configuration of the request should be
   /// caught through the returned [Future] value.
   Future<Comment> create(CommentCreateRequest request);
-
 }

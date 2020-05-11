@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -9,7 +8,6 @@ import 'package:app/legacy/model/data/post.dart';
 import 'package:app/legacy/common/errors.dart';
 
 class WPRestCommentRepository implements CommentRepository {
-
   final String websiteUrl;
   final restRouteBase = "/wp-json/wp/v2";
   final httpClient = http.Client();
@@ -19,14 +17,14 @@ class WPRestCommentRepository implements CommentRepository {
   Comment _parseJson(String jsonBody) {
     Map<String, dynamic> jsonObj = json.decode(jsonBody);
     return Comment(
-        int.parse(jsonObj['id'].toString()),
-        int.parse(jsonObj['post'].toString()),
-        int.parse(jsonObj['author'].toString()),
-        int.parse(jsonObj['parent'].toString()),
-        jsonObj['author_name'].toString(),
-        jsonObj['author_avatar_urls']['48'].toString(),
-        jsonObj['content']['rendered'].toString(),
-        DateTime.parse(jsonObj['date_gmt']),
+      int.parse(jsonObj['id'].toString()),
+      int.parse(jsonObj['post'].toString()),
+      int.parse(jsonObj['author'].toString()),
+      int.parse(jsonObj['parent'].toString()),
+      jsonObj['author_name'].toString(),
+      jsonObj['author_avatar_urls']['48'].toString(),
+      jsonObj['content']['rendered'].toString(),
+      DateTime.parse(jsonObj['date_gmt']),
     );
   }
 
@@ -47,26 +45,31 @@ class WPRestCommentRepository implements CommentRepository {
   }
 
   @override
-  Future<Discussion> getDiscussionFromPost({Post post, offset = 0, count = 100,
-    CommentOrder order = CommentOrder.date}) async {
+  Future<Discussion> getDiscussionFromPost(
+      {Post post,
+      offset = 0,
+      count = 100,
+      CommentOrder order = CommentOrder.date}) async {
     Map<String, String> query = {
-      'offset' : offset.toString(),
-      'per_page' : count.toString(),
-      'post' : post.id.toString()
+      'offset': offset.toString(),
+      'per_page': count.toString(),
+      'post': post.id.toString()
     };
     var uri = Uri.https(websiteUrl, restRouteBase + "/comments", query);
     var commentList = await _doSingleHttpRequest(uri);
 
-    List<Discussion> discussionList = commentList
-        .map((comment) => Discussion(comment, List())).toList();
+    List<Discussion> discussionList =
+        commentList.map((comment) => Discussion(comment, List())).toList();
     Discussion root = Discussion(null, List());
-    for(Discussion discussion in discussionList) {
-      if(discussion.value.parentId == 0)
+    for (Discussion discussion in discussionList) {
+      if (discussion.value.parentId == 0)
         root.responses.add(discussion);
       else
         discussionList
-          .firstWhere((e) => e.value.id == discussion.value.parentId, orElse: () => null)
-          ?.responses?.add(discussion);
+            .firstWhere((e) => e.value.id == discussion.value.parentId,
+                orElse: () => null)
+            ?.responses
+            ?.add(discussion);
     }
     return root;
   }
@@ -76,5 +79,4 @@ class WPRestCommentRepository implements CommentRepository {
     // TODO: implement createComment
     throw UnimplementedError();
   }
-
 }

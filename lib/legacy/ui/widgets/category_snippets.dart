@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 class CategorySnippetWidget extends StatelessWidget {
   final Category item;
 
-  const CategorySnippetWidget ({
+  const CategorySnippetWidget({
     Key key,
     @required this.item,
   }) : super(key: key);
@@ -24,8 +24,7 @@ class CategorySnippetWidget extends StatelessWidget {
       height: MediaQuery.of(context).size.width / screenProportion,
       child: Card(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius)
-          ),
+              borderRadius: BorderRadius.circular(borderRadius)),
           elevation: 8.0,
           child: Stack(
             children: <Widget>[
@@ -39,25 +38,24 @@ class CategorySnippetWidget extends StatelessWidget {
                     child: Opacity(
                       opacity: imageOpacity,
                       child: PictureWidget.fromUrl(
-                          fit: BoxFit.cover,
-                          imageUrl: item.featuredImageUrl
-                      ),
-                    )
-                ),
+                          fit: BoxFit.cover, imageUrl: item.featuredImageUrl),
+                    )),
               ),
-
               Center(
                 child: Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Container(
                     color: Colors.white70,
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width / textLineLength * textBackgroundLines,
+                    height: MediaQuery.of(context).size.width /
+                        textLineLength *
+                        textBackgroundLines,
                     child: Center(
                       child: Text(
                         item.name,
                         style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width / textLineLength,
+                          fontSize: MediaQuery.of(context).size.width /
+                              textLineLength,
                           fontWeight: FontWeight.w900,
                         ),
                         textAlign: TextAlign.center,
@@ -66,11 +64,8 @@ class CategorySnippetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
-          )
-      ),
+          )),
     );
   }
-
 }

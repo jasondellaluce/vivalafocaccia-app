@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
 class RecipeCarouselSnippetWidget extends StatelessWidget {
-  
   final Recipe recipe;
   final width;
   final borderRadius = BorderRadius.circular(10);
   final Function() onTap;
-  
+
   RecipeCarouselSnippetWidget({
     Key key,
     this.recipe,
@@ -28,8 +27,7 @@ class RecipeCarouselSnippetWidget extends StatelessWidget {
           children: <Widget>[
             // Recipe picture
             Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: borderRadius),
+              shape: RoundedRectangleBorder(borderRadius: borderRadius),
               elevation: 6.0,
               child: Container(
                 width: width,
@@ -61,5 +59,4 @@ class RecipeCarouselSnippetWidget extends StatelessWidget {
           ],
         ));
   }
-
 }

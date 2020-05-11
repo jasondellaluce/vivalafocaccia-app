@@ -26,14 +26,16 @@ class RecipeSnippetWidget extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Card(
-          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(borderRadius)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius)),
           elevation: 3.0,
           child: Column(
             children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height / imageHeightProportion,
+                    height: MediaQuery.of(context).size.height /
+                        imageHeightProportion,
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
                         borderRadius: BorderRadius.only(
@@ -42,22 +44,19 @@ class RecipeSnippetWidget extends StatelessWidget {
                         ),
                         child: PictureWidget.fromUrl(
                             fit: BoxFit.cover,
-                            imageUrl: item.featuredImageUrl
-                        )
-                    ),
+                            imageUrl: item.featuredImageUrl)),
                   ),
-
                   Positioned(
                     top: 6.0,
                     right: 6.0,
                     child: Card(
-                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(4.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0)),
                       child: Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Row(
                           children: <Widget>[
                             Text(" "),
-
                             Icon(
                               Icons.thumb_up,
                               color: Colors.lightBlue,
@@ -74,17 +73,20 @@ class RecipeSnippetWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: 6.0,
                     left: 6.0,
                     child: Card(
-                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(3.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3.0)),
                       child: Padding(
                         padding: EdgeInsets.all(4.0),
-                        child:Text(
-                          " " + DateFormat(GlobalConfiguration().get("dateTimeFormat"))
-                              .format(item.lastUpdateDateTime) + " ",
+                        child: Text(
+                          " " +
+                              DateFormat(GlobalConfiguration()
+                                      .get("dateTimeFormat"))
+                                  .format(item.lastUpdateDateTime) +
+                              " ",
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.green,
@@ -94,13 +96,9 @@ class RecipeSnippetWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-
-
                 ],
               ),
-
               SizedBox(height: 7.0),
-
               Padding(
                 padding: EdgeInsets.only(left: 15.0, right: 15),
                 child: Container(
@@ -116,9 +114,7 @@ class RecipeSnippetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 7.0),
-
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Container(
@@ -132,20 +128,16 @@ class RecipeSnippetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 10.0),
-
             ],
           ),
         ),
       ),
     );
   }
-
 }
 
 class RecipeEmptySnippetWidget extends StatelessWidget {
-
   final imageHeightProportion = 3.5;
   final borderRadius = 10.0;
 
@@ -156,35 +148,35 @@ class RecipeEmptySnippetWidget extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Card(
-          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(borderRadius)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius)),
           elevation: 3.0,
           child: Column(
             children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height / imageHeightProportion,
+                    height: MediaQuery.of(context).size.height /
+                        imageHeightProportion,
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(borderRadius),
                           topRight: Radius.circular(borderRadius),
                         ),
-                        child: Image.memory(kTransparentImage)
-                    ),
+                        child: Image.memory(kTransparentImage)),
                   ),
-
                   Positioned(
                     top: 6.0,
                     right: 6.0,
                     child: Card(
-                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(4.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0)),
                       child: Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Row(
                           children: <Widget>[
                             Text(" "),
-
                             Icon(
                               Icons.thumb_up,
                               color: Colors.lightBlue,
@@ -201,15 +193,15 @@ class RecipeEmptySnippetWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: 6.0,
                     left: 6.0,
                     child: Card(
-                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(3.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3.0)),
                       child: Padding(
                         padding: EdgeInsets.all(4.0),
-                        child:Text(
+                        child: Text(
                           " --- ",
                           style: TextStyle(
                             fontSize: 10,
@@ -220,13 +212,9 @@ class RecipeEmptySnippetWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-
-
                 ],
               ),
-
               SizedBox(height: 7.0),
-
               Padding(
                 padding: EdgeInsets.only(left: 15.0, right: 15),
                 child: Container(
@@ -241,9 +229,7 @@ class RecipeEmptySnippetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 7.0),
-
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Container(
@@ -257,14 +243,11 @@ class RecipeEmptySnippetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 10.0),
-
             ],
           ),
         ),
       ),
     );
   }
-
 }

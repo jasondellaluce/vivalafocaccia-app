@@ -1,20 +1,13 @@
-
 import 'package:app/models/models.dart';
 import 'common.dart';
 
-enum CategoryOrderBy {
-  name
-}
+enum CategoryOrderBy { name }
 
 class CategorySingleReadRequest {
   final int id;
   final String code;
 
-  CategorySingleReadRequest({
-    this.id,
-    this.code
-  });
-
+  CategorySingleReadRequest({this.id, this.code});
 }
 
 class CategoryMultiReadRequest {
@@ -23,12 +16,8 @@ class CategoryMultiReadRequest {
   final CategoryOrderBy orderBy;
   final ReadOrderType order;
 
-  CategoryMultiReadRequest({
-    this.readOffset,
-    this.readCount,
-    this.orderBy,
-    this.order
-  });
+  CategoryMultiReadRequest(
+      {this.readOffset, this.readCount, this.orderBy, this.order});
 }
 
 /// Interface that represents a data repository for classes of the legacy.model.
@@ -39,7 +28,6 @@ class CategoryMultiReadRequest {
 /// and throw error that can be caught with proper handlers in the returned
 /// futures.
 abstract class CategoryRepository {
-
   /// Retrieves a single element matching the details specified by [request],
   /// if possible. Should return the most updated value retrievable. Errors and
   /// failures regarding retrieval of the element or the configuration of the
@@ -51,5 +39,4 @@ abstract class CategoryRepository {
   /// failures regarding retrieval of the element or the configuration of the
   /// request should be caught through the returned [Future] value.
   Future<List<Category>> readMany(CategoryMultiReadRequest request);
-
 }

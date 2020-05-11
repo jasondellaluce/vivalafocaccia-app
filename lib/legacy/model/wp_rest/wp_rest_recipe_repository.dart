@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/legacy/model/models.dart';
@@ -7,9 +6,7 @@ import 'abstract_wp_rest_post_repository.dart';
 class WPRestRecipeRepository
     extends AbstractWpRestPostTypeRepository<Recipe, RecipeOrder>
     implements RecipeRepository {
-
   WPRestRecipeRepository(String websiteUrl) : super(websiteUrl);
-
 
   RecipeIngredient _parseJsonRecipeIngredient(Map<String, dynamic> json) {
     return RecipeIngredient(
@@ -26,8 +23,7 @@ class WPRestRecipeRepository
         json['title'].toString(),
         json['duration'].toString(),
         json['description'].toString(),
-        imageList.map((e) => e['full_image_url'].toString()).toList()
-    );
+        imageList.map((e) => e['full_image_url'].toString()).toList());
   }
 
   @override
@@ -53,15 +49,16 @@ class WPRestRecipeRepository
         jsonObj['recipe_difficulty'].toString(),
         jsonObj['recipe_quick_description'].toString(),
         ingredientList.map((e) => _parseJsonRecipeIngredient(e)).toList(),
-        stepList.map((e) => _parseJsonRecipeStep(e)).toList()
-    );
+        stepList.map((e) => _parseJsonRecipeStep(e)).toList());
   }
 
   @override
   String formatOrderType(RecipeOrder order) {
-    switch(order) {
-      case RecipeOrder.date: return "date";
-      case RecipeOrder.relevance: return "relevance";
+    switch (order) {
+      case RecipeOrder.date:
+        return "date";
+      case RecipeOrder.relevance:
+        return "relevance";
     }
     return "";
   }
@@ -74,6 +71,4 @@ class WPRestRecipeRepository
     // TODO: implement setUserVote
     throw UnimplementedError();
   }
-
-
 }

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/models/models.dart';
@@ -7,15 +6,14 @@ import '../common.dart';
 import '../user_repository.dart';
 
 class WpRestUserRepository implements UserRepository {
-
   final HttpInterface httpClient;
   final String urlBase;
 
   WpRestUserRepository(this.httpClient, this.urlBase);
 
   @override
-  Future<AuthUser> authenticateWithCredentials(String username,
-      String password) async {
+  Future<AuthUser> authenticateWithCredentials(
+      String username, String password) async {
     /// Obtains token from WP JWT authentication plugin endpoint
     final jwtResponse = await httpClient.doPost(
       urlBase,
@@ -38,27 +36,23 @@ class WpRestUserRepository implements UserRepository {
 
     /// Obtain user information using the newly obtained token
     final userResponse = await httpClient.doGet(
-        urlBase,
-        '/wp-json/wp/v2/users/me',
-        headers: {
-          'Authorization' : 'Bearer $token'
-        }
-    );
+        urlBase, '/wp-json/wp/v2/users/me',
+        headers: {'Authorization': 'Bearer $token'});
 
     /// Checks and formats eventual errors
     if (userResponse.statusCode < 200 && userResponse.statusCode >= 300) {
-      throw new UserAuthenticationError(json.decode(userResponse.body)['message']);
+      throw new UserAuthenticationError(
+          json.decode(userResponse.body)['message']);
     }
 
     /// Create User object
     var userDecoded = json.decode(userResponse.body);
     return AuthUser(
         id: int.parse(userDecoded['id'].toString()),
-        name : userDecoded['name'].toString(),
-        email : email,
-        featuredImageUrl : userDecoded['avatar_urls']['48'].toString(),
-        authToken : token
-    );
+        name: userDecoded['name'].toString(),
+        email: email,
+        featuredImageUrl: userDecoded['avatar_urls']['48'].toString(),
+        authToken: token);
   }
 
   @override
@@ -72,7 +66,4 @@ class WpRestUserRepository implements UserRepository {
     // TODO: implement authenticateWithGoogle
     throw UnimplementedError();
   }
-
-
-
 }

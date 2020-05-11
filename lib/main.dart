@@ -8,7 +8,8 @@ import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
     GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
       runApp(VivaLaFocacciaApp());
     });
@@ -16,7 +17,6 @@ void main() async {
 }
 
 class VivaLaFocacciaApp extends StatefulWidget {
-
   @override
   _VivaLaFocacciaAppState createState() => _VivaLaFocacciaAppState();
 }
@@ -35,16 +35,16 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light().copyWith(
-        //scaffoldBackgroundColor: HexColor("#fefcf8"),
-        primaryColor: Colors.orange,
-        // accentColor: HexColor("#FFB500")
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Provider<Localization>(
-        create: (BuildContext context) => Localization((s) => GlobalConfiguration().get(s)),
-        child: HomePage(),
-      )
-    );
+        theme: ThemeData.light().copyWith(
+          //scaffoldBackgroundColor: HexColor("#fefcf8"),
+          primaryColor: Colors.orange,
+          // accentColor: HexColor("#FFB500")
+        ),
+        debugShowCheckedModeBanner: false,
+        home: Provider<Localization>(
+          create: (BuildContext context) =>
+              Localization((s) => GlobalConfiguration().get(s)),
+          child: HomePage(),
+        ));
   }
 }

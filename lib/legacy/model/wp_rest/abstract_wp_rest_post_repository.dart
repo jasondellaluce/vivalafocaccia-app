@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -11,9 +10,8 @@ import 'package:app/legacy/common/errors.dart';
 /// standard Post REST Controller. This can serve as simple base
 /// for simple posts, but can be adapted for custom post types
 /// (which should extend the Post legacy.model class for coherency).
-abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderType>
-    implements PostTypeRepository<PostType, OrderType> {
-
+abstract class AbstractWpRestPostTypeRepository<PostType extends Post,
+    OrderType> implements PostTypeRepository<PostType, OrderType> {
   final String websiteUrl;
   final restRouteBase = "/wp-json/wp/v2";
   final httpClient = http.Client();
@@ -31,7 +29,7 @@ abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderTyp
     return result;
   }
 
-  List<PostType> _parseHttpListResponse(response){
+  List<PostType> _parseHttpListResponse(response) {
     if (response.statusCode == 200) {
       return parseJsonList(response.body);
     }
@@ -39,11 +37,13 @@ abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderTyp
   }
 
   List<Future<PostType>> doListHttpRequest(uri, count) {
-    final response = httpClient.get(uri)
-        .then((value) => _parseHttpListResponse(value));
-    return List.generate(count, (index) => response
-        .then((value) => value[index])
-        .catchError((err) => throw DataRetrieveError(err.toString())));
+    final response =
+        httpClient.get(uri).then((value) => _parseHttpListResponse(value));
+    return List.generate(
+        count,
+        (index) => response
+            .then((value) => value[index])
+            .catchError((err) => throw DataRetrieveError(err.toString())));
   }
 
   Future<PostType> doSingleHttpRequest(uri) async {
@@ -57,25 +57,23 @@ abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderTyp
 
   @override
   Future<PostType> getFromCode({String code}) async {
-    Map<String, String> query = {
-      'slug' : code
-    };
+    Map<String, String> query = {'slug': code};
     var uri = Uri.https(websiteUrl, restRouteBase + "/" + wpRestRoute, query);
     return doSingleHttpRequest(uri);
   }
 
   @override
   Future<PostType> getFromId({int id}) async {
-    var uri = Uri.https(websiteUrl, restRouteBase + "/"
-        + wpRestRoute + "/" + id.toString());
+    var uri = Uri.https(
+        websiteUrl, restRouteBase + "/" + wpRestRoute + "/" + id.toString());
     return doSingleHttpRequest(uri);
   }
 
   @override
-  List<Future<PostType>> getMany({offset:0, count:10, order}) {
+  List<Future<PostType>> getMany({offset: 0, count: 10, order}) {
     Map<String, String> query = {
-      'offset' : offset.toString(),
-      'per_page' : count.toString(),
+      'offset': offset.toString(),
+      'per_page': count.toString(),
     };
     if (order != null) query['orderby'] = formatOrderType(order);
 
@@ -84,12 +82,12 @@ abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderTyp
   }
 
   @override
-  List<Future<PostType>> getManyFromCategory({Category category,
-      offset:0, count:10, order}) {
+  List<Future<PostType>> getManyFromCategory(
+      {Category category, offset: 0, count: 10, order}) {
     Map<String, String> query = {
-      'offset' : offset.toString(),
-      'per_page' : count.toString(),
-      'categories' : category.id.toString(),
+      'offset': offset.toString(),
+      'per_page': count.toString(),
+      'categories': category.id.toString(),
     };
     if (order != null) query['orderby'] = formatOrderType(order);
     return doListHttpRequest(
@@ -97,16 +95,15 @@ abstract class AbstractWpRestPostTypeRepository <PostType extends Post, OrderTyp
   }
 
   @override
-  List<Future<PostType>> getManyFromKeyWords({String keyWords,
-      offset:0, count:10, order}) {
+  List<Future<PostType>> getManyFromKeyWords(
+      {String keyWords, offset: 0, count: 10, order}) {
     Map<String, String> query = {
-      'offset' : offset.toString(),
-      'per_page' : count.toString(),
-      'search' : keyWords,
+      'offset': offset.toString(),
+      'per_page': count.toString(),
+      'search': keyWords,
     };
     if (order != null) query['orderby'] = formatOrderType(order);
     return doListHttpRequest(
         Uri.https(websiteUrl, restRouteBase + "/" + wpRestRoute, query), count);
   }
-
 }

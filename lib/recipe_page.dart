@@ -1,4 +1,3 @@
-
 import 'package:app/models/models.dart';
 import 'package:app/repositories/recipe_repository.dart';
 import 'package:app/repositories/repository_factory.dart';
@@ -13,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'core/localization.dart';
 
 class RecipePage extends StatelessWidget {
-
   final defaultPadding = EdgeInsets.symmetric(vertical: 20, horizontal: 25);
 
   @override
@@ -25,13 +23,11 @@ class RecipePage extends StatelessWidget {
     ///TODO: Inject repository factory through provider
     return FutureBuilder(
       future: RepositoryFactory().forRecipe().read(RecipeSingleReadRequest(
-          code: "video-ricetta-della-focaccia-genovese")
-      ),
+          code: "video-ricetta-della-focaccia-genovese")),
       builder: (context, snapshot) {
-        if(snapshot.hasError)
+        if (snapshot.hasError)
           return Center(child: Text(snapshot.error.toString()));
-        if(!snapshot.hasData)
-          return CircularProgressIndicator();
+        if (!snapshot.hasData) return CircularProgressIndicator();
         return Provider<Recipe>(
             create: (context) => snapshot.data,
             child: Scaffold(
@@ -44,44 +40,43 @@ class RecipePage extends StatelessWidget {
                       scaleFactor: -1.5,
                       duration: Duration(milliseconds: 100),
                       onPressed: _onBackButtonPressed,
-                      child: Icon(Icons.arrow_back, color: Theme.of(context).textTheme.bodyText1.color)
-                  ),
+                      child: Icon(Icons.arrow_back,
+                          color: Theme.of(context).textTheme.bodyText1.color)),
                   actions: <Widget>[
                     BouncingWidget(
                         scaleFactor: -1.5,
                         duration: Duration(milliseconds: 100),
                         onPressed: _onCommentButtonPressed,
-                        child: Icon(Icons.insert_comment, color: Theme.of(context).textTheme.bodyText1.color)
-                    ),
-                    SizedBox(width:20),
+                        child: Icon(Icons.insert_comment,
+                            color:
+                                Theme.of(context).textTheme.bodyText1.color)),
+                    SizedBox(width: 20),
                     BouncingWidget(
                         scaleFactor: -1.5,
                         duration: Duration(milliseconds: 100),
                         onPressed: _onShareButtonPressed,
-                        child: Icon(Icons.share, color: Theme.of(context).textTheme.bodyText1.color)
-                    ),
-                    SizedBox(width:20),
+                        child: Icon(Icons.share,
+                            color:
+                                Theme.of(context).textTheme.bodyText1.color)),
+                    SizedBox(width: 20),
                   ],
                 ),
                 body: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Container(
                       child: Column(
-                        children: <Widget>[
-                          _HeaderImageWidget(),
-                          _HeaderDetailsWidget(padding: defaultPadding),
-                          _RecipeDetailsListWidget(padding: defaultPadding),
-                          _RecipeDescriptionWidget(padding: defaultPadding),
-                          _IngredientDetailsWidget(padding: defaultPadding),
-                          _DescriptionWidget(padding: defaultPadding),
-                          // _RecipeTimingPreviewWidget(padding: defaultPadding),
-                          _StepListWidget(padding: defaultPadding)
-                        ],
-                      )
-                  ),
-                )
-            )
-        );
+                    children: <Widget>[
+                      _HeaderImageWidget(),
+                      _HeaderDetailsWidget(padding: defaultPadding),
+                      _RecipeDetailsListWidget(padding: defaultPadding),
+                      _RecipeDescriptionWidget(padding: defaultPadding),
+                      _IngredientDetailsWidget(padding: defaultPadding),
+                      _DescriptionWidget(padding: defaultPadding),
+                      // _RecipeTimingPreviewWidget(padding: defaultPadding),
+                      _StepListWidget(padding: defaultPadding)
+                    ],
+                  )),
+                )));
       },
     );
   }
@@ -97,16 +92,15 @@ class RecipePage extends StatelessWidget {
   void _onShareButtonPressed() {
     // TODO: Open share dialog
   }
-
 }
 
-class _HeaderImageWidget extends StatelessWidget{
+class _HeaderImageWidget extends StatelessWidget {
   final imageHeightRatio = 0.45;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width : double.infinity,
+      width: double.infinity,
       child: Stack(
         children: <Widget>[
           Column(
@@ -121,10 +115,12 @@ class _HeaderImageWidget extends StatelessWidget{
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 20, bottom: 0, left: 20, right: 20),
+                padding:
+                    EdgeInsets.only(top: 20, bottom: 0, left: 20, right: 20),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
-                ),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
                 child: Center(
                   child: Text(
                     context.watch<Recipe>().title,
@@ -138,7 +134,6 @@ class _HeaderImageWidget extends StatelessWidget{
               )
             ],
           ),
-
           Positioned(
             top: MediaQuery.of(context).size.height * imageHeightRatio / 2 - 25,
             left: MediaQuery.of(context).size.width / 2 - 25,
@@ -149,16 +144,13 @@ class _HeaderImageWidget extends StatelessWidget{
               child: Icon(Icons.play_arrow, size: 30),
             ),
           )
-
         ],
       ),
     );
   }
-
 }
 
-class _HeaderDetailsWidget extends StatelessWidget{
-
+class _HeaderDetailsWidget extends StatelessWidget {
   final EdgeInsets padding;
 
   const _HeaderDetailsWidget({Key key, this.padding}) : super(key: key);
@@ -183,14 +175,16 @@ class _HeaderDetailsWidget extends StatelessWidget{
                     BasicButton(
                       onTap: _onVoteButtonPressed,
                       padding: EdgeInsets.all(0),
-                      child: Icon(CupertinoIcons.heart, color: Colors.red, size : 25.0),
+                      child: Icon(CupertinoIcons.heart,
+                          color: Colors.red, size: 25.0),
                       color: Colors.transparent,
                       hasShadow: false,
                       animationScale: -2,
                     ),
                     Container(height: 5),
                     Text(
-                      context.watch<Localization>()["recipePageVoteCountIcon"]
+                      context
+                          .watch<Localization>()["recipePageVoteCountIcon"]
                           .replaceFirst("COUNT", recipe.votesCount.toString()),
                     ),
                   ],
@@ -206,25 +200,29 @@ class _HeaderDetailsWidget extends StatelessWidget{
                       duration: Duration(milliseconds: 100),
                       child: Row(
                           children: List.generate(5, (index) {
-                            if(index < recipe.averageRating.ceil())
-                              return Icon(Icons.star, color: Theme.of(context).accentColor);
-                            return Icon(Icons.star_border, color: Theme.of(context).accentColor);
-                          })
-                      ),
+                        if (index < recipe.averageRating.ceil())
+                          return Icon(Icons.star,
+                              color: Theme.of(context).accentColor);
+                        return Icon(Icons.star_border,
+                            color: Theme.of(context).accentColor);
+                      })),
                     ),
                     Container(height: 5),
                     Text(
                       recipe.ratingsCount == 0
-                          ? context.watch<Localization>()["recipePageAskForReviewIcon"]
-                          : context.watch<Localization>()["recipePageReviewCountIcon"]
-                          .replaceFirst("COUNT", recipe.ratingsCount.toString()),
+                          ? context.watch<Localization>()[
+                              "recipePageAskForReviewIcon"]
+                          : context
+                              .watch<Localization>()[
+                                  "recipePageReviewCountIcon"]
+                              .replaceFirst(
+                                  "COUNT", recipe.ratingsCount.toString()),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -237,7 +235,6 @@ class _HeaderDetailsWidget extends StatelessWidget{
   void _onReviewButtonPressed() {
     // TODO: Open review list page
   }
-
 }
 
 class _RecipeDescriptionWidget extends StatelessWidget {
@@ -247,18 +244,15 @@ class _RecipeDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(context.watch<Recipe>().description == null
-        || context.watch<Recipe>().description.length == 0)
-      return Container();
+    if (context.watch<Recipe>().description == null ||
+        context.watch<Recipe>().description.length == 0) return Container();
     return Container(
       padding: padding,
-        child: Text(
-            context.watch<Recipe>().description,
-            style: TextStyle(
-              height: 1.5
-          ),
-        ),
-      );
+      child: Text(
+        context.watch<Recipe>().description,
+        style: TextStyle(height: 1.5),
+      ),
+    );
   }
 }
 
@@ -270,78 +264,88 @@ class _RecipeDetailsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recipe = context.watch<Recipe>();
-    if(context.watch<Recipe>().servesCount == 0
-        && context.watch<Recipe>().cookingTime?.length == 0
-        && context.watch<Recipe>().cookingTemperature?.length == 0
-        && context.watch<Recipe>().difficulty?.length == 0)
-      return Container();
+    if (context.watch<Recipe>().servesCount == 0 &&
+        context.watch<Recipe>().cookingTime?.length == 0 &&
+        context.watch<Recipe>().cookingTemperature?.length == 0 &&
+        context.watch<Recipe>().difficulty?.length == 0) return Container();
     return Container(
-        padding: padding,
-        child: Wrap(
-          children: <Widget>[
-            /// Serves count
-            context.watch<Recipe>().servesCount == 0 ? Container() :
-            Column(
-              children: <Widget>[
-                Row(
+      padding: padding,
+      child: Wrap(
+        children: <Widget>[
+          /// Serves count
+          context.watch<Recipe>().servesCount == 0
+              ? Container()
+              : Column(
                   children: <Widget>[
-                    Icon(Icons.people),
-                    SizedBox(width: 10),
-                    Text(context.watch<Localization>()["recipePageServingCount"]
-                        .replaceFirst("COUNT", recipe.ratingsCount.toString()))
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.people),
+                        SizedBox(width: 10),
+                        Text(context
+                            .watch<Localization>()["recipePageServingCount"]
+                            .replaceFirst(
+                                "COUNT", recipe.ratingsCount.toString()))
+                      ],
+                    ),
+                    SizedBox(height: 10)
                   ],
                 ),
-                SizedBox(height: 10)
-              ],
-            ),
 
-            /// Cooking time
-            context.watch<Recipe>().cookingTime.length == 0 ? Container() :
-            Column(
-              children: <Widget>[
-                Row(
+          /// Cooking time
+          context.watch<Recipe>().cookingTime.length == 0
+              ? Container()
+              : Column(
                   children: <Widget>[
-                    Icon(Icons.av_timer),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.av_timer),
+                        SizedBox(width: 10),
+                        Text(context
+                            .watch<Localization>()["recipePageCookingTime"]
+                            .replaceFirst(
+                                "VALUE", recipe.ratingsCount.toString()))
+                      ],
+                    ),
+                    SizedBox(height: 10)
+                  ],
+                ),
+
+          /// Cooking temperature
+          context.watch<Recipe>().cookingTemperature.length == 0
+              ? Container()
+              : Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.wb_sunny),
+                        SizedBox(width: 10),
+                        Text(context
+                            .watch<Localization>()[
+                                "recipePageCookingTemperature"]
+                            .replaceFirst(
+                                "VALUE", recipe.ratingsCount.toString()))
+                      ],
+                    ),
+                    SizedBox(height: 10)
+                  ],
+                ),
+
+          /// Difficulty
+          context.watch<Recipe>().difficulty.length == 0
+              ? Container()
+              : Row(
+                  children: <Widget>[
+                    Icon(Icons.fastfood),
                     SizedBox(width: 10),
-                    Text(context.watch<Localization>()["recipePageCookingTime"]
+                    Text(context
+                        .watch<Localization>()["recipePageDifficulty"]
                         .replaceFirst("VALUE", recipe.ratingsCount.toString()))
                   ],
                 ),
-                SizedBox(height: 10)
-              ],
-            ),
-
-            /// Cooking temperature
-            context.watch<Recipe>().cookingTemperature.length == 0 ? Container() :
-            Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.wb_sunny),
-                    SizedBox(width: 10),
-                    Text(context.watch<Localization>()["recipePageCookingTemperature"]
-                        .replaceFirst("VALUE", recipe.ratingsCount.toString()))
-                  ],
-                ),
-                SizedBox(height: 10)
-              ],
-            ),
-
-            /// Difficulty
-            context.watch<Recipe>().difficulty.length == 0 ? Container() :
-            Row(
-              children: <Widget>[
-                Icon(Icons.fastfood),
-                SizedBox(width: 10),
-                Text(context.watch<Localization>()["recipePageDifficulty"]
-                    .replaceFirst("VALUE", recipe.ratingsCount.toString()))
-              ],
-            ),
-          ],
-        ),
-      );
+        ],
+      ),
+    );
   }
-
 }
 
 class _IngredientDetailsWidget extends StatelessWidget {
@@ -352,41 +356,38 @@ class _IngredientDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Recipe recipe = context.watch<Recipe>();
-    if(recipe.ingredientList.length == 0)
-      return Container();
-    return  /// Ingredients
-      Container(
-        width: double.infinity,
-        padding: padding,
-        color: Theme.of(context).primaryColor,
-        child: Wrap(
-          runSpacing: 10,
-          children: <Widget> [
-            Row(
-              children: <Widget>[
-                Icon(Icons.assignment),
-                SizedBox(width: 8),
-                Text(
-                    context.watch<Localization>()["recipePageIngredientsTitle"],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold
-                    )
-                )
-              ],
-            )
-          ] + recipe.ingredientList.map((ingredient) {
-            if(ingredient.isTitle)
+    if (recipe.ingredientList.length == 0) return Container();
+    return
+
+        /// Ingredients
+        Container(
+      width: double.infinity,
+      padding: padding,
+      color: Theme.of(context).primaryColor,
+      child: Wrap(
+        runSpacing: 10,
+        children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(Icons.assignment),
+                  SizedBox(width: 8),
+                  Text(
+                      context
+                          .watch<Localization>()["recipePageIngredientsTitle"],
+                      style: TextStyle(fontWeight: FontWeight.bold))
+                ],
+              )
+            ] +
+            recipe.ingredientList.map((ingredient) {
+              if (ingredient.isTitle)
+                return _SingleIngredient(
+                    name: ingredient.name, showAsLabel: true);
               return _SingleIngredient(
-                  name: ingredient.name,
-                  showAsLabel: true
-              );
-            return _SingleIngredient(
-                name: ingredient.quantity.toString() + " " + ingredient.name,
-                showAsLabel: false
-            );
-          }).toList(),
-        ),
-      );
+                  name: ingredient.quantity.toString() + " " + ingredient.name,
+                  showAsLabel: false);
+            }).toList(),
+      ),
+    );
   }
 }
 
@@ -394,11 +395,11 @@ class _SingleIngredient extends StatefulWidget {
   final bool showAsLabel;
   final String name;
 
-  const _SingleIngredient({Key key, this.showAsLabel = false, this.name}) : super(key: key);
+  const _SingleIngredient({Key key, this.showAsLabel = false, this.name})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SingleIngredientState();
-
 }
 
 class _SingleIngredientState extends State<_SingleIngredient> {
@@ -409,14 +410,13 @@ class _SingleIngredientState extends State<_SingleIngredient> {
     selected = false;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    if(widget.showAsLabel) {
+    if (widget.showAsLabel) {
       return Text(
         widget.name,
-        style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold),
       );
     }
     return GestureDetector(
@@ -426,15 +426,14 @@ class _SingleIngredientState extends State<_SingleIngredient> {
       child: Row(
         children: <Widget>[
           selected
-            ? Icon(Icons.check_circle)
-            : Icon(Icons.radio_button_unchecked),
+              ? Icon(Icons.check_circle)
+              : Icon(Icons.radio_button_unchecked),
           SizedBox(width: 10),
           Text(widget.name)
         ],
       ),
     );
   }
-
 }
 
 class _DescriptionWidget extends StatefulWidget {
@@ -446,7 +445,7 @@ class _DescriptionWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _DescriptionWidgetState();
 }
 
-class _DescriptionWidgetState extends State<_DescriptionWidget>{
+class _DescriptionWidgetState extends State<_DescriptionWidget> {
   bool expanded;
 
   @override
@@ -467,23 +466,22 @@ class _DescriptionWidgetState extends State<_DescriptionWidget>{
             children: <Widget>[
               Icon(Icons.format_indent_increase),
               SizedBox(width: 8),
-              Text(
-                  context.watch<Localization>()["recipePageDescriptionTitle"],
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold
-                  )
-              )
+              Text(context.watch<Localization>()["recipePageDescriptionTitle"],
+                  style: TextStyle(fontWeight: FontWeight.bold))
             ],
           ),
           SizedBox(height: 10),
           Container(
             child: Html(
-              data: expanded ? recipe.content : recipe.content.substring(0, 250) + "...",
+              data: expanded
+                  ? recipe.content
+                  : recipe.content.substring(0, 250) + "...",
               onLinkTap: _onUrlLinkPressed,
-              defaultTextStyle: TextStyle(
-                  height: 1.5
-              ),
-              linkStyle: Theme.of(context).textTheme.bodyText1.copyWith(color: Theme.of(context).accentColor),
+              defaultTextStyle: TextStyle(height: 1.5),
+              linkStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Theme.of(context).accentColor),
               useRichText: true,
             ),
           ),
@@ -494,20 +492,15 @@ class _DescriptionWidgetState extends State<_DescriptionWidget>{
                     ? context.watch<Localization>()["readLessLabel"]
                     : context.watch<Localization>()["readMoreLabel"],
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor
-                ),
+                style: TextStyle(color: Theme.of(context).primaryColor),
               ),
-              onPressed: () => setState(() => expanded = !expanded)
-          )
+              onPressed: () => setState(() => expanded = !expanded))
         ],
       ),
     );
   }
 
-  void _onUrlLinkPressed(String url) {
-
-  }
+  void _onUrlLinkPressed(String url) {}
 }
 
 class _StepListWidget extends StatelessWidget {
@@ -520,21 +513,20 @@ class _StepListWidget extends StatelessWidget {
     return Container(
       padding: padding,
       child: Column(
-        children: <Widget>[
-          BasicButton(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-            child: Text(
-              context.watch<Localization>()["recipePageStepByStepLabel"],
-              style: TextStyle(
-                color: Theme.of(context).primaryIconTheme.color
-              ),
-            ),
-          ),
-          SizedBox(height: 20)
-        ] + List.generate(context.watch<Recipe>().stepList.length, (index) {
-          return _SingleStepWidget(index: index);
-        })
-      ),
+          children: <Widget>[
+                BasicButton(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  child: Text(
+                    context.watch<Localization>()["recipePageStepByStepLabel"],
+                    style: TextStyle(
+                        color: Theme.of(context).primaryIconTheme.color),
+                  ),
+                ),
+                SizedBox(height: 20)
+              ] +
+              List.generate(context.watch<Recipe>().stepList.length, (index) {
+                return _SingleStepWidget(index: index);
+              })),
     );
   }
 }
@@ -546,10 +538,9 @@ class _SingleStepWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _SingleStepWidgetState();
-
 }
 
-class _SingleStepWidgetState extends State<_SingleStepWidget>{
+class _SingleStepWidgetState extends State<_SingleStepWidget> {
   bool selected;
   int selectedImageIndex;
 
@@ -559,6 +550,7 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
     selectedImageIndex = 0;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var stepList = context.watch<Recipe>().stepList;
@@ -573,7 +565,9 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
                 SizedBox(height: 5),
                 GestureDetector(
                   onTap: () => setState(() => selected = !selected),
-                  child: Icon(selected ? Icons.check_box : Icons.check_box_outline_blank),
+                  child: Icon(selected
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank),
                 )
               ],
             ),
@@ -583,23 +577,27 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
             Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                stepList[widget.index].title?.length == 0 ? Container() :
-                Column(
-                  children: <Widget>[
-                    Text(
-                      stepList[widget.index].title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                stepList[widget.index].title?.length == 0
+                    ? Container()
+                    : Column(
+                        children: <Widget>[
+                          Text(
+                            stepList[widget.index].title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 15),
-                  ],
-                ),
                 (stepList[widget.index].featuredImageUrlList.length == 0
                     ? Container()
                     : BouncingWidget(
                         onPressed: () => setState(() {
-                          selectedImageIndex = (selectedImageIndex + 1) % stepList[widget.index].featuredImageUrlList.length;
+                          selectedImageIndex = (selectedImageIndex + 1) %
+                              stepList[widget.index]
+                                  .featuredImageUrlList
+                                  .length;
                         }),
                         scaleFactor: -2,
                         duration: Duration(milliseconds: 100),
@@ -610,21 +608,25 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
                             child: Stack(
                               children: <Widget>[
                                 Container(
-                                    child: Image.network(stepList[widget.index].featuredImageUrlList[selectedImageIndex])
-                                ),
+                                    child: Image.network(stepList[widget.index]
+                                            .featuredImageUrlList[
+                                        selectedImageIndex])),
                                 stepList.length < 2
-                                  ? Container()
-                                  : Positioned(
-                                      bottom: 10,
-                                      right: 10,
-                                      child: Icon(Icons.layers, color : Theme.of(context).primaryIconTheme.color, size : 25),
-                                    )
+                                    ? Container()
+                                    : Positioned(
+                                        bottom: 10,
+                                        right: 10,
+                                        child: Icon(Icons.layers,
+                                            color: Theme.of(context)
+                                                .primaryIconTheme
+                                                .color,
+                                            size: 25),
+                                      )
                               ],
                             ),
                           ),
                         ),
-                      )
-                ),
+                      )),
                 SizedBox(height: 15),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
@@ -633,7 +635,8 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
                     defaultTextStyle: TextStyle(
                       height: 1.5,
                     ),
-                    showImages: stepList[widget.index].featuredImageUrlList.length == 0,
+                    showImages:
+                        stepList[widget.index].featuredImageUrlList.length == 0,
                   ),
                 )
               ],
@@ -645,18 +648,15 @@ class _SingleStepWidgetState extends State<_SingleStepWidget>{
       ],
     );
   }
-
 }
 
 class _RecipeTimingPreviewWidget extends StatefulWidget {
-
   final EdgeInsets padding;
 
   const _RecipeTimingPreviewWidget({Key key, this.padding}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _RecipeTimingPreviewState();
-
 }
 
 class _RecipeTimingPreviewState extends State<_RecipeTimingPreviewWidget> {
@@ -671,39 +671,34 @@ class _RecipeTimingPreviewState extends State<_RecipeTimingPreviewWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: Implement this completely and use timepicker
+    // ToDO: Export external widget
     return Container(
-      padding: widget.padding,
+        padding: widget.padding,
         color: Theme.of(context).primaryColor,
-      child: Wrap(
-        runSpacing: 10,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Icon(Icons.av_timer),
-              SizedBox(width: 8),
-              Text(
-                  context.watch<Localization>()["recipeTimingCalculatorTitle"],
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold
-                  )
-              )
-            ],
-          ),
-
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  context.watch<Localization>()["recipeTimingCalculatorStartByLabel"],
-
-                ],
-              )
-            ],
-          )
-
-        ],
-      )
-    );
+        child: Wrap(
+          runSpacing: 10,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Icon(Icons.av_timer),
+                SizedBox(width: 8),
+                Text(
+                    context
+                        .watch<Localization>()["recipeTimingCalculatorTitle"],
+                    style: TextStyle(fontWeight: FontWeight.bold))
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    context.watch<Localization>()[
+                        "recipeTimingCalculatorStartByLabel"],
+                  ],
+                )
+              ],
+            )
+          ],
+        ));
   }
-
 }

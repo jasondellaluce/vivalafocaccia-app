@@ -1,8 +1,6 @@
 /// Enumerates the basic order in which results of a read request can
 /// be disposed, which can be either in ascending or descending order.
-enum ReadOrderType {
-  asc, desc
-}
+enum ReadOrderType { asc, desc }
 
 class RepositoryInvalidRequestError extends Error {
   final String message;
@@ -57,5 +55,4 @@ class UserAuthenticationError extends Error {
   String toString() {
     return message;
   }
-
 }

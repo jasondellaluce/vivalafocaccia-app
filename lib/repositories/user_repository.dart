@@ -1,4 +1,3 @@
-
 import 'package:app/models/models.dart';
 
 /// Interface that represents a data repository for classes of the legacy.model.
@@ -9,12 +8,11 @@ import 'package:app/models/models.dart';
 /// and throw error that can be caught with proper handlers in the returned
 /// futures.
 abstract class UserRepository {
-
   /// Perform user authentication using regular username-password credentials
   /// pair. The returned user object will contain access info that will allow
   /// authenticated access to other functionality of the system.
-  Future<AuthUser> authenticateWithCredentials(String username,
-      String password);
+  Future<AuthUser> authenticateWithCredentials(
+      String username, String password);
 
   /// Perform user authentication using Google's authentication token.
   /// The returned user object will contain access info that will allow
@@ -25,8 +23,4 @@ abstract class UserRepository {
   /// The returned user object will contain access info that will allow
   /// authenticated access to other functionality of the system.
   Future<AuthUser> authenticateWithFacebook(String facebookToken);
-
 }
-
-
-

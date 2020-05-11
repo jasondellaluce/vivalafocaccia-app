@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatefulWidget {
@@ -8,10 +7,9 @@ class SearchBarWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _SearchBarWidgetState();
-
 }
 
-class _SearchBarWidgetState extends State<SearchBarWidget>{
+class _SearchBarWidgetState extends State<SearchBarWidget> {
   var _textController;
 
   @override
@@ -39,9 +37,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget>{
         autocorrect: false,
         // controller: ,
         decoration: InputDecoration(
-            prefixIcon: Icon(
-                Icons.search
-            ),
+            prefixIcon: Icon(Icons.search),
             contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(100.0),
@@ -50,10 +46,8 @@ class _SearchBarWidgetState extends State<SearchBarWidget>{
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(100.0),
               borderSide: BorderSide.none,
-            )
-        ),
+            )),
       ),
     );
   }
-
 }

@@ -1,4 +1,3 @@
-
 import 'package:app/legacy/model/models.dart';
 import 'package:app/legacy/model/wp_rest/wp_rest_comment_repository.dart';
 import 'package:app/legacy/model/wp_rest/wp_rest_post_repository.dart';
@@ -17,7 +16,8 @@ class Repositories {
   var _commentRepository;
 
   Repositories._privateConstructor() {
-    _websiteUrl = GlobalConfiguration().get("serverUrl") ?? "vivalafocaccia.com";
+    _websiteUrl =
+        GlobalConfiguration().get("serverUrl") ?? "vivalafocaccia.com";
     _categoryRepository = new LocalCategoryRepository();
     _postRepository = new WPRestPostRepository(_websiteUrl);
     _recipeRepository = new WPRestRecipeRepository(_websiteUrl);
@@ -48,5 +48,4 @@ class Repositories {
   UserRepository ofUser() {
     return _userRepository;
   }
-
 }

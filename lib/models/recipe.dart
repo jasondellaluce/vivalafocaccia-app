@@ -1,4 +1,3 @@
-
 import 'post.dart';
 
 class RecipeIngredient {
@@ -7,12 +6,7 @@ class RecipeIngredient {
   final String note;
   final String quantity;
 
-  RecipeIngredient({
-    this.isTitle,
-    this.name,
-    this.note,
-    this.quantity
-  });
+  RecipeIngredient({this.isTitle, this.name, this.note, this.quantity});
 }
 
 class RecipeStep {
@@ -21,12 +15,8 @@ class RecipeStep {
   final String description;
   final List<String> featuredImageUrlList;
 
-  RecipeStep({
-    this.title,
-    this.duration,
-    this.description,
-    this.featuredImageUrlList
-  });
+  RecipeStep(
+      {this.title, this.duration, this.description, this.featuredImageUrlList});
 }
 
 class Recipe extends Post {
@@ -43,40 +33,40 @@ class Recipe extends Post {
   final List<RecipeStep> stepList;
   final List<RecipeIngredient> ingredientList;
 
-  Recipe({
-    id,
-    authorId,
-    code,
-    title,
-    content,
-    authorName,
-    pageUrl,
-    featuredImageUrl,
-    featuredVideoUrl,
-    creationDateTime,
-    lastUpdateDateTime,
-    this.servesCount,
-    this.votesCount,
-    this.ratingsCount,
-    this.averageRating,
-    this.totalMixtureWeight,
-    this.totalPanSurface,
-    this.cookingTime,
-    this.cookingTemperature,
-    this.difficulty,
-    this.description,
-    this.ingredientList,
-    this.stepList
-  }) : super(
-      id: id,
-      authorId : authorId,
-      code : code,
-      title: title,
-      content : content,
-      authorName : authorName,
-      pageUrl : pageUrl,
-      featuredImageUrl : featuredImageUrl,
-      creationDateTime : creationDateTime,
-      lastUpdateDateTime : lastUpdateDateTime,
-  );
+  Recipe(
+      {id,
+      authorId,
+      code,
+      title,
+      content,
+      authorName,
+      pageUrl,
+      featuredImageUrl,
+      featuredVideoUrl,
+      creationDateTime,
+      lastUpdateDateTime,
+      this.servesCount,
+      this.votesCount,
+      this.ratingsCount,
+      this.averageRating,
+      this.totalMixtureWeight,
+      this.totalPanSurface,
+      this.cookingTime,
+      this.cookingTemperature,
+      this.difficulty,
+      this.description,
+      this.ingredientList,
+      this.stepList})
+      : super(
+          id: id,
+          authorId: authorId,
+          code: code,
+          title: title,
+          content: content,
+          authorName: authorName,
+          pageUrl: pageUrl,
+          featuredImageUrl: featuredImageUrl,
+          creationDateTime: creationDateTime,
+          lastUpdateDateTime: lastUpdateDateTime,
+        );
 }

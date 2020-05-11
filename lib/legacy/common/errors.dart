@@ -1,4 +1,3 @@
-
 abstract class _BaseError {
   final String message;
 
@@ -8,17 +7,12 @@ abstract class _BaseError {
   String toString() {
     return message;
   }
-
 }
 
 class DataRetrieveError extends _BaseError {
-
   const DataRetrieveError(message) : super(message);
-
 }
 
-class AuthenticationError extends _BaseError  {
-
+class AuthenticationError extends _BaseError {
   const AuthenticationError(message) : super(message);
-
 }

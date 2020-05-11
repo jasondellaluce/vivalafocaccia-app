@@ -1,4 +1,3 @@
-
 import 'package:app/core/http_interface.dart';
 import 'package:app/core/third_party/network_http_interface.dart';
 import 'package:app/repositories/static_impl/static_category_repository.dart';
@@ -16,7 +15,6 @@ import 'recipe_repository.dart';
 import 'user_repository.dart';
 
 class RepositoryFactory {
-
   String urlEndpoint;
   HttpInterface _httpInterface;
 
@@ -48,5 +46,4 @@ class RepositoryFactory {
   VoteRepository forVote() {
     return WpRestVoteRepository(_httpInterface, urlEndpoint);
   }
-
 }

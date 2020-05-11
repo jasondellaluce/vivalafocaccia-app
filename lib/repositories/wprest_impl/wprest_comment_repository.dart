@@ -1,4 +1,3 @@
-
 import 'package:app/models/models.dart';
 import '../common.dart';
 import 'abstract_wprest_repository.dart';
@@ -18,39 +17,39 @@ class WpRestCommentRepository extends AbstractWpRestRepository<Comment>
       postId: int.parse(map['post'].toString()),
       authorId: int.parse(map['author'].toString()),
       parentId: int.parse(map['parent'].toString()),
-      authorName : map['author_name'].toString(),
+      authorName: map['author_name'].toString(),
       authorImageUrl: map['author_avatar_urls']['48'].toString(),
-      content : map['content']['rendered'].toString(),
-      creationDateTime : DateTime.parse(map['date_gmt']),
+      content: map['content']['rendered'].toString(),
+      creationDateTime: DateTime.parse(map['date_gmt']),
     );
   }
 
   Map<String, dynamic> _formatCommentForCreate(Comment data, User user) {
     return {
-      "post" : data?.postId.toString(),
-      "parent" : data?.parentId.toString(),
-      "author" : user?.id.toString(),
-      "author_email" : user.email,
-      "author_name" : user.name,
-      "content" : {
-        "rendered" : data.content
-      },
-      "date" : DateTime.now().toLocal().toIso8601String(),
-      "date_gmt" : DateTime.now().toUtc().toIso8601String()
+      "post": data?.postId.toString(),
+      "parent": data?.parentId.toString(),
+      "author": user?.id.toString(),
+      "author_email": user.email,
+      "author_name": user.name,
+      "content": {"rendered": data.content},
+      "date": DateTime.now().toLocal().toIso8601String(),
+      "date_gmt": DateTime.now().toUtc().toIso8601String()
       // TODO: add IP, user agent,
     };
   }
 
   String _formatCommentOrderBy(CommentOrderBy order) {
-    switch(order) {
-      case CommentOrderBy.date: return "date";
-      default: return null;
+    switch (order) {
+      case CommentOrderBy.date:
+        return "date";
+      default:
+        return null;
     }
   }
 
   @override
   Future<Comment> read(CommentSingleReadRequest request) {
-    if(request.id != null)
+    if (request.id != null)
       throw new RepositoryInvalidRequestError("Should specify id");
 
     String url = urlEndpoint + "/" + request.id.toString();
@@ -70,9 +69,10 @@ class WpRestCommentRepository extends AbstractWpRestRepository<Comment>
 
   @override
   Future<Comment> create(CommentCreateRequest request) {
-    return delegateCreate(urlBase, urlEndpoint,
+    return delegateCreate(
+        urlBase,
+        urlEndpoint,
         _formatCommentForCreate(request.prototype, request.authUser),
         formatAuthUserTokenToHeader(request.authUser));
   }
-
 }

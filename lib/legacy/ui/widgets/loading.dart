@@ -23,10 +23,7 @@ class BottomLoadingWidget extends StatelessWidget {
 class LoadingErrorWidget extends StatelessWidget {
   final String message;
 
-  const LoadingErrorWidget({
-    Key key,
-    @required this.message
-  }) : super(key: key);
+  const LoadingErrorWidget({Key key, @required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,6 @@ class LoadingErrorWidget extends StatelessWidget {
 
 // TODO: real placeholder
 class NothingToLoadWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Text('Got nothing to load bruh');

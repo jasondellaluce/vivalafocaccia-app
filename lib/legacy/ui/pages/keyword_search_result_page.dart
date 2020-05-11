@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:global_configuration/global_configuration.dart';
 
 class KeywordSearchResultPage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => KeywordSearchResultPageState();
 }
@@ -31,51 +30,44 @@ class KeywordSearchResultPageState extends State<KeywordSearchResultPage> {
     context.bloc<KeywordSearchResultBloc>().keyWords = args['title'] ?? "";
 
     return MultiBlocListener(
-      // Setup navigation event listeners
-      listeners: [
-        BlocListener(
-          bloc: context.bloc<KeywordSearchResultBloc>(),
-          listener: (context, state) {
-            if(state is RecipeSelectedState) {
-              print(state.recipe.code);
-            }
-          },
-        )
-      ],
-
-      child: Scaffold(
-          appBar: AppBar(
-            elevation: 0.0,
-            title: Text(
-              _title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            leading: Navigator.canPop(context) ?
-              IconButton(
-                icon: Icon(
-                    Icons.arrow_back_ios
-                ),
-                onPressed: () {
-                  if(Navigator.canPop(context))
-                    Navigator.pop(context);
-                },
-              ) : Container()
-          ),
-          body: Padding(
-              padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-              child: _ScrollingResults()
+        // Setup navigation event listeners
+        listeners: [
+          BlocListener(
+            bloc: context.bloc<KeywordSearchResultBloc>(),
+            listener: (context, state) {
+              if (state is RecipeSelectedState) {
+                print(state.recipe.code);
+              }
+            },
           )
-      )
-    );
+        ],
+        child: Scaffold(
+            appBar: AppBar(
+                elevation: 0.0,
+                title: Text(
+                  _title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                centerTitle: true,
+                automaticallyImplyLeading: false,
+                leading: Navigator.canPop(context)
+                    ? IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        onPressed: () {
+                          if (Navigator.canPop(context)) Navigator.pop(context);
+                        },
+                      )
+                    : Container()),
+            body: Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+                child: _ScrollingResults())));
   }
 }
 
 class _ScrollingResults extends StatefulWidget {
   @override
-  _ScrollingResultsState createState() =>  _ScrollingResultsState();
+  _ScrollingResultsState createState() => _ScrollingResultsState();
 }
 
 class _ScrollingResultsState extends State<_ScrollingResults> {
@@ -104,9 +96,7 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
         }
         if (state is ResultLoadedState) {
           if (state.results.isEmpty) {
-            return Center(
-              child: NothingToLoadWidget()
-            );
+            return Center(child: NothingToLoadWidget());
           }
           return ListView.builder(
             shrinkWrap: false,
@@ -114,32 +104,26 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
               return index >= state.results.length
                   ? BottomLoadingWidget()
                   : FutureBuilder<Recipe>(
-                future: state.results[index],
-                builder: (futureContext, futureData) {
-                    if(futureData.hasError) {
-                      if(index == state.previousLength)
-                        return LoadingErrorWidget(
-                            message: futureData.error.toString()
-                        );
-                    }
-                    else if(futureData.hasData) {
-                      return GestureDetector(
-                        onTap: () {
-                          context.bloc<KeywordSearchResultBloc>()
-                              .add(RecipeSelectedEvent(
-                                recipe: futureData.data,
-                                currentState: state
-                              ));
-                        },
-                        child: RecipeSnippetWidget(
-                            item: futureData.data
-                        ),
-                      );
-                    }
+                      future: state.results[index],
+                      builder: (futureContext, futureData) {
+                        if (futureData.hasError) {
+                          if (index == state.previousLength)
+                            return LoadingErrorWidget(
+                                message: futureData.error.toString());
+                        } else if (futureData.hasData) {
+                          return GestureDetector(
+                            onTap: () {
+                              context.bloc<KeywordSearchResultBloc>().add(
+                                  RecipeSelectedEvent(
+                                      recipe: futureData.data,
+                                      currentState: state));
+                            },
+                            child: RecipeSnippetWidget(item: futureData.data),
+                          );
+                        }
 
-                    return RecipeEmptySnippetWidget();
-                  }
-                );
+                        return RecipeEmptySnippetWidget();
+                      });
             },
             itemCount: state.hasReachedMax
                 ? state.results.length
@@ -166,4 +150,3 @@ class _ScrollingResultsState extends State<_ScrollingResults> {
     }
   }
 }
-

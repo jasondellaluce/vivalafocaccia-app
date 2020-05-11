@@ -1,4 +1,3 @@
-
 class Comment {
   final int id;
   final int postId;
@@ -9,14 +8,13 @@ class Comment {
   final String authorImageUrl;
   final DateTime creationDateTime;
 
-  Comment({
-    this.id,
-    this.postId,
-    this.authorId,
-    this.parentId,
-    this.authorName,
-    this.authorImageUrl,
-    this.content,
-    this.creationDateTime
-  });
+  Comment(
+      {this.id,
+      this.postId,
+      this.authorId,
+      this.parentId,
+      this.authorName,
+      this.authorImageUrl,
+      this.content,
+      this.creationDateTime});
 }

@@ -89,7 +89,6 @@ class HomePage extends StatelessWidget {
   void _onSearchSubmit(TextEditingController controller, String searchValue) {
     //TODO: Navigate to keyword search result and erase text in controller
   }
-
 }
 
 class _CategoryCarouselWidget extends StatelessWidget {
@@ -153,7 +152,4 @@ class _CategoryCarouselWidget extends StatelessWidget {
   void _onShowMorePressed() {
     // TODO: Navigate to category search results
   }
-  
 }
-
-

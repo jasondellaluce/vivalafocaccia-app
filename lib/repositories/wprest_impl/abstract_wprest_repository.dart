@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/core/core.dart';
@@ -8,7 +7,6 @@ import '../common.dart';
 /// Base abstract class for repositories implemented using WordPress REST API
 /// as a backend.
 abstract class AbstractWpRestRepository<T> {
-
   final HttpInterface httpClient;
 
   AbstractWpRestRepository(this.httpClient);
@@ -17,29 +15,22 @@ abstract class AbstractWpRestRepository<T> {
   /// type [T].
   T parseJsonMap(Map<String, dynamic> map);
 
-  Future<T> delegateRead(
-      String urlBase,
-      String urlEndpoint,
-      Map<String, String> query,
-      Map<String, String> headers) async {
+  Future<T> delegateRead(String urlBase, String urlEndpoint,
+      Map<String, String> query, Map<String, String> headers) async {
     query.removeWhere((key, value) => value == null);
     headers.removeWhere((key, value) => value == null);
     final response = await httpClient.doGet(urlBase, urlEndpoint,
         query: query, headers: headers);
     if (response.statusCode == 200) {
       var decoded = json.decode(response.body);
-      if(decoded is List)
-        return parseJsonList(decoded)[0];
+      if (decoded is List) return parseJsonList(decoded)[0];
       return parseJsonMap(json.decode(response.body));
     }
     throw RepositorySingleReadError(json.decode(response.body)['message']);
   }
 
-  Future<List<T>> delegateReadMany(
-      String urlBase,
-      String urlEndpoint,
-      Map<String, String> query,
-      Map<String, String> headers) async {
+  Future<List<T>> delegateReadMany(String urlBase, String urlEndpoint,
+      Map<String, String> query, Map<String, String> headers) async {
     query.removeWhere((key, value) => value == null);
     headers.removeWhere((key, value) => value == null);
     final response = await httpClient.doGet(urlBase, urlEndpoint,
@@ -50,11 +41,8 @@ abstract class AbstractWpRestRepository<T> {
     throw RepositoryMultiReadError(json.decode(response.body)['message']);
   }
 
-  Future<T> delegateCreate(
-      String urlBase,
-      String urlEndpoint,
-      Map<String, dynamic> queryBody,
-      Map<String, dynamic> headers) async {
+  Future<T> delegateCreate(String urlBase, String urlEndpoint,
+      Map<String, dynamic> queryBody, Map<String, dynamic> headers) async {
     queryBody.removeWhere((key, value) => value == null);
     headers.removeWhere((key, value) => value == null);
     final response = await httpClient.doPost(urlBase, urlEndpoint,
@@ -74,7 +62,7 @@ abstract class AbstractWpRestRepository<T> {
   }
 
   String formatResultOrderType(ReadOrderType order) {
-    switch(order) {
+    switch (order) {
       case ReadOrderType.asc:
         return "asc";
       case ReadOrderType.desc:
@@ -84,10 +72,6 @@ abstract class AbstractWpRestRepository<T> {
   }
 
   Map<String, String> formatAuthUserTokenToHeader(AuthUser user) {
-    return {
-      'Authorization' : 'Bearer ${user.authToken}'
-    };
+    return {'Authorization': 'Bearer ${user.authToken}'};
   }
-
 }
-

@@ -1,4 +1,3 @@
-
 import 'user.dart';
 import 'package:meta/meta.dart';
 
@@ -32,25 +31,35 @@ class Recipe extends Post {
   final List<RecipeIngredient> ingredientList;
   final List<RecipeStep> stepList;
 
-  Recipe(id, authorId, code, title, content, authorName, pageUrl,
-      featuredImageUrl, creationDateTime, lastUpdateDateTime, this.servesCount,
-      this.likeCount, this.cookingTime, this.cookingTemperature,
-      this.difficulty, this.description, this.ingredientList, this.stepList)
+  Recipe(
+      id,
+      authorId,
+      code,
+      title,
+      content,
+      authorName,
+      pageUrl,
+      featuredImageUrl,
+      creationDateTime,
+      lastUpdateDateTime,
+      this.servesCount,
+      this.likeCount,
+      this.cookingTime,
+      this.cookingTemperature,
+      this.difficulty,
+      this.description,
+      this.ingredientList,
+      this.stepList)
       : super(id, authorId, code, title, content, authorName, pageUrl,
-      featuredImageUrl, creationDateTime, lastUpdateDateTime);
+            featuredImageUrl, creationDateTime, lastUpdateDateTime);
 }
 
-enum RecipeOrder {
-  date, relevance
-}
+enum RecipeOrder { date, relevance }
 
 abstract class RecipeRepository
     extends PostTypeRepository<Recipe, RecipeOrder> {
-
-  Future<Recipe> setUserVote({
-    @required Recipe post,
-    @required bool positive,
-    @required AuthUser user
-  });
-
+  Future<Recipe> setUserVote(
+      {@required Recipe post,
+      @required bool positive,
+      @required AuthUser user});
 }
