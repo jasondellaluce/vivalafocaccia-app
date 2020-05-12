@@ -29,8 +29,9 @@ class _VivaLaFocacciaAppState extends State<NavigationApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "VivaLaFocaccia",
-      theme: ThemeData.light().copyWith(
-          primaryColor: Colors.deepOrange, accentColor: Colors.yellowAccent),
+      theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.deepOrange,
+          accentColor: Colors.yellowAccent),
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: Colors.amber,
         accentColor: Colors.redAccent,
@@ -42,7 +43,7 @@ class _VivaLaFocacciaAppState extends State<NavigationApp> {
 }
 
 class _BottomBarWidget extends StatefulWidget {
-  final navigationTabRoutes = ["/home", "/recipeOverview", "/home"];
+  final navigationTabRoutes = ["/home", "/home", "/home"];
 
   final routeMap = {
     '/': HomePage(),
@@ -117,7 +118,9 @@ class _BottomBarWidgetState extends State<_BottomBarWidget> {
               });
             }
             return MaterialPageRoute(
-                builder: _parseRoute(settings.name), settings: settings);
+              builder: _parseRoute(settings.name),
+              maintainState: false,
+              settings: settings);
           },
         ),
       ),
@@ -132,7 +135,7 @@ class _BottomBarWidgetState extends State<_BottomBarWidget> {
             title: Text('Ricerca'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.person),
             title: Text('Personale'),
           ),
         ],

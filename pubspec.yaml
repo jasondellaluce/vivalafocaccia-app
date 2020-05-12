@@ -23,6 +23,7 @@ dependencies:
   bouncing_widget: ^1.2.0
   flutter_signin_button: ^1.0.0
   flutter_html:
+  share: ^0.6.4+2
   flutter:
     sdk: flutter
 

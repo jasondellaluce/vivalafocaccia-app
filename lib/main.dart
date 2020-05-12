@@ -14,7 +14,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
-      runApp(VivaLaFocacciaApp());
+      runApp(NavigationApp());
     });
   });
 }

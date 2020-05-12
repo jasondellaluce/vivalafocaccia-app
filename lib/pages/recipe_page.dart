@@ -1,103 +1,151 @@
 import 'package:app/models/models.dart';
-import 'package:app/repositories/recipe_repository.dart';
-import 'package:app/repositories/repository_factory.dart';
 import 'package:app/widgets/basic_button.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 
 import 'package:app/core/core.dart';
+import 'package:share/share.dart';
 
 class RecipePage extends StatelessWidget {
   final defaultPadding = EdgeInsets.symmetric(vertical: 20, horizontal: 25);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Recipe as nav argument or link opening and loading if future
-    // It can be passed by:
-    //    1) Nav Argument
-    //    2) Nav Argument (Future)
     // TODO: Extract useful widgets in other modules
-    // TODO: Show proper loading animation if argument is a future
     // TODO: Integrate video
     // TODO: Manage colors better
-    ///TODO: Inject repository factory through provider
+    Future<Recipe> futureRecipe = Future.value(Recipe());
+    if(ModalRoute.of(context).settings.arguments is Recipe) {
+      futureRecipe = Future.value(ModalRoute.of(context).settings.arguments);
+    }
+    else if(ModalRoute.of(context).settings.arguments is Future<Recipe>) {
+      futureRecipe = ModalRoute.of(context).settings.arguments;
+    }
     return FutureBuilder(
-      future: RepositoryFactory().forRecipe().read(RecipeSingleReadRequest(
-          code: "video-ricetta-della-focaccia-genovese")),
-      builder: (context, snapshot) {
+      future: futureRecipe,
+      builder: (futureContext, snapshot) {
         if (snapshot.hasError)
-          return Center(child: Text(snapshot.error.toString()));
-        if (!snapshot.hasData) return CircularProgressIndicator();
+          return _LoadingErrorWidget(errorLabel: snapshot.error.toString());
+
+        if (!snapshot.hasData)
+          return _LoadingWidget();
+
         return Provider<Recipe>(
             create: (context) => snapshot.data,
-            child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0.0,
-                  centerTitle: true,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  leading: BouncingWidget(
-                      scaleFactor: -1.5,
-                      duration: Duration(milliseconds: 100),
-                      onPressed: () => _onBackButtonPressed(context),
-                      child: Icon(Icons.arrow_back,
-                          color: Theme.of(context).textTheme.bodyText1.color)),
-                  actions: <Widget>[
-                    BouncingWidget(
-                        scaleFactor: -1.5,
-                        duration: Duration(milliseconds: 100),
-                        onPressed: _onCommentButtonPressed,
-                        child: Icon(Icons.insert_comment,
-                            color:
-                                Theme.of(context).textTheme.bodyText1.color)),
-                    SizedBox(width: 20),
-                    BouncingWidget(
-                        scaleFactor: -1.5,
-                        duration: Duration(milliseconds: 100),
-                        onPressed: _onShareButtonPressed,
-                        child: Icon(Icons.share,
-                            color:
-                                Theme.of(context).textTheme.bodyText1.color)),
-                    SizedBox(width: 20),
-                  ],
-                ),
-                body: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                      child: Column(
-                    children: <Widget>[
-                      _HeaderImageWidget(),
-                      _HeaderDetailsWidget(padding: defaultPadding),
-                      _RecipeDetailsListWidget(padding: defaultPadding),
-                      _RecipeDescriptionWidget(padding: defaultPadding),
-                      _IngredientDetailsWidget(padding: defaultPadding),
-                      _DescriptionWidget(padding: defaultPadding),
-                      // _RecipeTimingPreviewWidget(padding: defaultPadding),
-                      _StepListWidget(padding: defaultPadding)
-                    ],
-                  )),
-                )));
+            child: _MainPageWidget(defaultPadding: defaultPadding));
       },
     );
   }
 
+}
+
+class _MainPageWidget extends StatelessWidget {
+
+  const _MainPageWidget({
+    Key key,
+    @required this.defaultPadding,
+  }) : super(key: key);
+
+  final EdgeInsets defaultPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          leading: BouncingWidget(
+              scaleFactor: -1.5,
+              duration: Duration(milliseconds: 100),
+              onPressed: () => _onBackButtonPressed(context),
+              child: Icon(Icons.arrow_back,
+                  color: Theme.of(context).textTheme.bodyText1.color)),
+          actions: <Widget>[
+            BouncingWidget(
+                scaleFactor: -1.5,
+                duration: Duration(milliseconds: 100),
+                onPressed: _onCommentButtonPressed,
+                child: Icon(Icons.insert_comment,
+                    color:
+                        Theme.of(context).textTheme.bodyText1.color)),
+            SizedBox(width: 20),
+            BouncingWidget(
+                scaleFactor: -1.5,
+                duration: Duration(milliseconds: 100),
+                onPressed: () => _onShareButtonPressed(context, context.read<Recipe>(), context.read<Localization>()["recipeShareSubjectLabel"]),
+                child: Icon(Icons.share,
+                    color:
+                        Theme.of(context).textTheme.bodyText1.color)),
+            SizedBox(width: 20),
+          ],
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+              child: Column(
+            children: <Widget>[
+              _HeaderImageWidget(),
+              _HeaderDetailsWidget(padding: defaultPadding),
+              _RecipeDetailsListWidget(padding: defaultPadding),
+              _RecipeDescriptionWidget(padding: defaultPadding),
+              _IngredientDetailsWidget(padding: defaultPadding),
+              _DescriptionWidget(padding: defaultPadding),
+              // _RecipeTimingPreviewWidget(padding: defaultPadding),
+              _StepListWidget(padding: defaultPadding)
+            ],
+          )),
+        ));
+  }
+
   void _onBackButtonPressed(context) {
-    // TODO: Navigate to previous page or close app (Eventually don't show button at all)
-    Navigator.pushNamed(context, "/home");
+    if(!Navigator.canPop(context))
+      SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+    else
+      Navigator.pop(context);
   }
 
   void _onCommentButtonPressed() {
     // TODO: Navigate to comment list page
   }
 
-  void _onShareButtonPressed() {
-    // TODO: Open share dialog
+  void _onShareButtonPressed(BuildContext context, Recipe recipe, String subject) {
+    Share.share(parse(recipe.title).documentElement.text.trim() + "\n" + recipe.pageUrl, subject: subject);
+  }
+
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Cooler loading animation
+    return Scaffold(
+      body: CircularProgressIndicator()
+    );
   }
 }
+
+class _LoadingErrorWidget extends StatelessWidget {
+  final String errorLabel;
+
+  const _LoadingErrorWidget({Key key, this.errorLabel}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Cooler error printing
+    return Scaffold(
+      body: Text(errorLabel)
+    );
+  }
+}
+
 
 class _HeaderImageWidget extends StatelessWidget {
   final imageHeightRatio = 0.45;
@@ -128,7 +176,7 @@ class _HeaderImageWidget extends StatelessWidget {
                         topRight: Radius.circular(30))),
                 child: Center(
                   child: Text(
-                    context.watch<Recipe>().title,
+                    parse(context.watch<Recipe>().title).documentElement.text,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -171,7 +219,7 @@ class _HeaderDetailsWidget extends StatelessWidget {
           /// likes, review, comments
           Container(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 /// Likes
                 Column(
@@ -205,7 +253,7 @@ class _HeaderDetailsWidget extends StatelessWidget {
                       duration: Duration(milliseconds: 100),
                       child: Row(
                           children: List.generate(5, (index) {
-                        if (index < recipe.averageRating.ceil())
+                        if (recipe.averageRating != null && index < recipe.averageRating.ceil())
                           return Icon(Icons.star,
                               color: Theme.of(context).accentColor);
                         return Icon(Icons.star_border,
@@ -254,7 +302,7 @@ class _RecipeDescriptionWidget extends StatelessWidget {
     return Container(
       padding: padding,
       child: Text(
-        context.watch<Recipe>().description,
+        parse(context.watch<Recipe>().description).documentElement.text.trim(),
         style: TextStyle(height: 1.5),
       ),
     );
@@ -424,19 +472,28 @@ class _SingleIngredientState extends State<_SingleIngredient> {
         style: TextStyle(fontWeight: FontWeight.bold),
       );
     }
-    return GestureDetector(
-      onTap: () => setState(() {
-        selected = !selected;
-      }),
-      child: Row(
-        children: <Widget>[
-          selected
-              ? Icon(Icons.check_circle)
-              : Icon(Icons.radio_button_unchecked),
-          SizedBox(width: 10),
-          Text(widget.name)
-        ],
-      ),
+    return Container(
+      child: GestureDetector(
+        onTap: () => setState(() {
+          selected = !selected;
+        }),
+        child: Row(
+          children: <Widget>[
+            selected
+                ? Icon(Icons.check_circle)
+                : Icon(Icons.radio_button_unchecked),
+            SizedBox(width: 10),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Text(
+                parse(widget.name).documentElement.text.trim(),
+                maxLines: 2,
+                overflow: TextOverflow.fade
+              )
+            )
+          ],
+        ),
+      )
     );
   }
 }
@@ -587,7 +644,7 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                     : Column(
                         children: <Widget>[
                           Text(
-                            stepList[widget.index].title,
+                            parse(stepList[widget.index].title).documentElement.text.trim(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -616,7 +673,7 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                                     child: Image.network(stepList[widget.index]
                                             .featuredImageUrlList[
                                         selectedImageIndex])),
-                                stepList.length < 2
+                                stepList[widget.index].featuredImageUrlList.length < 2
                                     ? Container()
                                     : Positioned(
                                         bottom: 10,
@@ -636,7 +693,7 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Html(
-                    data: stepList[widget.index].description,
+                    data: parse(stepList[widget.index].description).documentElement.text.trim(),
                     defaultTextStyle: TextStyle(
                       height: 1.5,
                     ),

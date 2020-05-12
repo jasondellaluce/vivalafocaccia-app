@@ -60,8 +60,7 @@ class HomePage extends StatelessWidget {
                   FutureBuilder(
                     future: repositoryFactory.forCategory().readMany(
                         CategoryMultiReadRequest(
-                            readCount: recipesPerCategoryCount,
-                            orderBy: CategoryOrderBy.name)),
+                          orderBy: CategoryOrderBy.name)),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return CircularProgressIndicator();
                       List<Widget> widgetList = [];
@@ -98,6 +97,8 @@ class _CategoryCarouselWidget extends StatelessWidget {
   final RecipeRepository recipeRepository;
   final categoryTitleWidthProportion = 0.6;
 
+  var recipesPerCategoryCount = 20;
+
   _CategoryCarouselWidget({Key key, this.category, this.recipeRepository})
       : super(key: key);
 
@@ -132,13 +133,16 @@ class _CategoryCarouselWidget extends StatelessWidget {
         // Carousel slider
         FutureBuilder(
           future: recipeRepository.readMany(
-              RecipeMultiReadRequest(categoryId: category.id, readCount: 10)),
+              RecipeMultiReadRequest(categoryId: category.id, readCount: recipesPerCategoryCount)),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return CircularProgressIndicator();
 
             List<Widget> widgets = [];
             for (var recipe in snapshot.data) {
-              widgets.add(RecipeCarouselSnippetWidget(recipe: recipe));
+              widgets.add(RecipeCarouselSnippetWidget(
+                recipe: recipe,
+                onTap: () => _onRecipeSnippetPressed(context, recipe),
+              ));
               widgets.add(SizedBox(width: 10));
             }
 
@@ -155,5 +159,9 @@ class _CategoryCarouselWidget extends StatelessWidget {
 
   void _onShowMorePressed() {
     // TODO: Navigate to category search results
+  }
+
+  void _onRecipeSnippetPressed(BuildContext context, Recipe recipe) {
+    Navigator.pushNamed(context, "/recipeOverview", arguments: recipe);
   }
 }
