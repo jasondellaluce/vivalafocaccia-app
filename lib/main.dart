@@ -5,13 +5,14 @@ import 'package:provider/provider.dart';
 
 import 'core/localization.dart';
 import 'home_page.dart';
+import 'navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
-      runApp(VivaLaFocacciaApp());
+      runApp(NavigationApp());
     });
   });
 }
@@ -35,7 +36,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData.light().copyWith(
+        theme: ThemeData.dark().copyWith(
           //scaffoldBackgroundColor: HexColor("#fefcf8"),
           primaryColor: Colors.orange,
           // accentColor: HexColor("#FFB500")

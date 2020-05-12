@@ -16,8 +16,12 @@ class RecipePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Recipe as nav argument or link opening and loading if future
+    // TODO: Recipe as nav argument or link opening and loading if future 
+    // It can be passed by:
+    //    1) Nav Argument
+    //    2) Nav Argument (Future)
     // TODO: Extract useful widgets in other modules
+    // TODO: Show proper loading animation if argument is a future
     // TODO: Integrate video
     // TODO: Manage colors better
     ///TODO: Inject repository factory through provider
@@ -39,7 +43,7 @@ class RecipePage extends StatelessWidget {
                   leading: BouncingWidget(
                       scaleFactor: -1.5,
                       duration: Duration(milliseconds: 100),
-                      onPressed: _onBackButtonPressed,
+                      onPressed: () => _onBackButtonPressed(context),
                       child: Icon(Icons.arrow_back,
                           color: Theme.of(context).textTheme.bodyText1.color)),
                   actions: <Widget>[
@@ -81,8 +85,9 @@ class RecipePage extends StatelessWidget {
     );
   }
 
-  void _onBackButtonPressed() {
+  void _onBackButtonPressed(context) {
     // TODO: Navigate to previous page or close app (Eventually don't show button at all)
+    Navigator.pushNamed(context, "/home");
   }
 
   void _onCommentButtonPressed() {

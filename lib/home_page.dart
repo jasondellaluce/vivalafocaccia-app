@@ -8,37 +8,39 @@ import 'package:flutter/rendering.dart';
 import 'models/models.dart';
 
 class HomePage extends StatelessWidget {
+
   final topColorHeightRatio = 0.7;
   final recipesPerCategoryCount = 20;
+  final logoImageWidthRatio = 0.55;
 
   @override
   Widget build(BuildContext context) {
     // TODO: Inject RepositoryFactory with Provider
     var repositoryFactory = RepositoryFactory();
-    return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Stack(
-          children: <Widget>[
-            // Logo background
-            Container(
-              height: MediaQuery.of(context).size.height * topColorHeightRatio,
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            ),
-
-            // Real page Contents
-            Container(
-              child: Column(
-                children: <Widget>[
-                  // Logo image
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.1,
-                      bottom: 30,
-                      left: 25,
-                      right: 25,
-                    ),
-                    width: MediaQuery.of(context).size.width * 0.7,
+        return Scaffold(
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Stack(
+              children: <Widget>[
+                // Logo background
+                Container(
+                  height: MediaQuery.of(context).size.height * topColorHeightRatio,
+                  decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                ),
+    
+                // Real page Contents
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      // Logo image
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.1,
+                          bottom: 30,
+                          left: 25,
+                          right: 25,
+                        ),
+                        width: MediaQuery.of(context).size.width * logoImageWidthRatio,
                     child: Image.asset("assets/logo.png"),
                   ),
                   SizedBox(height: 10),
@@ -92,29 +94,31 @@ class HomePage extends StatelessWidget {
 }
 
 class _CategoryCarouselWidget extends StatelessWidget {
+
   final Category category;
   final RecipeRepository recipeRepository;
+  final categoryTitleWidthProportion = 0.6;
 
   _CategoryCarouselWidget({Key key, this.category, this.recipeRepository})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 30),
-
-        // Category name and link
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Column(
           children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width * 0.5,
+            SizedBox(height: 30),
+    
+            // Category name and link
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * categoryTitleWidthProportion,
               child: Text(
                 category.name,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .headline6
                     .copyWith(fontWeight: FontWeight.bold),
               ),
             ),

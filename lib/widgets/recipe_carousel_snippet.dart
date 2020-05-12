@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
 class RecipeCarouselSnippetWidget extends StatelessWidget {
+
   final Recipe recipe;
   final width;
   final borderRadius = BorderRadius.circular(10);
@@ -19,10 +20,8 @@ class RecipeCarouselSnippetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BouncingWidget(
-        scaleFactor: 1.3,
-        duration: Duration(milliseconds: 50),
-        onPressed: onTap,
+    return GestureDetector(
+        onTap: onTap,
         child: Column(
           children: <Widget>[
             // Recipe picture
@@ -54,6 +53,8 @@ class RecipeCarouselSnippetWidget extends StatelessWidget {
                 parse(recipe.title).documentElement.text.trim(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyText1,
+                textAlign: TextAlign.center,
               ),
             )
           ],
