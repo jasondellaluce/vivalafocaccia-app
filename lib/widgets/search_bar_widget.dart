@@ -35,7 +35,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         onSubmitted: (s) => widget.onSubmit(_textController, s),
         maxLines: 1,
         autocorrect: false,
-        // controller: ,
+        controller: _textController,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
             contentPadding: EdgeInsets.all(10.0),

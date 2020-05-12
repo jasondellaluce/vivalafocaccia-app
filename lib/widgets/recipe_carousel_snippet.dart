@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
 class RecipeCarouselSnippetWidget extends StatelessWidget {
-
   final Recipe recipe;
   final width;
   final borderRadius = BorderRadius.circular(10);

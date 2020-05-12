@@ -4,7 +4,9 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 
 import 'core/localization.dart';
-import 'home_page.dart';
+import "pages/recipe_page.dart";
+import 'pages/home_page.dart';
+import 'pages/login_page.dart';
 import 'navigation.dart';
 
 void main() async {
@@ -12,7 +14,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     GlobalConfiguration().loadFromAsset("global_configuration.json").then((_) {
-      runApp(NavigationApp());
+      runApp(VivaLaFocacciaApp());
     });
   });
 }
@@ -45,7 +47,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
         home: Provider<Localization>(
           create: (BuildContext context) =>
               Localization((s) => GlobalConfiguration().get(s)),
-          child: HomePage(),
+          child: LoginPage(),
         ));
   }
 }

@@ -1,23 +1,20 @@
-import 'package:app/home_page.dart';
-import 'package:app/recipe_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/home_page.dart';
+import 'pages/recipe_page.dart';
 import 'core/core.dart';
 import 'repositories/repositories.dart';
 
 class NavigationApp extends StatefulWidget {
-
   @override
   _VivaLaFocacciaAppState createState() => _VivaLaFocacciaAppState();
-
 }
 
 class _VivaLaFocacciaAppState extends State<NavigationApp> {
-
   @override
   void initState() {
     super.initState();
@@ -33,12 +30,10 @@ class _VivaLaFocacciaAppState extends State<NavigationApp> {
     return MaterialApp(
       title: "VivaLaFocaccia",
       theme: ThemeData.light().copyWith(
-        primaryColor: Colors.orange,
-        accentColor: Colors.orangeAccent
-      ),
+          primaryColor: Colors.deepOrange, accentColor: Colors.yellowAccent),
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: Colors.amber,
-        accentColor: Colors.amberAccent
+        accentColor: Colors.redAccent,
       ),
       debugShowCheckedModeBanner: false,
       home: _BottomBarWidget(),
@@ -47,12 +42,7 @@ class _VivaLaFocacciaAppState extends State<NavigationApp> {
 }
 
 class _BottomBarWidget extends StatefulWidget {
-  
-  final navigationTabRoutes = [
-    "/home",
-    "/recipeOverview",
-    "/home"
-  ];
+  final navigationTabRoutes = ["/home", "/recipeOverview", "/home"];
 
   final routeMap = {
     '/': HomePage(),
@@ -67,14 +57,12 @@ class _BottomBarWidget extends StatefulWidget {
 
   @override
   _BottomBarWidgetState createState() => _BottomBarWidgetState();
-
 }
 
 class _BottomBarWidgetState extends State<_BottomBarWidget> {
-
   final _navigatorKey = GlobalKey<NavigatorState>();
   int selectedIndex;
-  
+
   @override
   void initState() {
     selectedIndex = 0;
@@ -89,30 +77,30 @@ class _BottomBarWidgetState extends State<_BottomBarWidget> {
   }
 
   WidgetBuilder _parseRoute(String routeName) {
-    if(!widget.routeMap.containsKey(routeName))
+    if (!widget.routeMap.containsKey(routeName))
       throw Exception("Unknown Navigation Route!");
 
     // TODO: Implement route-specific providers here
 
-    return (context) => _applySharedProviders(context, widget.routeMap[routeName]);
+    return (context) =>
+        _applySharedProviders(context, widget.routeMap[routeName]);
   }
 
   Widget _applySharedProviders(BuildContext context, Widget child) {
-    return Provider<Localization> (
-      create: (BuildContext context) => widget.sharedLocalization,
-      child: Provider<RepositoryFactory>(
-        create: (BuildContext context) => widget.sharedRepositoryFactory,
-        child: child,
-      )
-    );
+    return Provider<Localization>(
+        create: (BuildContext context) => widget.sharedLocalization,
+        child: Provider<RepositoryFactory>(
+          create: (BuildContext context) => widget.sharedRepositoryFactory,
+          child: child,
+        ));
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
-          if(_navigatorKey.currentState.canPop()) {
+          if (_navigatorKey.currentState.canPop()) {
             _navigatorKey.currentState.pop();
             return false;
           }
@@ -123,43 +111,35 @@ class _BottomBarWidgetState extends State<_BottomBarWidget> {
           initialRoute: "/",
           onGenerateRoute: (settings) {
             var indexOfName = widget.navigationTabRoutes.indexOf(settings.name);
-            if(indexOfName >= 0) {
+            if (indexOfName >= 0) {
               setState(() {
                 selectedIndex = indexOfName;
               });
             }
             return MaterialPageRoute(
-              builder: _parseRoute(settings.name),
-              settings: settings
-            );
+                builder: _parseRoute(settings.name), settings: settings);
           },
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             title: Text('Ricerca'),
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             title: Text('Personale'),
           ),
         ],
-
         currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).accentColor,
         onTap: _selectIndex,
       ),
     );
   }
-
 }

@@ -1,5 +1,4 @@
-# app
-
+# Viva La Focaccia for Android and iOS
 Cross-platform Mobile Application for VivaLaFocaccia
 
 ## Client-side software dependencies

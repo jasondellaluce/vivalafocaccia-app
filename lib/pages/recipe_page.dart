@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
-import 'core/localization.dart';
+import 'package:app/core/core.dart';
 
 class RecipePage extends StatelessWidget {
   final defaultPadding = EdgeInsets.symmetric(vertical: 20, horizontal: 25);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Recipe as nav argument or link opening and loading if future 
+    // TODO: Recipe as nav argument or link opening and loading if future
     // It can be passed by:
     //    1) Nav Argument
     //    2) Nav Argument (Future)
