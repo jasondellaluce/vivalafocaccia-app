@@ -5,10 +5,5 @@ class NavigatorBottomTab {
   final String title;
   final Icon icon;
 
-  NavigatorBottomTab({
-    @required this.routeName,
-    this.title,
-    this.icon
-  });
-
+  NavigatorBottomTab({@required this.routeName, this.title, this.icon});
 }

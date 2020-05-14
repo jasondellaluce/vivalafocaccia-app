@@ -56,8 +56,9 @@ class HomePage extends StatelessWidget {
                   SizedBox(height: 10),
 
                   FutureBuilder(
-                    future: Provider.of<BlogContentService>(context, listen: false)
-                        .getCategories(),
+                    future:
+                        Provider.of<BlogContentService>(context, listen: false)
+                            .getCategories(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return CircularProgressIndicator();
                       List<Widget> widgetList = [];
@@ -95,6 +96,8 @@ class HomePage extends StatelessWidget {
   }
 
   void _onRecipeSnippetTap(BuildContext context, Recipe recipe) {
-    //TODO: Navigate to recipe overview page
+    Provider.of<ContentReadingService>(context, listen: false).selectedRecipe =
+        Future.value(recipe);
+    Navigator.of(context).pushNamed("/recipeOverview");
   }
 }

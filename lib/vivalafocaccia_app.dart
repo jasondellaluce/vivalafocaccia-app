@@ -1,5 +1,4 @@
-
-import 'package:app/navigator_bottom_navbar/navigator_bottom_navbar.dart';
+import 'package:app/widgets/widgets.dart';
 import 'package:app/pages/pages.dart';
 import 'package:app/repositories/repositories.dart';
 import 'package:app/services/services.dart';
@@ -28,46 +27,45 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
   Widget build(BuildContext context) {
     var repositoryFactory = RepositoryFactory();
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        //scaffoldBackgroundColor: HexColor("#fefcf8"),
-        primaryColor: Colors.orange,
-        // accentColor: HexColor("#FFB500")
-      ),
-      debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          Provider<LocalizationService>(
-              create: (context) => LocalizationService(
-                  stringGetter: (s) => GlobalConfiguration().get(s))),
-          Provider<BlogContentService>(
-              create: (context) => BlogContentService(
-                  categoryRepository: repositoryFactory.forCategory(),
-                  postRepository: repositoryFactory.forPost(),
-                  recipeRepository: repositoryFactory.forRecipe())),
-          ChangeNotifierProvider<AuthenticationService>(
-              create: (context) => AuthenticationService(
-                  userRepository: repositoryFactory.forUser())),
-        ],
-        child: NavigatorBottomNavbar(
-          routePageMap: {
-            "/" : HomePage(),
-            "/home" : HomePage(),
-            "/personal" : LoginPage(),
-          },
-          bottomTabs: [
-            NavigatorBottomTab(
-              routeName: "/home",
-              title: "Home",
-              icon: Icon(Icons.home)
-            ),
-            NavigatorBottomTab(
-              routeName: "/personal",
-              title: "Personal",
-              icon: Icon(Icons.person)
+        theme: ThemeData.light().copyWith(
+          //scaffoldBackgroundColor: HexColor("#fefcf8"),
+          primaryColor: Colors.orange,
+          // accentColor: HexColor("#FFB500")
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MultiProvider(
+          providers: [
+            Provider<LocalizationService>(
+                create: (context) => LocalizationService(
+                    stringGetter: (s) => GlobalConfiguration().get(s))),
+            Provider<BlogContentService>(
+                create: (context) => BlogContentService(
+                    categoryRepository: repositoryFactory.forCategory(),
+                    postRepository: repositoryFactory.forPost(),
+                    recipeRepository: repositoryFactory.forRecipe())),
+            ChangeNotifierProvider<AuthenticationService>(
+                create: (context) => AuthenticationService(
+                    userRepository: repositoryFactory.forUser())),
+            ChangeNotifierProvider<ContentReadingService>(
+              create: (context) => ContentReadingService(),
             )
           ],
-        ),
-      )
-    );
+          child: NavigatorBottomNavbar(
+            routePageMap: {
+              "/": HomePage(),
+              "/home": HomePage(),
+              "/personal": LoginPage(),
+              "/recipeOverview": RecipeOverviewPage()
+            },
+            bottomTabs: [
+              NavigatorBottomTab(
+                  routeName: "/home", title: "Home", icon: Icon(Icons.home)),
+              NavigatorBottomTab(
+                  routeName: "/personal",
+                  title: "Personal",
+                  icon: Icon(Icons.person)),
+            ],
+          ),
+        ));
   }
 }

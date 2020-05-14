@@ -2,7 +2,6 @@ import 'package:app/models/models.dart';
 import 'package:app/repositories/repositories.dart';
 
 class BlogContentService {
-  
   final CategoryRepository categoryRepository;
   final PostRepository postRepository;
   final RecipeRepository recipeRepository;
