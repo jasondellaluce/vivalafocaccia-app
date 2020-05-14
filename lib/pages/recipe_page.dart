@@ -1,5 +1,5 @@
 import 'package:app/models/models.dart';
-import 'package:app/widgets/basic_button.dart';
+import 'package:app/widgets/widgets.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +20,11 @@ class RecipePage extends StatelessWidget {
     // TODO: Extract useful widgets in other modules
     // TODO: Integrate video
     // TODO: Manage colors better
+    print("Recipe page rebuilt");
     Future<Recipe> futureRecipe = Future.value(Recipe());
-    if(ModalRoute.of(context).settings.arguments is Recipe) {
+    if (ModalRoute.of(context).settings.arguments is Recipe) {
       futureRecipe = Future.value(ModalRoute.of(context).settings.arguments);
-    }
-    else if(ModalRoute.of(context).settings.arguments is Future<Recipe>) {
+    } else if (ModalRoute.of(context).settings.arguments is Future<Recipe>) {
       futureRecipe = ModalRoute.of(context).settings.arguments;
     }
     return FutureBuilder(
@@ -33,8 +33,7 @@ class RecipePage extends StatelessWidget {
         if (snapshot.hasError)
           return _LoadingErrorWidget(errorLabel: snapshot.error.toString());
 
-        if (!snapshot.hasData)
-          return _LoadingWidget();
+        if (!snapshot.hasData) return _LoadingWidget();
 
         return Provider<Recipe>(
             create: (context) => snapshot.data,
@@ -42,11 +41,9 @@ class RecipePage extends StatelessWidget {
       },
     );
   }
-
 }
 
 class _MainPageWidget extends StatelessWidget {
-
   const _MainPageWidget({
     Key key,
     @required this.defaultPadding,
@@ -74,16 +71,17 @@ class _MainPageWidget extends StatelessWidget {
                 duration: Duration(milliseconds: 100),
                 onPressed: _onCommentButtonPressed,
                 child: Icon(Icons.insert_comment,
-                    color:
-                        Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1.color)),
             SizedBox(width: 20),
             BouncingWidget(
                 scaleFactor: -1.5,
                 duration: Duration(milliseconds: 100),
-                onPressed: () => _onShareButtonPressed(context, context.read<Recipe>(), context.read<Localization>()["recipeShareSubjectLabel"]),
+                onPressed: () => _onShareButtonPressed(
+                    context,
+                    context.read<Recipe>(),
+                    context.read<Localization>()["recipeShareSubjectLabel"]),
                 child: Icon(Icons.share,
-                    color:
-                        Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1.color)),
             SizedBox(width: 20),
           ],
         ),
@@ -106,7 +104,7 @@ class _MainPageWidget extends StatelessWidget {
   }
 
   void _onBackButtonPressed(context) {
-    if(!Navigator.canPop(context))
+    if (!Navigator.canPop(context))
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
     else
       Navigator.pop(context);
@@ -116,19 +114,19 @@ class _MainPageWidget extends StatelessWidget {
     // TODO: Navigate to comment list page
   }
 
-  void _onShareButtonPressed(BuildContext context, Recipe recipe, String subject) {
-    Share.share(parse(recipe.title).documentElement.text.trim() + "\n" + recipe.pageUrl, subject: subject);
+  void _onShareButtonPressed(
+      BuildContext context, Recipe recipe, String subject) {
+    Share.share(
+        parse(recipe.title).documentElement.text.trim() + "\n" + recipe.pageUrl,
+        subject: subject);
   }
-
 }
 
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Cooler loading animation
-    return Scaffold(
-      body: CircularProgressIndicator()
-    );
+    return Scaffold(body: CircularProgressIndicator());
   }
 }
 
@@ -140,12 +138,9 @@ class _LoadingErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Cooler error printing
-    return Scaffold(
-      body: Text(errorLabel)
-    );
+    return Scaffold(body: Text(errorLabel));
   }
 }
-
 
 class _HeaderImageWidget extends StatelessWidget {
   final imageHeightRatio = 0.45;
@@ -253,7 +248,8 @@ class _HeaderDetailsWidget extends StatelessWidget {
                       duration: Duration(milliseconds: 100),
                       child: Row(
                           children: List.generate(5, (index) {
-                        if (recipe.averageRating != null && index < recipe.averageRating.ceil())
+                        if (recipe.averageRating != null &&
+                            index < recipe.averageRating.ceil())
                           return Icon(Icons.star,
                               color: Theme.of(context).accentColor);
                         return Icon(Icons.star_border,
@@ -473,28 +469,23 @@ class _SingleIngredientState extends State<_SingleIngredient> {
       );
     }
     return Container(
-      child: GestureDetector(
-        onTap: () => setState(() {
-          selected = !selected;
-        }),
-        child: Row(
-          children: <Widget>[
-            selected
-                ? Icon(Icons.check_circle)
-                : Icon(Icons.radio_button_unchecked),
-            SizedBox(width: 10),
-            Container(
+        child: GestureDetector(
+      onTap: () => setState(() {
+        selected = !selected;
+      }),
+      child: Row(
+        children: <Widget>[
+          selected
+              ? Icon(Icons.check_circle)
+              : Icon(Icons.radio_button_unchecked),
+          SizedBox(width: 10),
+          Container(
               width: MediaQuery.of(context).size.width * 0.7,
-              child: Text(
-                parse(widget.name).documentElement.text.trim(),
-                maxLines: 2,
-                overflow: TextOverflow.fade
-              )
-            )
-          ],
-        ),
-      )
-    );
+              child: Text(parse(widget.name).documentElement.text.trim(),
+                  maxLines: 2, overflow: TextOverflow.fade))
+        ],
+      ),
+    ));
   }
 }
 
@@ -644,7 +635,10 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                     : Column(
                         children: <Widget>[
                           Text(
-                            parse(stepList[widget.index].title).documentElement.text.trim(),
+                            parse(stepList[widget.index].title)
+                                .documentElement
+                                .text
+                                .trim(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -673,7 +667,10 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                                     child: Image.network(stepList[widget.index]
                                             .featuredImageUrlList[
                                         selectedImageIndex])),
-                                stepList[widget.index].featuredImageUrlList.length < 2
+                                stepList[widget.index]
+                                            .featuredImageUrlList
+                                            .length <
+                                        2
                                     ? Container()
                                     : Positioned(
                                         bottom: 10,
@@ -693,7 +690,10 @@ class _SingleStepWidgetState extends State<_SingleStepWidget> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Html(
-                    data: parse(stepList[widget.index].description).documentElement.text.trim(),
+                    data: parse(stepList[widget.index].description)
+                        .documentElement
+                        .text
+                        .trim(),
                     defaultTextStyle: TextStyle(
                       height: 1.5,
                     ),
