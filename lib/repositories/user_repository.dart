@@ -23,4 +23,8 @@ abstract class UserRepository {
   /// The returned user object will contain access info that will allow
   /// authenticated access to other functionality of the system.
   Future<AuthUser> authenticateWithFacebook(String facebookToken);
+
+  /// Performs deauthentication of a given pre-authenticated user.
+  Future<void> deauthenticate(AuthUser user);
+  
 }

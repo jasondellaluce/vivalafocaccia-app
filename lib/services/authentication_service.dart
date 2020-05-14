@@ -1,11 +1,14 @@
+import 'package:app/legacy/common/errors.dart';
 import 'package:app/models/models.dart';
 import 'package:app/repositories/repositories.dart';
 import 'package:flutter/material.dart';
 
+// TODO: Persist token (SharedPreferences maybe?)
 class AuthenticationService extends ChangeNotifier {
+
   final UserRepository userRepository;
   AuthUser _activeUser;
-  Error _error;
+  var _error;
 
   AuthenticationService({this.userRepository});
 
@@ -13,23 +16,41 @@ class AuthenticationService extends ChangeNotifier {
   bool get hasError => _error != null;
 
   AuthUser get activeUser => _activeUser;
-  Error get error => _error;
+  get error => _error;
 
-  void login(String username, String password) async {
-    // TODO: Do it for real
-    if (_activeUser != null) {
-      _error = UserAuthenticationError("Already logged in");
-      throw _error;
-    } else {
-      _error = null;
-      _activeUser = AuthUser(id: 1, name: username, email: username);
+  Future<void> login(String username, String password) async {
+    try {
+      if(_activeUser != null) {
+        throw AuthenticationError("Another user is already logged in, You have to log them out first.");
+      }
+      AuthUser newUser = await userRepository.authenticateWithCredentials(username, password);
+      _activeUser = newUser;
     }
-    notifyListeners();
+    catch(e) {
+      _error = e;
+      throw e;
+    }
+    finally {
+      notifyListeners();
+    }
   }
 
   Future<void> logout() async {
-    _activeUser = null;
-    _error = null;
-    notifyListeners();
+    try {
+      if(_activeUser == null) {
+        throw AuthenticationError("There is no logged user, execute a login first.");
+      }
+      await userRepository.deauthenticate(_activeUser);
+      _activeUser = null;
+      _error = null;
+    }
+    catch(e) {
+      _error = e;
+      throw e;
+    }
+    finally {
+      notifyListeners();
+    }
   }
+  
 }

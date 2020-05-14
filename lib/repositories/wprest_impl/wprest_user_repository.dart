@@ -66,4 +66,11 @@ class WpRestUserRepository implements UserRepository {
     // TODO: implement authenticateWithGoogle
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> deauthenticate(AuthUser user) async {
+    // There is nothing to be done in this implementation, as
+    // in order to deauthenticate an user, the business logic
+    // just needs to discard the previously obtained auth token. 
+  }
 }

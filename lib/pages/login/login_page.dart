@@ -90,15 +90,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void _onSubmitButtonPressed(
       BuildContext context, String username, String password) {
-    // TODO: Attempt real authentication here
-    var future = Future.delayed(Duration(seconds: 2));
-
     setState(() {
       _isLoading = true;
     });
-    future.then((value) => setState(() {
-          _isLoading = false;
-        }));
+    Provider.of<AuthenticationService>(context, listen: false).login(username, password).whenComplete(() => setState(() {
+      _isLoading = false;
+    }));
   }
 
   void _onGoogleButtonPressed(BuildContext context) {
