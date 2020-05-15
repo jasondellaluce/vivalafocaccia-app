@@ -54,15 +54,18 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
             routePageMap: {
               "/": HomePage(),
               "/home": HomePage(),
-              "/personal": LoginPage(),
+              "/search": SearchPage(),
+              "/user": LoginPage(),
               "/recipeOverview": RecipeOverviewPage()
             },
             bottomTabs: [
               NavigatorBottomTab(
                   routeName: "/home", title: "Home", icon: Icon(Icons.home)),
               NavigatorBottomTab(
-                  routeName: "/personal",
-                  title: "Personal",
+                  routeName: "/search", title: "Ricerca", icon: Icon(Icons.search)),
+              NavigatorBottomTab(
+                  routeName: "/user",
+                  title: "Utente",
                   icon: Icon(Icons.person)),
             ],
           ),

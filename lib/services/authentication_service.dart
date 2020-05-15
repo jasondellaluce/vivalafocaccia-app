@@ -25,6 +25,7 @@ class AuthenticationService extends ChangeNotifier {
       }
       AuthUser newUser = await userRepository.authenticateWithCredentials(username, password);
       _activeUser = newUser;
+      _error = null;
     }
     catch(e) {
       _error = e;

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'widgets/category_carousel.dart';
 
 class HomePage extends StatelessWidget {
+
   final topColorHeightRatio = 0.7;
   final recipesPerCategoryCount = 20;
   final logoImageWidthRatio = 0.55;
@@ -32,10 +33,10 @@ class HomePage extends StatelessWidget {
                   // Logo image
                   Container(
                     margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.1,
+                      top: 60,
                       bottom: 30,
-                      left: 25,
-                      right: 25,
+                      left: 20,
+                      right: 20,
                     ),
                     width:
                         MediaQuery.of(context).size.width * logoImageWidthRatio,

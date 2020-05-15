@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatefulWidget {
+
+  final String textHint;
   final Function(BuildContext, TextEditingController, String) onSubmit;
 
-  const SearchBarWidget({Key key, this.onSubmit}) : super(key: key);
+  const SearchBarWidget({Key key, this.onSubmit, this.textHint}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SearchBarWidgetState();
@@ -32,11 +34,13 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextField(
+        
         onSubmitted: (s) => widget.onSubmit(context, _textController, s),
         maxLines: 1,
         autocorrect: false,
         controller: _textController,
         decoration: InputDecoration(
+          hintText: widget.textHint,
             prefixIcon: Icon(Icons.search),
             contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(
