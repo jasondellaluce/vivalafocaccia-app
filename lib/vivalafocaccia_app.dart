@@ -27,10 +27,10 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
   Widget build(BuildContext context) {
     var repositoryFactory = RepositoryFactory();
     return MaterialApp(
-        theme: ThemeData.light().copyWith(
+        theme: ThemeData.dark().copyWith(
           //scaffoldBackgroundColor: HexColor("#fefcf8"),
           primaryColor: Colors.orange,
-          // accentColor: HexColor("#FFB500")
+          accentColor: Colors.red
         ),
         debugShowCheckedModeBanner: false,
         home: MultiProvider(
@@ -38,8 +38,8 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
             Provider<LocalizationService>(
                 create: (context) => LocalizationService(
                     stringGetter: (s) => GlobalConfiguration().get(s))),
-            Provider<BlogContentService>(
-                create: (context) => BlogContentService(
+            Provider<DataFetchService>(
+                create: (context) => DataFetchService(
                     categoryRepository: repositoryFactory.forCategory(),
                     postRepository: repositoryFactory.forPost(),
                     recipeRepository: repositoryFactory.forRecipe())),
@@ -55,6 +55,7 @@ class _VivaLaFocacciaAppState extends State<VivaLaFocacciaApp> {
               "/": HomePage(),
               "/home": HomePage(),
               "/search": SearchPage(),
+              "/searchResult": SearchResultPage(),
               "/user": LoginPage(),
               "/recipeOverview": RecipeOverviewPage()
             },

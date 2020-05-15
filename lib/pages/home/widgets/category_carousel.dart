@@ -35,7 +35,7 @@ class CategoryCarouselWidget extends StatelessWidget {
 
         // Carousel slider
         FutureBuilder(
-          future: Provider.of<BlogContentService>(context, listen: false)
+          future: Provider.of<DataFetchService>(context, listen: false)
               .getRecipesPerCategory(category, 0),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return CategoryProgressIndicator();

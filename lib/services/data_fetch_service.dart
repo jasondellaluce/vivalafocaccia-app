@@ -1,14 +1,14 @@
 import 'package:app/models/models.dart';
 import 'package:app/repositories/repositories.dart';
 
-class BlogContentService {
+class DataFetchService {
   
   final fetchPerRequest = 20;
   final CategoryRepository categoryRepository;
   final PostRepository postRepository;
   final RecipeRepository recipeRepository;
 
-  BlogContentService(
+  DataFetchService(
       {this.categoryRepository, this.postRepository, this.recipeRepository});
 
   Future<List<Category>> getCategories() {
@@ -24,4 +24,15 @@ class BlogContentService {
     return recipeRepository.readMany(
         RecipeMultiReadRequest(categoryId: category.id, readOffset: skipCount, readCount: fetchPerRequest));
   }
+
+   Future<List<Post>> getPostsPerKeywords(String query, int skipCount) {
+    return postRepository.readMany(
+        PostMultiReadRequest(keyWordQuery: query, readOffset: skipCount, readCount: fetchPerRequest));
+  }
+
+  Future<List<Recipe>> getRecipesPerKeywords(String query, int skipCount) {
+    return recipeRepository.readMany(
+        RecipeMultiReadRequest(keyWordQuery: query, readOffset: skipCount, readCount: fetchPerRequest));
+  }
+
 }

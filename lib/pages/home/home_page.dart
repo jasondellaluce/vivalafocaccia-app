@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
 
                   FutureBuilder(
                     future:
-                        Provider.of<BlogContentService>(context, listen: false)
+                        Provider.of<DataFetchService>(context, listen: false)
                             .getCategories(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return CircularProgressIndicator();
@@ -89,11 +89,11 @@ class HomePage extends StatelessWidget {
 
   void _onSearchSubmit(BuildContext context, TextEditingController controller,
       String searchValue) {
-    //TODO: Navigate to keyword search result and erase text in controller
+    Navigator.of(context).pushNamed("/searchResult", arguments: searchValue);
   }
 
   void _onCategoryShowMore(BuildContext context, Category category) {
-    //TODO: Navigate to category search result and erase text in controller
+    Navigator.of(context).pushNamed("/searchResult", arguments: category);
   }
 
   void _onRecipeSnippetTap(BuildContext context, Recipe recipe) {

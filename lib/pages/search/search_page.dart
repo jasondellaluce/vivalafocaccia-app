@@ -15,7 +15,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print("Building: SearchPage");
     var localization = Provider.of<LocalizationService>(context, listen: false);
-    return Consumer<BlogContentService>(
+    return Consumer<DataFetchService>(
       builder: (context, service, child) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -46,12 +46,12 @@ class SearchPage extends StatelessWidget {
   }
 
   void _onSearchSubmit(BuildContext context, TextEditingController controller, String searchValue) {
-    // TODO: Navigate to search results by keyword
+    Navigator.of(context).pushNamed("/searchResult", arguments: searchValue);
   }
 
 
-  void _onCategorySelected(BuildContext context, Category search) {
-    // TODO: Navigate to search results by category
+  void _onCategorySelected(BuildContext context, Category searchCategory) {
+    Navigator.of(context).pushNamed("/searchResult", arguments: searchCategory);
   }
 
 }

@@ -85,19 +85,19 @@ class RecipeOverviewPage extends StatelessWidget {
         ));
   }
 
-  void _onBackButtonPressed(BuildContext context) {
-    // TODO: Navigateto previous page or close app
-  }
-
-  void _onCommentButtonPressed(BuildContext context) {
-    // TODO: Navigate to comment list page
-  }
-
   void _onShareButtonPressed(
       BuildContext context, Recipe recipe, String subject) {
     Share.share(
         parse(recipe.title).documentElement.text.trim() + "\n" + recipe.pageUrl,
         subject: subject);
+  }
+  
+  void _onBackButtonPressed(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  void _onCommentButtonPressed(BuildContext context) {
+    // TODO: Navigate to comment list page
   }
 
   void _onUrlLinkTap(BuildContext context, String url) {
