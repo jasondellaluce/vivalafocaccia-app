@@ -1,4 +1,3 @@
-import 'package:app/legacy/common/errors.dart';
 import 'package:app/models/models.dart';
 import 'package:app/repositories/repositories.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<void> login(String username, String password) async {
     try {
       if(_activeUser != null) {
-        throw AuthenticationError("Another user is already logged in, You have to log them out first.");
+        throw UserAuthenticationError("Another user is already logged in, You have to log them out first.");
       }
       AuthUser newUser = await userRepository.authenticateWithCredentials(username, password);
       _activeUser = newUser;
@@ -39,7 +38,7 @@ class AuthenticationService extends ChangeNotifier {
   Future<void> logout() async {
     try {
       if(_activeUser == null) {
-        throw AuthenticationError("There is no logged user, execute a login first.");
+        throw UserAuthenticationError("There is no logged user, execute a login first.");
       }
       await userRepository.deauthenticate(_activeUser);
       _activeUser = null;
